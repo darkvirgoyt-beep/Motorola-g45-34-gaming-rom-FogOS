@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/badge/Codename-fogos%20%2F%20SM6375-orange.svg?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Android-14%20%2F%2015%20(LineageOS%20Base)-green.svg?style=for-the-badge&logo=android" />
   <img src="https://img.shields.io/badge/Developer-Prince%20%C2%B7%20VirgoYT-red.svg?style=for-the-badge&logo=youtube" />
+  <a href="https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases"><img src="https://img.shields.io/badge/Download-Latest%20Release-brightgreen.svg?style=for-the-badge&logo=github" /></a>
 </p>
 
 ---
@@ -98,38 +99,57 @@ fastboot flash vbmeta vbmeta.img --disable-verity --disable-verification
 2. **Hide Root from Banking Apps:**
    * Open Magisk / KernelSU settings -> Enable **Zygisk**.
    * Turn ON **Enforce Denylist** (or install **Shamiko** module).
-   * In **Configure Denylist**, add Google Play Services (`com.google.android.gms.unstable`), Google Play Store, and your banking apps (GPay, PhonePe, Paytm, Banking).
+   * In **Configure Denylist**, add Google Play Services (`com.google.android.gms.unstable`), Google Play Store, and your banking apps.
 3. **Pre-bundled Modules:**
    * Every FogOS release includes the **PlayIntegrityFix** module in `modules/PlayIntegrityFix.zip`.
    * Flash the module in Magisk / KernelSU to instantly achieve `MEETS_DEVICE_INTEGRITY`.
 
 ---
 
-## 📦 Pre-Bundled Companion Apps & Tools
+## ⚠️ Flashing Notes & Prerequisites for Moto G45 (`fogos`)
 
-In each release package and under `tools/`, you will find:
-* 📱 **FogOS PulseControl (`FogOS-PulseControl.apk`):** On-the-fly gaming profile switcher and monitoring.
-* ⚙️ **SmartPack Kernel Manager (`SmartPack-Kernel-Manager.apk`):** Modern open-source Kernel Adiutor continuation for live CPU, GPU, governor, and thermal tuning.
-* 🛡️ **Play Integrity Fix (`PlayIntegrityFix.zip`):** Ready-to-flash module for banking app pass.
+> [!IMPORTANT]
+> **Base Firmware Requirement:** Your phone must be running stock Motorola **Android 14** (or latest official stock OS) before installing FogOS. Flashing over an incompatible or mismatched baseband/firmware can cause a hard brick. Always update to the latest stock firmware first.
 
----
-
-## 🛠️ GitHub Actions Build Pipelines
-
-1. **`FogOS Gaming ROM - Build`**: Fast distribution builder (LineageOS base + VirgoYT Kernel + all gaming patches + Fastboot flasher). Compiles and publishes in ~6 minutes!
-2. **`Compile LineageOS from Source (fogos)`**: Full source code compilation (`repo init`, `LineageOS 21`, `breakfast fogos`, `brunch fogos`).
+1. **Bootloader Unlock:** Ensure your bootloader is unlocked officially via Motorola's portal (`fastboot oem get_unlock_data`).
+2. **Release Keys Signing:** Custom private keys are generated via `./scripts/generate_release_keys.sh` so builds are signed with official release-keys rather than generic `test-keys`.
 
 ---
 
-## 📲 How to Flash on Motorola G45 / G34
+## 📲 How to Flash (Two Supported Methods)
 
+### Method 1: 1-Click Fastboot Installer (Recommended for PC)
 1. Download the release package from the [Releases](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases) page.
 2. Extract the ZIP package on your PC.
-3. Boot into Fastboot mode (`Power + Volume Down`).
+3. Boot phone into Fastboot mode (`Power + Volume Down`) and connect via USB.
 4. **Windows:** Double-click `flash_all.bat`.
    **Linux / macOS:** Run `chmod +x flash_all.sh && ./flash_all.sh`.
-5. Select **Y** to format userdata if first time flashing.
-6. Reboot and enjoy ultimate gaming performance!
+5. Select **Y** to format userdata if flashing for the first time.
+
+### Method 2: Recovery Sideload via ADB
+1. Flash the boot image:
+   ```bash
+   fastboot flash boot boot.img
+   fastboot reboot recovery
+   ```
+2. In Recovery on your phone:
+   * Select `Factory reset` -> `Format data/factory reset`.
+   * Select `Apply update` -> `Apply from ADB`.
+3. Sideload the ROM:
+   ```bash
+   adb sideload FogOS-v1.0-Gaming-fogos-VirgoYT-*.zip
+   ```
+4. Reboot system now!
+
+---
+
+## 🔬 Recommended Verification & Testing Steps
+
+After flashing FogOS Elite Gaming Edition on your Motorola G45:
+1. **Benchmark Stability:** Run **AnTuTu v10** and **Geekbench 6** to verify CPU/GPU performance scaling.
+2. **Real-Game FPS Meter:** Test **BGMI / PUBG Mobile**, **Call of Duty: Mobile**, and **Genshin Impact** using PerfDog or Scene 6 FPS overlay to verify 90/120 FPS lock.
+3. **Banking & Play Integrity:** Open **Play Integrity API Checker** (available on Play Store) to confirm `MEETS_DEVICE_INTEGRITY`. Test Google Pay, PhonePe, and Paytm.
+4. **Note on Android 17:** Official SM6375 vendor HALs, RIL, and camera drivers are designed for Android 14/15. LineageOS 23.2 / 21 is currently the optimal, rock-solid gaming foundation until Google and Motorola release public Android 17 BSP drops.
 
 ---
 

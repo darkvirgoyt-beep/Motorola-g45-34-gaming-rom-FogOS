@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FogOS Elite Gaming ROM Manifest - Motorola Moto G45 5G / G34 5G (fogos) -->
+<!-- Lead Developer: Prince · VirgoYT (VirgoYT707) -->
+<manifest>
+  <!-- Device Tree & Common SM6375 Holi Platform -->
+  <project name="LineageOS/android_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="lineage-21.0" />
+  <project name="LineageOS/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="lineage-21.0" />
+
+  <!-- Vendor Blobs (Proprietary HALs, Camera, Radio) -->
+  <project name="TheMuppets/proprietary_vendor_motorola_fogos" path="vendor/motorola/fogos" remote="github" revision="lineage-21.0" />
+  <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common" path="vendor/motorola/sm6375-common" remote="github" revision="lineage-21.0" />
+
+  <!-- VirgoYT Custom Gaming Kernel -->
+  <project name="darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new" path="kernel/motorola/sm6375" remote="github" revision="main" />
+
+  <!-- Hardware HAL Modules -->
+  <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="lineage-21.0" />
+</manifest>
