@@ -1,0 +1,22 @@
+# FogOS profile-control device and app domain.
+# Merge these declarations into the ROM's device/vendor sepolicy tree.
+type fogos_profile_device, dev_type;
+type fogos_app, domain;
+app_domain(fogos_app)
+
+# The app can only talk to this one character device. It does not receive
+# permission to write generic sysfs, procfs, or other kernel controls.
+allow fogos_app fogos_profile_device:chr_file {
+    getattr
+    open
+    read
+    write
+};
+
+
+# Do not add broad capabilities such as sys_admin or dac_override here.
+# The app is intentionally non-root and must use only /dev/fogos_profile.
+
+# Device-node label. This is usually placed in file_contexts instead of a .te
+# file; it is kept here as a reminder of the required path.
+# /dev/fogos_profile  u:object_r:fogos_profile_device:s0

@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- FogOS Elite Gaming ROM Manifest - Motorola Moto G45 5G / G34 5G (fogos) -->
-<!-- Lead Developer: Prince · VirgoYT (VirgoYT707) -->
+<!-- VirgoX-Elite-GamingOS-Rom - Motorola Moto G45 5G / G34 5G (fogos) -->
+<!-- Maintainer: VIRGOYT707 -->
 <manifest>
   <remote name="github" fetch="https://github.com/" />
 
-  <!-- Device Tree & Common SM6375 Holi Platform -->
-  <project name="LineageOS/android_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="lineage-21.0" />
-  <project name="LineageOS/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="lineage-21.0" />
+  <!-- Audited fogos device tree and shared SM6375 platform. -->
+  <project name="darkvirgoyt-beep/android17_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="main" />
+  <project name="darkvirgoyt-beep/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="lineage-23.2" />
 
-  <!-- Vendor Blobs (Proprietary HALs, Camera, Radio) -->
-  <project name="TheMuppets/proprietary_vendor_motorola_fogos" path="vendor/motorola/fogos" remote="github" revision="lineage-21.0" />
-  <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common" path="vendor/motorola/sm6375-common" remote="github" revision="lineage-21.0" />
+  <!-- Vendor blobs must come from the matching Motorola firmware and Android base. -->
+  <!-- Keep proprietary vendor projects out of this manifest until their revision is confirmed. -->
 
-  <!-- VirgoYT Custom Gaming Kernel -->
-  <project name="darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new" path="kernel/motorola/sm6375" remote="github" revision="main" />
+  <!-- Audited gaming kernel source. -->
+  <project name="darkvirgoyt-beep/android_kernel_motorola_fogos" path="kernel/motorola/fogos" remote="github" revision="sixteen-qpr2" />
 
-  <!-- Hardware HAL Modules -->
-  <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="lineage-21.0" />
+  <!-- Connected FogOS Controller source/reference. -->
+  <project name="darkvirgoyt-beep/FogOS-PulseControl" path="vendor/virgox/FogOS-PulseControl" remote="github" revision="main" />
 
-  <!-- Custom GameSpace Package (Launcher shortcuts + Gaming Profiles) -->
-  <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fourteen" />
+  <!-- Hardware HAL modules must match the selected ROM base. -->
+  <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="lineage-23.2" />
 
-  <!-- Dolby Atmos & Spatial Audio (FogOS / InfinityX audio engine) -->
-  <project name="PixelOS-AOSP/android_packages_apps_DolbyAtmos" path="packages/apps/DolbyAtmos" remote="github" revision="fourteen" />
+  <!-- Gaming profiles are provided by FogOS PulseControl; unrelated GameSpace and Dolby projects are intentionally excluded. -->
 </manifest>

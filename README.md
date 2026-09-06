@@ -195,7 +195,7 @@ Build output, signing keys, and private device data should not be committed to t
 | Component | Repository |
 |---|---|
 | VirgoX ROM source | [VirgoX-Elite-GamingOS](https://github.com/darkvirgoyt-beep/VirgoX-Elite-GamingOS) |
-| Gaming kernel | [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new) |
+| Gaming kernel | [android_kernel_motorola_fogos](https://github.com/darkvirgoyt-beep/android_kernel_motorola_fogos) |
 | Device tree | [android17_device_motorola_fogos](https://github.com/darkvirgoyt-beep/android17_device_motorola_fogos) |
 | Common device tree | [android_device_motorola_sm6375-common](https://github.com/darkvirgoyt-beep/android_device_motorola_sm6375-common) |
 | PulseControl utility | [FogOS-PulseControl](https://github.com/darkvirgoyt-beep/FogOS-PulseControl) |
@@ -225,7 +225,7 @@ Pull requests should remain focused, document changed properties or scripts, avo
 - **Project:** VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM
 - **Base architecture:** [LineageOS](https://github.com/LineageOS)
 - **Target platform:** Qualcomm SM6375 / Holi
-- **Related kernel:** [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new)
+- **Related kernel:** [android_kernel_motorola_fogos](https://github.com/darkvirgoyt-beep/android_kernel_motorola_fogos)
 
 ## License
 
@@ -237,3 +237,7 @@ Review the licenses of the upstream Android, LineageOS, kernel, device-tree, ven
   <strong>VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM</strong><br />
   Built for responsive Android gaming on Moto G45 5G and Moto G34 5G.
 </p>
+
+## Current VirgoX integration
+
+The build workflow now uses the audited `fogos` kernel, device tree, shared SM6375 tree, and connected `FogOS-PulseControl` source. It installs the `virgox_fogos` product target, includes the restricted `/dev/fogos_profile` SELinux policy, and excludes unrelated GameSpace and Dolby projects from the local manifest. Use `lunch virgox_fogos-userdebug` after selecting a consistent Android base and supplying matching vendor blobs.

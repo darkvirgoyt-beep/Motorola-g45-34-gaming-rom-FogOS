@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# FogOS Elite Gaming ROM - Source Compilation Script (fogos)
+# VirgoX-Elite-GamingOS-Rom Source Compilation Script (fogos)
 # Developer: Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 set -e
@@ -27,7 +27,8 @@ cd "$LINEAGE_DIR"
 
 if [ ! -f "build/envsetup.sh" ]; then
     echo "=== [2/4] Initializing and Syncing LineageOS Source ==="
-    repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --depth=1
+    ROM_BASE_BRANCH="${ROM_BASE_BRANCH:-lineage-23.2}"
+    repo init -u https://github.com/LineageOS/android.git -b "$ROM_BASE_BRANCH" --depth=1
     mkdir -p .repo/local_manifests
     cp "$PROJECT_ROOT/manifests/fogos.xml" .repo/local_manifests/fogos.xml 2>/dev/null || true
     repo sync -c -j"$(nproc)" --force-sync --no-clone-bundle --no-tags
@@ -40,16 +41,25 @@ mkdir -p device/motorola/fogos/overlay
 mkdir -p device/motorola/fogos/rootdir
 mkdir -p device/motorola/fogos/patches
 mkdir -p device/motorola/fogos/sysconfig
+mkdir -p device/motorola/fogos/virgox/sepolicy
+mkdir -p device/motorola/fogos/virgox
 
 cp -r "$PROJECT_ROOT/overlay/"* device/motorola/fogos/overlay/ 2>/dev/null || true
 cp -r "$PROJECT_ROOT/rootdir/"* device/motorola/fogos/rootdir/ 2>/dev/null || true
 cp "$PROJECT_ROOT/system_ext.prop" device/motorola/fogos/system_ext.prop 2>/dev/null || true
 cp -r "$PROJECT_ROOT/patches/"* device/motorola/fogos/patches/ 2>/dev/null || true
 cp -r "$PROJECT_ROOT/sysconfig/"* device/motorola/fogos/sysconfig/ 2>/dev/null || true
+cp "$PROJECT_ROOT/virgox/product/virgox_fogos.mk" device/motorola/fogos/virgox_fogos.mk
+cp "$PROJECT_ROOT/virgox/gaming_profiles.json" device/motorola/fogos/virgox/gaming_profiles.json
+cp "$PROJECT_ROOT/virgox/sepolicy/"* device/motorola/fogos/virgox/sepolicy/
+# Register the product only if the device tree exposes the standard product list.
+if grep -q 'lineage_fogos.mk' device/motorola/fogos/AndroidProducts.mk; then
+    grep -q 'virgox_fogos.mk' device/motorola/fogos/AndroidProducts.mk || sed -i 's#$(LOCAL_DIR)/lineage_fogos.mk#$(LOCAL_DIR)/lineage_fogos.mk \\\n    $(LOCAL_DIR)/virgox_fogos.mk#' device/motorola/fogos/AndroidProducts.mk
+fi
 
 echo "=== [4/4] Starting Full Build ==="
 source build/envsetup.sh
-breakfast fogos
+lunch virgox_fogos-userdebug
 mka bacon -j"$(nproc)"
 
 echo "=== [✓] FogOS Build Complete for Motorola G45 5G! ==="

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "device": "fogos",
+  "controller_package": "com.fogos.control",
+  "profiles": [
+    {
+      "id": "balanced",
+      "controller_value": "balanced",
+      "default": true,
+      "thermal_policy": "stock"
+    },
+    {
+      "id": "performance",
+      "controller_value": "performance",
+      "default": false,
+      "thermal_policy": "stock"
+    },
+    {
+      "id": "extreme_gaming",
+      "controller_value": "extreme_gaming",
+      "default": false,
+      "thermal_policy": "stock"
+    }
+  ],
+  "policy": "The controller must use only the validated /dev/fogos_profile endpoint and must never disable thermal protection or write arbitrary sysfs paths."
+}
