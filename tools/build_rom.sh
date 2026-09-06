@@ -2,7 +2,7 @@
 set -e
 
 # ==============================================================================
-# FogOS Elite Gaming ROM Builder Script for Motorola Moto G45 5G (fogos)
+# VirgoX Elite Gaming OS Builder Script for Motorola Moto G45 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
@@ -11,7 +11,7 @@ OUT_DIR="$(pwd)/out"
 mkdir -p "$WORK_DIR" "$OUT_DIR" "$OUT_DIR/tools" "$OUT_DIR/modules"
 
 echo "=============================================================================="
-echo "      Starting FogOS Elite Gaming ROM Build for Moto G45 (fogos)"
+echo "      Starting VirgoX Elite Gaming OS Build for Moto G45 (fogos)"
 echo "                   Developer: Prince · VirgoYT"
 echo "=============================================================================="
 
@@ -92,9 +92,9 @@ echo "[6/7] Assembling flashable partition images..."
 cp "$WORK_DIR"/extracted/*.img "$OUT_DIR/"
 
 # 6. Create Fastboot Flashable ZIP
-echo "[7/7] Packaging FogOS Elite Gaming ROM distribution..."
+echo "[7/7] Packaging VirgoX Elite Gaming OS distribution..."
 BUILD_DATE=$(date +'%Y%m%d')
-RELEASE_ZIP_NAME="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}.zip"
+RELEASE_ZIP_NAME="VirgoX-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}.zip"
 
 cd "$OUT_DIR"
 sha256sum *.img > SHA256SUMS.txt
@@ -102,7 +102,7 @@ zip -r -9 "../$RELEASE_ZIP_NAME" ./*
 
 cd "$WORK_DIR/.."
 
-echo "[8/9] Building FogOS Sideload OTA package (adb sideload)..."
+echo "[8/9] Building VirgoX Sideload OTA package (adb sideload)..."
 FOGOS_BASE_ZIP="$WORK_DIR/base_rom.zip" bash tools/make_sideload_ota.sh
 
 # 9. Build Official Android A/B OTA package with payload.bin and correct structure
@@ -115,16 +115,16 @@ unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" "payload_properties.txt" "car
 cp "$WORK_DIR/payload.bin" "$OUT_DIR/payload.bin"
 [ -f "$OTA_PKG_DIR/payload_properties.txt" ] && cp "$OTA_PKG_DIR/payload_properties.txt" "$OUT_DIR/payload_properties.txt"
 
-OFFICIAL_OTA_ZIP="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-Official-OTA.zip"
+OFFICIAL_OTA_ZIP="VirgoX-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-Official-OTA.zip"
 cd "$OTA_PKG_DIR"
 zip -r -0 "../$OFFICIAL_OTA_ZIP" ./*
 cd "$WORK_DIR/.."
 mv "$WORK_DIR/$OFFICIAL_OTA_ZIP" "./$OFFICIAL_OTA_ZIP"
 
 echo "=============================================================================="
-echo "[SUCCESS] FogOS Elite Gaming ROM built successfully!"
+echo "[SUCCESS] VirgoX Elite Gaming OS built successfully!"
 echo "Fastboot package: $RELEASE_ZIP_NAME"
 echo "Official OTA package (payload.bin): $OFFICIAL_OTA_ZIP"
-echo "Sideload package: $(ls FogOS-*-sideload.zip 2>/dev/null | head -n 1)"
+echo "Sideload package: $(ls VirgoX-*-sideload.zip 2>/dev/null | head -n 1)"
 echo "Standalone payload.bin: out/payload.bin"
 echo "=============================================================================="

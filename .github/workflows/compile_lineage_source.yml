@@ -1,4 +1,4 @@
-name: FogOS Elite Gaming ROM - Source Compilation (fogos)
+name: VirgoX Elite Gaming OS - Source Compilation (fogos)
 
 on:
   workflow_dispatch:
@@ -108,18 +108,18 @@ jobs:
           mkdir -p device/motorola/fogos/patches
           cp -r $GITHUB_WORKSPACE/patches/* device/motorola/fogos/patches/ || true
 
-      - name: Inject FogOS Elite Gaming Customizations & 4GB/8GB Dual Support
+      - name: Inject VirgoX Elite Gaming Customizations & 4GB/8GB Dual Support
         run: |
           cd /home/runner/work/lineage
           cat $GITHUB_WORKSPACE/patches/fogos_gaming.prop >> device/motorola/fogos/system.prop || true
           cat << 'PROPS' >> device/motorola/fogos/system.prop
-          # FogOS Elite Gaming Core Attributes
-          ro.build.display.id=FogOS-v1.0-EliteGaming-VirgoYT
-          ro.fogos.version=1.0-EliteGaming
-          ro.fogos.base=LineageOS
-          ro.fogos.target.android=17
-          ro.fogos.ram.support=4GB-8GB-Unified
-          ro.fogos.maintainer=Prince · VirgoYT
+          # VirgoX Elite Gaming OS Core Attributes
+          ro.build.display.id=VirgoX-Elite-Gaming-OS-v1.0
+          ro.virgox.version=1.0-EliteGaming
+          ro.virgox.base=LineageOS
+          ro.virgox.target.android=17
+          ro.virgox.ram.support=4GB-8GB-Unified
+          ro.virgox.maintainer=Prince · VirgoYT
           ro.surface_flinger.use_content_detection_for_refresh_rate=false
           ro.surface_flinger.set_idle_timer_ms=0
           ro.surface_flinger.set_touch_timer_ms=5
@@ -128,11 +128,11 @@ jobs:
           persist.sys.game_mode=1
           PROPS
 
-      - name: Compile FogOS Custom ROM
+      - name: Compile VirgoX Custom ROM
         run: |
           cd /home/runner/work/lineage
           export BUILD_USERNAME=VirgoYT
-          export BUILD_HOSTNAME=fogos-gaming-build
+          export BUILD_HOSTNAME=virgox-gaming-build
           export CCACHE_EXEC=/usr/bin/ccache
           export CCACHE_DIR=/home/runner/.ccache
           ccache -M 50G
@@ -164,6 +164,6 @@ jobs:
           sha256sum "${RELEASE_FILES[@]}" > SHA256SUMS.txt
           RELEASE_FILES+=("SHA256SUMS.txt")
 
-          gh release create "FogOS-Source-$(date +'%Y%m%d')" "${RELEASE_FILES[@]}" \
-            --title "👑 FogOS Elite Gaming Edition (Android 17 Source / payload.bin) — Motorola G45 / G34" \
-            --notes "Official LineageOS/FogOS 400GB+ full source compilation for Motorola Moto G45 5G / G34 5G (fogos). Includes official signed OTA with payload.bin, standalone payload.bin, VirgoYT Gaming Kernel, and dynamic 4GB/8GB RAM engine."
+          gh release create "VirgoX-Source-$(date +'%Y%m%d')" "${RELEASE_FILES[@]}" \
+            --title "👑 VirgoX Elite Gaming OS (Android 17 Source / payload.bin) — Motorola G45 / G34" \
+            --notes "Official VirgoX Elite Gaming OS 400GB+ full source compilation for Motorola Moto G45 5G / G34 5G (fogos). Includes official signed OTA with payload.bin, standalone payload.bin, VirgoYT Gaming Kernel, and dynamic 4GB/8GB RAM engine."

@@ -1,19 +1,19 @@
 # ==============================================================================
-# FogOS Elite Gaming Properties - Motorola Moto G45 5G / G34 5G (fogos)
+# VirgoX Elite Gaming OS Properties - Motorola Moto G45 5G / G34 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
 # --- BRANDING & CREDITS ---
-ro.build.display.id=FogOS-v1.0-EliteGaming-VirgoYT
-ro.fogos.version=1.0-EliteGaming
-ro.fogos.base=LineageOS
-ro.fogos.target.android=17
-ro.fogos.ram.support=4GB-8GB-Unified
-ro.fogos.maintainer=Prince · VirgoYT
+ro.build.display.id=VirgoX-Elite-Gaming-OS-v1.0
+ro.virgox.version=1.0-EliteGaming
+ro.virgox.base=LineageOS
+ro.virgox.target.android=17
+ro.virgox.ram.support=4GB-8GB-Unified
+ro.virgox.maintainer=Prince · VirgoYT
 ro.build.user=VirgoYT
 ro.build.host=VirgoYT-Gaming-Lab
 persist.sys.custom.maintainer=VirgoYT
-ro.modversion=FogOS-v1.0-fogos-VirgoYT
+ro.modversion=VirgoX-v1.0-fogos-VirgoYT
 
 # --- CPU, SCHEDULER & THREAD BOOST ---
 sched.colocate.enable=1

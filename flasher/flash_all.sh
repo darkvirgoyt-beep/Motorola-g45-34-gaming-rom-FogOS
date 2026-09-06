@@ -2,12 +2,12 @@
 set -e
 
 # ==============================================================================
-# FogOS Elite Gaming Flasher - Motorola Moto G45 5G / G34 5G (fogos)
+# VirgoX Elite Gaming OS Flasher - Motorola Moto G45 5G / G34 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
 echo "=============================================================================="
-echo "          FogOS Elite Gaming Edition for Motorola G45 / G34 5G"
+echo "          VirgoX Elite Gaming OS for Motorola G45 / G34 5G"
 echo "                   Maintained by: Prince · VirgoYT"
 echo "=============================================================================="
 echo ""

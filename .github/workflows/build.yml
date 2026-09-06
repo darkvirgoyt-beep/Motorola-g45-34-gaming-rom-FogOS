@@ -1,4 +1,4 @@
-name: FogOS Gaming ROM - Build
+name: VirgoX Elite Gaming OS - Build
 
 on:
   push:
@@ -24,7 +24,7 @@ on:
 
 jobs:
   build:
-    name: Build FogOS Gaming ROM
+    name: Build VirgoX Elite Gaming OS
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -60,19 +60,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ github.event.inputs.release_tag }}"
-          [ -z "$TAG" ] && TAG="FogOS-v1.0-$(date +'%Y%m%d-%H%M')"
+          [ -z "$TAG" ] && TAG="VirgoX-v1.0-$(date +'%Y%m%d-%H%M')"
 
           PRERELEASE_FLAG=""
           if [ "${{ github.event.inputs.prerelease }}" = "true" ]; then
             PRERELEASE_FLAG="--prerelease"
           fi
 
-          ZIP_FILE=$(ls FogOS-*.zip | grep -v -- '-sideload.zip' | grep -v -- '-Official-OTA.zip' | head -n 1)
-          SIDELOAD_ZIP=$(ls FogOS-*-sideload.zip 2>/dev/null | head -n 1)
-          OTA_ZIP=$(ls FogOS-*-Official-OTA.zip 2>/dev/null | head -n 1)
+          ZIP_FILE=$(ls VirgoX-*.zip FogOS-*.zip 2>/dev/null | grep -v -- '-sideload.zip' | grep -v -- '-Official-OTA.zip' | head -n 1)
+          SIDELOAD_ZIP=$(ls VirgoX-*-sideload.zip FogOS-*-sideload.zip 2>/dev/null | head -n 1)
+          OTA_ZIP=$(ls VirgoX-*-Official-OTA.zip FogOS-*-Official-OTA.zip 2>/dev/null | head -n 1)
 
           cat << 'NOTES' > release_notes.md
-          ### 🚀 FogOS Elite Gaming Edition v1.0 — Motorola Moto G45 5G / G34 5G (fogos)
+          ### 🚀 VirgoX Elite Gaming OS v1.0 — Motorola Moto G45 5G / G34 5G (fogos)
           **Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
           **Base System:** LineageOS Platform (Android 17 / Forward-Compatible Core)
           **Hardware Support:** Motorola Moto G45 5G & G34 5G (Qualcomm Snapdragon 6s Gen 3 / SM6375)
@@ -153,7 +153,7 @@ jobs:
           else
             echo "[*] Creating new release $TAG..."
             gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
-              --title "👑 FogOS Elite Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
+              --title "👑 VirgoX Elite Gaming OS v1.0 — Motorola G45 / G34 5G (fogos)" \
               --notes-file release_notes.md \
               $PRERELEASE_FLAG
           fi

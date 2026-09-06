@@ -1,5 +1,5 @@
 # ==============================================================================
-# FogOS Elite Gaming system_ext Properties - Motorola Moto G45 (fogos)
+# VirgoX Elite Gaming OS system_ext Properties - Motorola Moto G45 (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
@@ -40,6 +40,8 @@ persist.vendor.sensors.batch_delay=0
 persist.vendor.sensors.hal.imu_filter=0
 ro.vendor.sensors.ssc=true
 ro.vendor.sensors.adsp=true
+persist.virgox.gyro.smoothing=1
+persist.virgox.gyro.sensitivity=1.0
 persist.fogos.gyro.smoothing=1
 persist.fogos.gyro.sensitivity=1.0
 

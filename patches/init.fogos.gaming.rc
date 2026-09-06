@@ -1,5 +1,5 @@
 # ==============================================================================
-# FogOS Elite Gaming Kernel & Low-Level Tuning - Moto G45 (fogos / SM6375)
+# VirgoX Elite Gaming OS Kernel & Low-Level Tuning - Moto G45 (fogos / SM6375)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
@@ -100,8 +100,20 @@ on boot
     write /sys/class/sensors/accelerometer_sensor/poll_delay 5
 
 # ==============================================================================
-# Dynamic Performance Profiles (Quick Settings Tiles & FogOS PulseControl)
+# Dynamic Performance Profiles (Quick Settings Tiles & VirgoX PulseControl)
 # ==============================================================================
+on property:persist.virgox.profile=powersave
+    setprop persist.fogos.profile powersave
+
+on property:persist.virgox.profile=balanced
+    setprop persist.fogos.profile balanced
+
+on property:persist.virgox.profile=gaming
+    setprop persist.fogos.profile gaming
+
+on property:persist.virgox.profile=turbo
+    setprop persist.fogos.profile turbo
+
 on property:persist.fogos.profile=powersave
     write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 1500000
     write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 1800000
@@ -142,9 +154,11 @@ on property:persist.fogos.profile=turbo
 
 # Performance mode toggle hook
 on property:sys.perf.mode=1
+    setprop persist.virgox.profile turbo
     setprop persist.fogos.profile turbo
 
 on property:sys.perf.mode=0
+    setprop persist.virgox.profile balanced
     setprop persist.fogos.profile balanced
 
 # --- GAMING SYSCTL & KERNEL GRANULARITY TWEAKS ---

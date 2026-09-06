@@ -5,7 +5,7 @@
 # Developer: Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
-LOG_TAG="FogOS-RAM-Optimizer"
+LOG_TAG="VirgoX-RAM-Optimizer"
 
 log_info() {
     log -p i -t "$LOG_TAG" "$1"
@@ -21,12 +21,12 @@ log_info "Detected Total System RAM: ${TOTAL_RAM_MB} MB (${TOTAL_RAM_KB} kB)"
 # 2. Check if device is 4GB variant (< 5000 MB) or 8GB variant (>= 5000 MB)
 if [ "$TOTAL_RAM_MB" -lt 5000 ]; then
     log_info "========================================================"
-    log_info " Activating FogOS 4GB RAM Elite Gaming Profile"
+    log_info " Activating VirgoX 4GB RAM Elite Gaming Profile"
     log_info " Target: Snapdragon 6s Gen 3 + 4GB LPDDR4X"
     log_info "========================================================"
 
-    setprop persist.fogos.ram_variant "4GB"
-    setprop persist.fogos.ram_status "optimized"
+    setprop persist.virgox.ram_variant "4GB"
+    setprop persist.virgox.ram_status "optimized"
 
     # Virtual Memory & Swappiness for 4GB (Aggressive zRAM usage to prevent OOM)
     echo 160 > /proc/sys/vm/swappiness 2>/dev/null || true
@@ -65,12 +65,12 @@ if [ "$TOTAL_RAM_MB" -lt 5000 ]; then
 
 else
     log_info "========================================================"
-    log_info " Activating FogOS 8GB RAM Ultra Gaming Profile"
+    log_info " Activating VirgoX 8GB RAM Ultra Gaming Profile"
     log_info " Target: Snapdragon 6s Gen 3 + 8GB LPDDR4X"
     log_info "========================================================"
 
-    setprop persist.fogos.ram_variant "8GB"
-    setprop persist.fogos.ram_status "optimized"
+    setprop persist.virgox.ram_variant "8GB"
+    setprop persist.virgox.ram_status "optimized"
 
     # Virtual Memory for 8GB (Maximum RAM caching for instant game load times)
     echo 60 > /proc/sys/vm/swappiness 2>/dev/null || true

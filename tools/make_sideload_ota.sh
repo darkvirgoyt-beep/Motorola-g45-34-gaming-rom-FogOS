@@ -16,7 +16,7 @@ WORK_DIR="$(pwd)/workspace"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PKG_DIR="$WORK_DIR/sideload"
 BUILD_DATE=$(date +'%Y%m%d')
-ZIP_NAME="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-sideload.zip"
+ZIP_NAME="VirgoX-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-sideload.zip"
 
 BASE_ZIP="${FOGOS_BASE_ZIP:-$WORK_DIR/base_rom.zip}"
 
@@ -27,7 +27,7 @@ if [ ! -f "$BASE_ZIP" ]; then
 fi
 
 echo "=============================================================================="
-echo "  Building FogOS FULL Sideload OTA (payload.bin + kernel + configs)"
+echo "  Building VirgoX FULL Sideload OTA (payload.bin + kernel + configs)"
 echo "  Base OTA: $(basename "$BASE_ZIP")"
 echo "=============================================================================="
 
@@ -100,7 +100,7 @@ ui() {
 
 ui ""
 ui "============================================="
-ui " FogOS Elite Gaming Edition - fogos (G45/G34)"
+ui " VirgoX Elite Gaming OS - fogos (G45/G34)"
 ui " Developer: Prince . VirgoYT"
 ui "============================================="
 ui ""

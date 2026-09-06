@@ -1,8 +1,8 @@
 @echo off
 color 0b
-title FogOS Elite Gaming Flasher - Moto G45 5G (fogos)
+title VirgoX Elite Gaming OS Flasher - Moto G45 5G (fogos)
 echo ==============================================================================
-echo           FogOS Elite Gaming Edition for Motorola G45 / G34 5G
+echo           VirgoX Elite Gaming OS for Motorola G45 / G34 5G
 echo                   Maintained by: Prince . VirgoYT
 echo ==============================================================================
 echo.
@@ -74,7 +74,7 @@ if /i "%WIPE%"=="Y" (
 )
 
 echo.
-echo [*] Rebooting device into FogOS Gaming ROM...
+echo [*] Rebooting device into VirgoX Elite Gaming OS...
 fastboot reboot
 echo.
 echo Enjoy ultra-smooth gaming and Play Integrity support on your Moto G45!
