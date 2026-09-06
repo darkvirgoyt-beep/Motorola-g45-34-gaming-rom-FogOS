@@ -1,0 +1,21 @@
+{
+  "name": "VirgoX Elite Gaming OS",
+  "short_name": "VirgoX",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070a12",
+  "theme_color": "#00e5ff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/virgox_bootanimation_preview.gif",
+      "sizes": "192x192",
+      "type": "image/gif"
+    },
+    {
+      "src": "assets/virgox_bootanimation_preview.gif",
+      "sizes": "512x512",
+      "type": "image/gif"
+    }
+  ]
+}
