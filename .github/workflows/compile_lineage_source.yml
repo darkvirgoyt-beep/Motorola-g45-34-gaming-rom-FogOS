@@ -80,6 +80,9 @@ jobs:
           cd /home/runner/work/lineage
           mkdir -p device/motorola/fogos/overlay
           cp -r $GITHUB_WORKSPACE/overlay/* device/motorola/fogos/overlay/ || true
+          mkdir -p device/motorola/fogos/rootdir
+          cp -r $GITHUB_WORKSPACE/rootdir/* device/motorola/fogos/rootdir/ || true
+          cp $GITHUB_WORKSPACE/system_ext.prop device/motorola/fogos/system_ext.prop || true
         run: |
           cd /home/runner/work/lineage
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1

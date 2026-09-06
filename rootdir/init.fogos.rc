@@ -1,0 +1,13 @@
+# ==============================================================================
+# FogOS Elite Gaming Sysctl Tweaks - Motorola Moto G45 5G / G34 5G (fogos)
+# Developer : Prince · VirgoYT (VirgoYT707)
+# ==============================================================================
+
+on boot
+    # Gaming Sysctl & Kernel Scheduler
+    write /proc/sys/net/ipv4/tcp_congestion_control bbr
+    write /proc/sys/net/core/somaxconn 1024
+    write /proc/sys/vm/swappiness 100
+    write /proc/sys/vm/vfs_cache_pressure 50
+    write /proc/sys/kernel/sched_min_granularity_ns 1000000
+    write /proc/sys/kernel/sched_wakeup_granularity_ns 3000000

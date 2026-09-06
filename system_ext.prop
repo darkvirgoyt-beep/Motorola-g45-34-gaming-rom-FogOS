@@ -1,0 +1,30 @@
+# ==============================================================================
+# FogOS Elite Gaming system_ext Properties - Motorola Moto G45 (fogos)
+# Developer : Prince · VirgoYT (VirgoYT707)
+# ==============================================================================
+
+# --- PERFORMANCE ---
+ro.sf.lcd_density=320
+ro.sf.hwc.disable_metadata_buffer=true
+debug.sf.hw=1
+debug.sf.latch_unsignaled=1
+debug.sf.disable_backpressure=1
+debug.sf.disable_triple_frame_buffer=1
+debug.sf.enable_hwc_vds=1
+debug.sf.force_hwc_copy=false
+
+# --- INPUT / TOUCH ---
+ro.input.max_events=50
+ro.input.event_per_port=8
+debug.touch.slop_scale=0.5
+debug.touch.sensitivity=1
+
+# --- GAMING ---
+ro.game_maxtemp.enable=true
+ro.game.overlay=true
+ro.sf.game_mode_opt=true
+debug.game.optimization=true
+debug.sf.game_rendering_optimization=true
+
+# --- GYRO / SENSORS (Precision Aiming for BGMI/PUBG/CODM) ---
+ro.sensor.gyro.cal=true

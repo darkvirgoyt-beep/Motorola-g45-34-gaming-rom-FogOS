@@ -104,3 +104,26 @@ profiler.force_disable_ulog=1
 ro.config.nocheckin=1
 ro.kernel.android.checkjni=0
 ro.kernel.checkjni=0
+
+# --- SYSTEM_EXT & GAMING DISPLAY ENGINE ---
+ro.sf.lcd_density=320
+ro.sf.hwc.disable_metadata_buffer=true
+debug.sf.disable_triple_frame_buffer=1
+debug.sf.enable_hwc_vds=1
+debug.sf.force_hwc_copy=false
+
+# --- INPUT / TOUCH SAMPLING & SENSITIVITY ---
+ro.input.max_events=50
+ro.input.event_per_port=8
+debug.touch.slop_scale=0.5
+debug.touch.sensitivity=1
+
+# --- GAMING ENGINE & THERMAL CAP ---
+ro.game_maxtemp.enable=true
+ro.game.overlay=true
+ro.sf.game_mode_opt=true
+debug.game.optimization=true
+debug.sf.game_rendering_optimization=true
+
+# --- GYROSCOPE CALIBRATION FOR BATTLE ROYALE AIMING ---
+ro.sensor.gyro.cal=true

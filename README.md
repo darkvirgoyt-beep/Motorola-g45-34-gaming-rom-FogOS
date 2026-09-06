@@ -158,3 +158,20 @@ After flashing FogOS Elite Gaming Edition on your Motorola G45:
 * **Lead Developer & Maintainer:** [Prince · VirgoYT](https://github.com/darkvirgoyt-beep) (`VirgoYT707`)
 * **Base Source:** LineageOS Team
 * **Kernel:** [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new)
+
+---
+
+## 🎯 Low-Level Sysctl & system_ext Enhancements
+
+### 1. Kernel Sysctl Configuration (`rootdir/init.fogos.rc`)
+* `net.core.somaxconn = 1024` — Expands TCP socket listening queue for zero multiplayer packet drop.
+* `vm.vfs_cache_pressure = 50` — Prioritizes holding filesystem pagecache in RAM.
+* `kernel.sched_min_granularity_ns = 1000000` (1ms) — Faster thread preemption during intense game scenes.
+* `kernel.sched_wakeup_granularity_ns = 3000000` (3ms) — Smooth thread wakeups without jitter.
+
+### 2. High-Performance Display & Touch Properties (`system_ext.prop`)
+* `ro.sf.lcd_density = 320` — Optimized UI scaling for gaming ergonomics.
+* `ro.sf.hwc.disable_metadata_buffer = true` & `debug.sf.disable_triple_frame_buffer = 1` — Eliminates buffer latency for instant touch-to-screen response.
+* `debug.touch.slop_scale = 0.5` & `debug.touch.sensitivity = 1` — Doubled touch detection sensitivity.
+* `ro.sensor.gyro.cal = true` — Real-time sensor calibration for ultra-precise gyroscope aiming in BGMI, PUBG Mobile, and COD Mobile.
+* `ro.sf.game_mode_opt = true` & `debug.sf.game_rendering_optimization = true` — Direct hardware composer bypass for lower GPU rendering latency.
