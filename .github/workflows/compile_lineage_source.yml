@@ -1,28 +1,40 @@
-name: Compile LineageOS from Source (fogos)
+name: FogOS Elite Gaming ROM - Source Compilation (fogos)
 
 on:
   workflow_dispatch:
     inputs:
       android_branch:
-        description: 'LineageOS Branch'
+        description: 'Android Base Version (LineageOS / AOSP)'
         required: true
-        default: 'lineage-21.0'
+        default: 'lineage-22.0'
         type: choice
         options:
-          - 'lineage-21.0'
           - 'lineage-22.0'
+          - 'lineage-21.0'
+          - 'lineage-23.0'
+          - 'main'
+      ram_target:
+        description: 'RAM Variant Optimization Target'
+        required: true
+        default: 'unified-4gb-8gb'
+        type: choice
+        options:
+          - 'unified-4gb-8gb'
+          - '4gb-optimized'
+          - '8gb-optimized'
       build_type:
-        description: 'Build variant (userdebug / eng)'
+        description: 'Build variant (userdebug / eng / user)'
         required: true
         default: 'userdebug'
         type: choice
         options:
           - 'userdebug'
           - 'eng'
+          - 'user'
 
 jobs:
   compile-source:
-    name: Compile LineageOS from Source
+    name: Compile FogOS Gaming ROM from Source
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -60,7 +72,7 @@ jobs:
           cd /home/runner/work/lineage
           repo init -u https://github.com/LineageOS/android.git -b ${{ github.event.inputs.android_branch }} --git-lfs --depth=1
 
-      - name: Setup Device Tree for Motorola G45 5G
+      - name: Setup Device Tree for Motorola G45 / G34 5G (fogos)
         run: |
           cd /home/runner/work/lineage
           mkdir -p .repo/local_manifests
@@ -82,7 +94,7 @@ jobs:
           cd /home/runner/work/lineage
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
 
-      - name: Apply Device Tree Overlays (Game Mode & QS Tiles)
+      - name: Apply FogOS Device Tree Overlays & Dynamic RAM Tuner
         run: |
           cd /home/runner/work/lineage
           mkdir -p device/motorola/fogos/overlay
@@ -92,26 +104,34 @@ jobs:
           cp $GITHUB_WORKSPACE/system_ext.prop device/motorola/fogos/system_ext.prop || true
           mkdir -p device/motorola/fogos/sysconfig
           cp -r $GITHUB_WORKSPACE/sysconfig/* device/motorola/fogos/sysconfig/ || true
+          mkdir -p device/motorola/fogos/patches
+          cp -r $GITHUB_WORKSPACE/patches/* device/motorola/fogos/patches/ || true
 
-      - name: Inject VirgoYT Gaming Optimizations and Branding
+      - name: Inject FogOS Elite Gaming Customizations & 4GB/8GB Dual Support
         run: |
           cd /home/runner/work/lineage
+          cat $GITHUB_WORKSPACE/patches/fogos_gaming.prop >> device/motorola/fogos/system.prop || true
           cat << 'PROPS' >> device/motorola/fogos/system.prop
-          ro.build.display.id=FogOS-Lineage-VirgoYT
-          ro.lineage.maintainer=Prince · VirgoYT
+          # FogOS Elite Gaming Core Attributes
+          ro.build.display.id=FogOS-v1.0-EliteGaming-VirgoYT
+          ro.fogos.version=1.0-EliteGaming
+          ro.fogos.base=LineageOS
+          ro.fogos.target.android=17
+          ro.fogos.ram.support=4GB-8GB-Unified
+          ro.fogos.maintainer=Prince · VirgoYT
           ro.surface_flinger.use_content_detection_for_refresh_rate=false
           ro.surface_flinger.set_idle_timer_ms=0
-          ro.surface_flinger.set_touch_timer_ms=200
+          ro.surface_flinger.set_touch_timer_ms=5
           windowsmgr.max_events_per_sec=240
           debug.sf.disable_backpressure=1
           persist.sys.game_mode=1
           PROPS
 
-      - name: Compile LineageOS
+      - name: Compile FogOS Custom ROM
         run: |
           cd /home/runner/work/lineage
           export BUILD_USERNAME=VirgoYT
-          export BUILD_HOSTNAME=fogos-build
+          export BUILD_HOSTNAME=fogos-gaming-build
           export CCACHE_EXEC=/usr/bin/ccache
           export CCACHE_DIR=/home/runner/.ccache
           ccache -M 50G
@@ -127,6 +147,6 @@ jobs:
         run: |
           cd /home/runner/work/lineage/out/target/product/fogos
           ROM_ZIP=$(ls lineage-*-fogos.zip | head -n 1)
-          gh release create "Lineage-Source-$(date +'%Y%m%d')" "$ROM_ZIP" boot.img \
-            --title "👑 LineageOS Source Build for Motorola G45 (fogos) — Prince · VirgoYT" \
-            --notes "Official LineageOS source compilation for Motorola Moto G45 5G / G34 5G (fogos) with embedded VirgoYT Gaming optimizations."
+          gh release create "FogOS-Source-$(date +'%Y%m%d')" "$ROM_ZIP" boot.img \
+            --title "👑 FogOS Elite Gaming Edition (Android 17 / Lineage Base) — Motorola G45 / G34 (4GB/8GB)" \
+            --notes "FogOS Elite Gaming Edition compiled from source for Motorola Moto G45 5G / G34 5G (fogos). Includes VirgoYT Gaming Kernel, Dynamic 4GB/8GB RAM Optimizer, Aim precision engine, and GameSpace."

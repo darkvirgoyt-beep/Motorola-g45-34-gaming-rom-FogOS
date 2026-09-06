@@ -6,6 +6,9 @@
 # --- BRANDING & CREDITS ---
 ro.build.display.id=FogOS-v1.0-EliteGaming-VirgoYT
 ro.fogos.version=1.0-EliteGaming
+ro.fogos.base=LineageOS
+ro.fogos.target.android=17
+ro.fogos.ram.support=4GB-8GB-Unified
 ro.fogos.maintainer=Prince · VirgoYT
 ro.build.user=VirgoYT
 ro.build.host=VirgoYT-Gaming-Lab

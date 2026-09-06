@@ -3,7 +3,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Device-Motorola%20G45%20%2F%20G34%205G-blue.svg?style=for-the-badge&logo=motorola" />
   <img src="https://img.shields.io/badge/Codename-fogos%20%2F%20SM6375-orange.svg?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Android-14%20%2F%2015%20(LineageOS%20Base)-green.svg?style=for-the-badge&logo=android" />
+  <img src="https://img.shields.io/badge/Android-17%20(LineageOS%20Base)-green.svg?style=for-the-badge&logo=android" />
+  <img src="https://img.shields.io/badge/RAM%20Support-4GB%20%26%208GB%20Adaptive-purple.svg?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Developer-Prince%20%C2%B7%20VirgoYT-red.svg?style=for-the-badge&logo=youtube" />
   <a href="https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases"><img src="https://img.shields.io/badge/Download-Latest%20Release-brightgreen.svg?style=for-the-badge&logo=github" /></a>
 </p>
@@ -14,46 +15,53 @@
 
 **FogOS Elite Gaming Edition** is a custom, performance-tuned Android ROM engineered specifically for the **Motorola Moto G45 5G** and **Moto G34 5G** (`fogos` / Qualcomm Snapdragon 6s Gen 3 / SM6375 platform).
 
-Maintained by **Prince · VirgoYT**, this ROM combines a pure, lightweight LineageOS base with deep kernel, low-level sysfs, and framework interventions to deliver maximum sustained FPS, instant touch response, and seamless Play Integrity for banking applications.
+Maintained by **Prince · VirgoYT**, this ROM uses a pure, lightweight LineageOS base heavily modified with a custom gaming core, targeted for **Android 17 / Forward-Compatible AOSP architecture**. It features deep kernel tuning, low-level sysfs optimizations, custom GameSpace, and dual-variant adaptive RAM management for both **4GB and 8GB RAM models**.
 
 ---
 
 ## ⚡ Elite Gaming Architectural Enhancements
 
-### 1. 🚀 CPU & GPU Subsystem (SM6375 / Holi)
+### 1. 🧠 Dynamic Dual-RAM Architecture (4GB & 8GB Variants)
+FogOS automatically inspects `/proc/meminfo` on early boot via `fogos_ram_optimizer.sh` and adapts system memory parameters to the exact hardware variant:
+* **🔥 4GB RAM Model:**
+  * **3.5 GB zRAM** with LZ4 high-speed compression (`comp_algorithm = lz4`).
+  * `vm.swappiness = 160` + `watermark_scale_factor = 200` to prevent memory compaction micro-stutters.
+  * Strict LMKD foreground game priority (`ro.lmk.thrashing_limit=30`, max 24 bg apps).
+  * Tuned Dalvik ART memory thresholds (192MB growth limit, 512MB max heap) to eliminate game crashes under heavy memory load.
+* **🚀 8GB RAM Model:**
+  * **4.0 GB zRAM** with high-throughput ZSTD/LZ4 compression.
+  * `vm.swappiness = 60` + `vfs_cache_pressure = 50` to keep game map assets, textures, and shaders permanently cached in physical RAM for near-instant map loading.
+  * Expanded ART heap (256MB growth limit, 768MB max heap) and 48 background apps limit for heavy multitasking.
+
+### 2. 🚀 CPU & GPU Subsystem (SM6375 / Holi)
 * **Energy-Aware Scheduler (EAS) & Sched-Boost:** Prioritizes `top-app` and `foreground` cgroups with increased task utilization boost (`sched_min_task_util_for_boost = 51`) and `prefer_idle = 1`.
 * **CPU-Boost & Touch Boost:** 60ms CPU boost upon user touch events (`0:1200000 6:1800000`) for instantaneous reaction times in shooter games.
 * **Schedutil Transition Optimization:** 500µs ramp-up (`up_rate_limit_us`) and 20,000µs hold (`down_rate_limit_us`) to prevent 1% low frame dips.
 * **Adreno 619 KGSL Optimization:** `msm-adreno-tz` governor with disabled idle downclocking and unthrottled GPU bus clock during gaming sessions.
 
-### 2. 💽 High-Speed Storage & I/O Pipeline
+### 3. 💽 High-Speed Storage & I/O Pipeline
 * **I/O Scheduler:** Tuned `bfq` and `mq-deadline` for UFS storage queues.
 * **Readahead:** 512KB readahead buffer on storage blocks to eliminate in-game texture streaming lag.
 * **NR Requests:** Queue depth expanded to 256 requests with disabled I/O statistics overhead.
 
-### 3. 🎯 Input Latency, Touch & Gestures
+### 4. 🎯 Aim Precision, Touch Sampling & Gyroscope
+* **100Hz IMU Gyroscope Polling Rate:** Configured `ro.sensor.rate.fastest=10000` (100Hz) routed to Hexagon ADSP for pixel-precise gyro tracking in BGMI and Call of Duty Mobile.
 * **240Hz Touch Sampling Rate:** Eliminates touch latency buffer (`windowsmgr.max_events_per_sec=240`).
-* **Zero Touch Debounce:** Direct touch event routing with reduced debounce time (`persist.sys.touch.debounce_ms=0`).
+* **Zero Touch Debounce:** Direct touch event routing with reduced debounce time (`persist.sys.touch.debounce_ms=0`, `touch_delay_ms=5`).
 * **Double-Tap-To-Wake (DT2W):** Native support enabled at kernel and sysfs level (`/sys/android_touch/double_tap_enable`).
 
-### 4. 🎛️ Quick Settings Tiles & Dynamic Performance Modes
+### 5. 🎛️ Quick Settings Tiles & Dynamic Performance Modes
 Switch on the fly between profiles via Quick Settings tile or the pre-bundled **FogOS PulseControl** app:
 * **🔋 Powersave:** Caps clocks, low GPU frequency, maximizes battery longevity.
 * **⚖️ Balanced:** Default daily driver with smooth 120Hz scrolling and standard thermal curve.
 * **🚀 Gaming:** Uncaps Adreno 619 GPU, forces high bus clock, bypasses thermal throttling, and triggers 240Hz sampling.
 
-### 5. ❄️ Thermal Throttling Mitigation
+### 6. ❄️ Thermal Throttling Mitigation
 * **Balanced Thermal Trip Thresholds:** Bypasses Motorola's stock 42°C downclock while maintaining safe hardware thermal boundaries (`persist.vendor.power.thermal_mitigation=0`).
 
-### 6. 🧠 Memory, LMKD & zRAM Compression
-* **zRAM & Swappiness:** `swappiness = 100` tuned with LZ4 fast compression for 4GB and 8GB RAM variants.
-* **VFS Cache Pressure:** Set to `70` to retain active game inodes and dentries in cache.
-* **Multi-Gen LRU (MGLRU):** Enabled (`/sys/kernel/mm/lru_gen/enabled 7`) for lower CPU overhead during page reclamation.
-* **LMKD Optimization:** Tuned LowMemoryKiller daemon (`ro.lmk.kill_heaviest_task=true`, PSI stall threshold 700ms) to prevent game termination in the background.
-
 ### 7. 🌐 Network & Low-Ping Multiplayer
-* **Google BBR TCP Congestion Control:** Enabled as default socket governor (`net.ipv4.tcp_congestion_control=bbr`).
-* **Low Latency Sockets:** Optimized TCP buffer sizes (`rmem_max = 8MB`, `wmem_max = 8MB`) with `tcp_low_latency = 1` and `tcp_fastopen = 3`.
+* **Google BBR/BBR2 TCP Congestion Control:** Enabled as default socket governor (`net.ipv4.tcp_congestion_control=bbr2`).
+* **Low Latency Sockets:** Optimized TCP buffer sizes (`rmem_max = 26MB`, `wmem_max = 26MB`) with `tcp_low_latency = 1` and `tcp_fastopen = 3`.
 
 ---
 

@@ -1,0 +1,13 @@
+# Build outputs and intermediate work directories
+workspace/
+out/
+*.zip
+*.img
+*.tar.gz
+*.apk
+!out/tools/*.apk
+
+# CCACHE and temp files
+.ccache/
+*.tmp
+*.log

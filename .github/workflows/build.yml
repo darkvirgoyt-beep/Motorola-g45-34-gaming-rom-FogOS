@@ -67,24 +67,39 @@ jobs:
             PRERELEASE_FLAG="--prerelease"
           fi
 
-          ZIP_FILE=$(ls FogOS-*.zip | head -n 1)
+          ZIP_FILE=$(ls FogOS-*.zip | grep -v -- '-sideload.zip' | head -n 1)
+          SIDELOAD_ZIP=$(ls FogOS-*-sideload.zip | head -n 1)
 
           cat << 'NOTES' > release_notes.md
-          ### 🚀 FogOS Elite Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
+          ### 🚀 FogOS Elite Gaming Edition v1.0 — Motorola Moto G45 5G / G34 5G (fogos)
           **Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
-          **Base:** Android 14 / Holi SM6375 Platform
+          **Base System:** LineageOS Platform (Android 17 / Forward-Compatible Core)
+          **Hardware Support:** Motorola Moto G45 5G & G34 5G (Qualcomm Snapdragon 6s Gen 3 / SM6375)
+
+          ---
+
+          ### 🧠 Adaptive Dual-RAM Architecture (4GB & 8GB Variants):
+          - **4GB RAM Variant:**
+            - Auto-detected on boot (`MemTotal < 5GB`).
+            - 3.5 GB zRAM with fast LZ4 compression.
+            - `vm.swappiness = 160` + aggressive LMKD foreground game priority to prevent OOM lag and frame drops.
+            - Tuned Dalvik ART memory thresholds (192MB growth limit, 512MB max heap).
+          - **8GB RAM Variant:**
+            - Auto-detected on boot (`MemTotal >= 5GB`).
+            - 4.0 GB zRAM with high-throughput ZSTD/LZ4.
+            - `vm.swappiness = 60` + `vfs_cache_pressure = 50` to keep map textures and game assets cached directly in RAM.
+            - Expanded ART heap (256MB growth limit, 768MB max heap) for seamless multitasking.
 
           ---
 
           ### 🎮 Elite Gaming Features:
-          - **VirgoYT Gaming Kernel:** CPU & GPU sched-boost, Adreno 619 clock force, touchboost (60ms).
-          - **Dynamic Profiles via QS Tiles & PulseControl:** Powersave, Balanced, and Elite Gaming modes.
-          - **120Hz Refresh Rate Lock:** Hard-locked SurfaceFlinger refresh rate without throttling.
-          - **240Hz Touch Sampling Rate:** Zero debounce latency (`persist.sys.touch.debounce_ms=0`).
-          - **Swappy & VK_EXT_present_timing:** Android Frame Pacing enabled for Vulkan & OpenGL.
-          - **Game Spoofing:** ROG Phone 8 Pro device profile for BGMI / PUBG Mobile 90/120 FPS.
-          - **Storage & I/O:** BFQ scheduler with 512KB readahead.
-          - **Multiplayer Low Ping:** Google BBR TCP congestion control with low-latency socket buffers.
+          - **Customized Beyond LineageOS:** Built from the ground up as a competitive gaming ROM, not vanilla Lineage.
+          - **VirgoYT Gaming Kernel:** CPU & GPU sched-boost, Adreno 619 clock lock (up to 950MHz), touchboost (60ms).
+          - **Aim & Gyro Precision:** 100Hz IMU polling rate (`SENSOR_RATE_FASTEST`) routed to Hexagon DSP for instant BGMI/COD gyro tracking.
+          - **240Hz Touch Sampling Rate:** Zero debounce latency (`persist.sys.touch.debounce_ms=0`, `touch_delay_ms=5`).
+          - **120Hz Refresh Rate Lock:** Hard-locked SurfaceFlinger refresh rate without thermal throttling dips.
+          - **Game Spoofing:** ROG Phone 8 Pro profile to unlock 90/120 FPS in BGMI, PUBG Mobile, and Call of Duty Mobile.
+          - **Low Ping Network Engine:** Google BBR/BBR2 TCP congestion control with 26MB socket buffers.
 
           ---
 
@@ -105,12 +120,20 @@ jobs:
           6. Select **Y** to format userdata if this is your first time flashing.
           7. Reboot and enjoy smooth high-FPS gaming!
 
+          ### 📥 Sideload Method (`adb apply update`):
+          Prefer fastboot for first install. For updates, sideload the `*-sideload.zip`:
+          1. Boot to Recovery → `Factory reset` → `Format data` (first time only).
+          2. `Apply update` → `Apply from ADB`.
+          3. `adb sideload FogOS-*-sideload.zip`
+          4. It flashes the FogOS gaming kernel (boot/vendor_boot/dtbo) and installs configs to `/data/fogos`.
+
           ---
           Credits to Prince · VirgoYT707 and the SM6375 Dev Community.
           NOTES
 
           # Collect release assets
           RELEASE_ASSETS=("$ZIP_FILE" "out/boot.img" "out/SHA256SUMS.txt")
+          [ -n "$SIDELOAD_ZIP" ] && [ -f "$SIDELOAD_ZIP" ] && RELEASE_ASSETS+=("$SIDELOAD_ZIP")
           [ -f "out/tools/FogOS-PulseControl.apk" ] && RELEASE_ASSETS+=("out/tools/FogOS-PulseControl.apk")
           [ -f "out/tools/SmartPack-Kernel-Manager.apk" ] && RELEASE_ASSETS+=("out/tools/SmartPack-Kernel-Manager.apk")
           [ -f "out/modules/PlayIntegrityFix.zip" ] && RELEASE_ASSETS+=("out/modules/PlayIntegrityFix.zip")

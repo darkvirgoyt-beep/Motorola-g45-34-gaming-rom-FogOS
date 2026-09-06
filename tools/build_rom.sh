@@ -78,6 +78,7 @@ cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml"
 cp sysconfig/gaming_power_whitelist.xml "$OUT_DIR/config/gaming_power_whitelist.xml" || true
 cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc"
 cp patches/fogos_game_network.sh "$OUT_DIR/config/fogos_game_network.sh" || true
+cp patches/fogos_ram_optimizer.sh "$OUT_DIR/config/fogos_ram_optimizer.sh" || true
 cp rootdir/init.fogos.rc "$OUT_DIR/config/init.fogos.rc" || true
 cp system_ext.prop "$OUT_DIR/config/system_ext.prop" || true
 
@@ -99,7 +100,14 @@ cd "$OUT_DIR"
 sha256sum *.img > SHA256SUMS.txt
 zip -r -9 "../$RELEASE_ZIP_NAME" ./*
 
+cd "$WORK_DIR/.."
+
+# 8. Build Sideload OTA package (adb apply update compatible)
+echo "[8/8] Building FogOS Sideload OTA package (adb sideload)..."
+bash tools/make_sideload_ota.sh
+
 echo "=============================================================================="
 echo "[SUCCESS] FogOS Elite Gaming ROM built successfully!"
-echo "Package: $RELEASE_ZIP_NAME"
+echo "Fastboot package: $RELEASE_ZIP_NAME"
+echo "Sideload package: $(ls FogOS-*-sideload.zip 2>/dev/null | head -n 1)"
 echo "=============================================================================="
