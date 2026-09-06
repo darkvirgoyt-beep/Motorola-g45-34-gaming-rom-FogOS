@@ -35,7 +35,7 @@ on:
 jobs:
   compile-source:
     name: Compile FogOS Gaming ROM from Source
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
@@ -49,16 +49,17 @@ jobs:
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/share/swift
           df -h
 
       - name: Setup Build Packages and Git
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \
-            gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev \
-            libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev \
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs \
+            gnupg gperf imagemagick libelf-dev liblz4-tool libncurses-dev libssl-dev \
             libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc \
-            zip zlib1g-dev python3 openjdk-17-jdk
+            zip zlib1g-dev python3 python-is-python3 openjdk-17-jdk
 
           sudo curl https://storage.googleapis.com/git-repo-downloads/repo -o /usr/local/bin/repo
           sudo chmod +x /usr/local/bin/repo
