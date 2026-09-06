@@ -38,7 +38,7 @@ jobs:
       - name: Checkout FogOS ROM Builder
         uses: actions/checkout@v4
 
-      - name: Install Dependencies & Payload Dumper
+      - name: Install Dependencies and Payload Dumper
         run: |
           sudo apt-get update
           sudo apt-get install -y curl jq unzip zip wget
@@ -66,34 +66,38 @@ jobs:
 
           ZIP_FILE=$(ls FogOS-*.zip | head -n 1)
 
+          cat << 'NOTES' > release_notes.md
+          ### 🚀 FogOS Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
+          **Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
+          **Base:** Android 14 / Holi SM6375 Platform
+
+          ---
+
+          ### 🎮 Gaming Features & Optimizations:
+          - **Embedded VirgoYT Gaming Kernel:** Optimized scheduler, touchboost, and overclocked Adreno 619 GPU pipeline.
+          - **120Hz Refresh Rate Lock:** Enforced display refresh rate without dynamic drops in games.
+          - **240Hz Touch Sampling Rate:** Ultra-low touch latency for BGMI, PUBG, and COD Mobile.
+          - **Game Spoofing Profiles:** ROG Phone 8 Pro device profile spoofing to unlock 90 FPS / 120 FPS graphics settings.
+          - **Thermal Engine Override:** Prevents thermal downclocking at 42°C.
+          - **zRAM LZ4 Tuning:** Enhanced background app holding and memory compression for 4GB/8GB models.
+          - **PulseControl App Preloaded:** On-the-fly gaming profile switcher and monitoring.
+
+          ---
+
+          ### 📦 Flashing Instructions:
+          1. Extract the downloaded ZIP package on your PC.
+          2. Reboot your Motorola G45 into Bootloader / Fastboot mode (`Power + Volume Down`).
+          3. Connect your phone via USB.
+          4. **Windows:** Double-click `flash_all.bat`.
+          5. **Linux / Mac:** Run `chmod +x flash_all.sh && ./flash_all.sh`.
+          6. Select **Y** to format userdata if this is your first time flashing.
+          7. Reboot and enjoy smooth high-FPS gaming!
+
+          ---
+          Credits to Prince · VirgoYT707 and the SM6375 Dev Community.
+          NOTES
+
           gh release create "$TAG" "$ZIP_FILE" out/boot.img out/SHA256SUMS.txt out/FogOS-PulseControl.apk \
             --title "👑 FogOS Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
-            --notes "### 🚀 FogOS Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
-**Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
-**Base:** Android 14 / Holi SM6375 Platform
-
----
-
-### 🎮 Gaming Features & Optimizations:
-* **Embedded VirgoYT Gaming Kernel:** Optimized scheduler, touchboost, and overclocked Adreno 619 GPU pipeline.
-* **120Hz Refresh Rate Lock:** Enforced display refresh rate without dynamic drops in games.
-* **240Hz Touch Sampling Rate:** Ultra-low touch latency for BGMI, PUBG, and COD Mobile.
-* **Game Spoofing Profiles:** ROG Phone 8 Pro device profile spoofing to unlock 90 FPS / 120 FPS graphics settings.
-* **Thermal Engine Override:** Prevents thermal downclocking at 42°C.
-* **zRAM LZ4 Tuning:** Enhanced background app holding and memory compression for 4GB/8GB models.
-* **PulseControl App Preloaded:** On-the-fly gaming profile switcher and monitoring.
-
----
-
-### 📦 Flashing Instructions:
-1. Extract the downloaded ZIP package on your PC.
-2. Reboot your Motorola G45 into Bootloader / Fastboot mode (\`Power + Volume Down\`).
-3. Connect your phone via USB.
-4. **Windows:** Double-click \`flash_all.bat\`.
-5. **Linux / Mac:** Run \`chmod +x flash_all.sh && ./flash_all.sh\`.
-6. Select **Y** to format userdata if this is your first time flashing.
-7. Reboot and enjoy smooth high-FPS gaming!
-
----
-*Credits to Prince · VirgoYT707 and the SM6375 Dev Community.*" \
+            --notes-file release_notes.md \
             $PRERELEASE_FLAG
