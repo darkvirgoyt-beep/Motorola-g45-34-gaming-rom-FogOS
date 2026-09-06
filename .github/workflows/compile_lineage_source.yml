@@ -1,0 +1,111 @@
+name: Compile LineageOS from Source (fogos)
+
+on:
+  workflow_dispatch:
+    inputs:
+      android_branch:
+        description: 'LineageOS Branch'
+        required: true
+        default: 'lineage-21.0'
+        type: choice
+        options:
+          - 'lineage-21.0'
+          - 'lineage-22.0'
+      build_type:
+        description: 'Build variant (userdebug / eng)'
+        required: true
+        default: 'userdebug'
+        type: choice
+        options:
+          - 'userdebug'
+          - 'eng'
+
+jobs:
+  compile-source:
+    name: Compile LineageOS from Source
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Maximize Runner Disk Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf /opt/hostedtoolcache
+          df -h
+
+      - name: Setup Build Packages and Git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib \
+            gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev \
+            libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev \
+            libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc \
+            zip zlib1g-dev python3 openjdk-17-jdk
+
+          sudo curl https://storage.googleapis.com/git-repo-downloads/repo -o /usr/local/bin/repo
+          sudo chmod +x /usr/local/bin/repo
+
+          git config --global user.name "VirgoYT"
+          git config --global user.email "darkvirgoyt@gmail.com"
+
+      - name: Initialize LineageOS Source Tree
+        run: |
+          mkdir -p /home/runner/work/lineage
+          cd /home/runner/work/lineage
+          repo init -u https://github.com/LineageOS/android.git -b ${{ github.event.inputs.android_branch }} --git-lfs --depth=1
+
+      - name: Setup Device Tree for Motorola G45 5G
+        run: |
+          cd /home/runner/work/lineage
+          mkdir -p .repo/local_manifests
+          cat << 'MANIFEST' > .repo/local_manifests/fogos.xml
+          <?xml version="1.0" encoding="UTF-8"?>
+          <manifest>
+            <project name="LineageOS/android_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="LineageOS/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="TheMuppets/proprietary_vendor_motorola_fogos" path="vendor/motorola/fogos" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common" path="vendor/motorola/sm6375-common" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="LineageOS/android_kernel_motorola_sm6375" path="kernel/motorola/sm6375" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+          </manifest>
+          MANIFEST
+
+      - name: Sync Source Repositories
+        run: |
+          cd /home/runner/work/lineage
+          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
+
+      - name: Inject VirgoYT Gaming Optimizations and Branding
+        run: |
+          cd /home/runner/work/lineage
+          cat << 'PROPS' >> device/motorola/fogos/system.prop
+          ro.build.display.id=FogOS-Lineage-VirgoYT
+          ro.lineage.maintainer=Prince · VirgoYT
+          ro.surface_flinger.use_content_detection_for_refresh_rate=false
+          ro.surface_flinger.set_idle_timer_ms=0
+          ro.surface_flinger.set_touch_timer_ms=200
+          windowsmgr.max_events_per_sec=240
+          debug.sf.disable_backpressure=1
+          persist.sys.game_mode=1
+          PROPS
+
+      - name: Compile LineageOS
+        run: |
+          cd /home/runner/work/lineage
+          source build/envsetup.sh
+          breakfast fogos
+          brunch fogos
+
+      - name: Publish Compiled ROM Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd /home/runner/work/lineage/out/target/product/fogos
+          ROM_ZIP=$(ls lineage-*-fogos.zip | head -n 1)
+          gh release create "Lineage-Source-$(date +'%Y%m%d')" "$ROM_ZIP" boot.img \
+            --title "👑 LineageOS Source Build for Motorola G45 (fogos) — Prince · VirgoYT" \
+            --notes "Official LineageOS source compilation for Motorola Moto G45 5G / G34 5G (fogos) with embedded VirgoYT Gaming optimizations."
