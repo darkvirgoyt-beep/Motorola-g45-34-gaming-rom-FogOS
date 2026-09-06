@@ -15,48 +15,34 @@ OUTPUT_DIR="$(dirname "$SCRIPT_DIR")/prebuilt/bootanimation"
 # We use the display width x height
 WIDTH=720
 HEIGHT=1600
-FPS=30
+FPS=60
 
 echo "=============================================="
 echo "  VirgoX Elite GamingOS Boot Animation"
-echo "  Resolution: ${WIDTH}x${HEIGHT} @ ${FPS}fps"
+echo "  Resolution: ${WIDTH}x${HEIGHT} @ ${FPS}fps (960 Frames)"
 echo "=============================================="
 
-# Validate frame directories
-if [ ! -d "$BOOT_DIR/part0" ] || [ -z "$(ls "$BOOT_DIR/part0"/*.png 2>/dev/null)" ]; then
-    echo "[!] ERROR: No PNG frames found in bootanimation/part0/"
-    echo "    Add your intro animation frames as sequential PNGs:"
-    echo "    part0/frame_0000.png, frame_0001.png, ..."
-    echo ""
-    echo "    Frame specs:"
-    echo "    - Resolution: ${WIDTH}x${HEIGHT}"
-    echo "    - Format: PNG (RGBA or RGB)"
-    echo "    - Naming: Sequential numbering"
-    exit 1
-fi
-
 # Create desc.txt (Android boot animation descriptor)
-# Format: WIDTH HEIGHT FPS
-# Then for each part: type count pause [path]
-#   type: p = play part, c = complete (play once then stop)
-#   count: 0 = infinite loop, N = play N times
-#   pause: frames to pause after this part
 cat > "$BOOT_DIR/desc.txt" << EOF
 $WIDTH $HEIGHT $FPS
 c 1 0 part0
-c 0 0 part1
+c 1 0 part1
+c 1 0 part2
+c 0 0 part3
 EOF
 
 echo "[*] Created desc.txt"
-echo "    Part 0: Intro (plays once)"
-echo "    Part 1: Loop (repeats until boot completes)"
+echo "    Part 0: Neural Convergence (240 frames @ 60fps = 4s)"
+echo "    Part 1: VX Monogram Synthesis (240 frames @ 60fps = 4s)"
+echo "    Part 2: Holi SM6375 Turbo Ignition (240 frames @ 60fps = 4s)"
+echo "    Part 3: Ultra Pulsing Core Loop (240 frames @ 60fps = 4s)"
 
 # Create output directory
 mkdir -p "$OUTPUT_DIR"
 
 # Package into bootanimation.zip (must use STORED compression, no deflate)
 cd "$BOOT_DIR"
-zip -r -0 "$OUTPUT_DIR/bootanimation.zip" desc.txt part0/ part1/ 2>/dev/null
+zip -r -0 "$OUTPUT_DIR/bootanimation.zip" desc.txt part0/ part1/ part2/ part3/ 2>/dev/null
 
 FINAL_SIZE=$(du -h "$OUTPUT_DIR/bootanimation.zip" | cut -f1)
 echo ""
