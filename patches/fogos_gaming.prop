@@ -127,3 +127,7 @@ debug.sf.game_rendering_optimization=true
 
 # --- GYROSCOPE CALIBRATION FOR BATTLE ROYALE AIMING ---
 ro.sensor.gyro.cal=true
+
+# --- GAMING SENSORS & GESTURES ---
+ro.sensor.game_gesture=true
+ro.sensor.rate.fastest=20000

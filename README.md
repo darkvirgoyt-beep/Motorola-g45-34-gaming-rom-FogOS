@@ -175,3 +175,26 @@ After flashing FogOS Elite Gaming Edition on your Motorola G45:
 * `debug.touch.slop_scale = 0.5` & `debug.touch.sensitivity = 1` — Doubled touch detection sensitivity.
 * `ro.sensor.gyro.cal = true` — Real-time sensor calibration for ultra-precise gyroscope aiming in BGMI, PUBG Mobile, and COD Mobile.
 * `ro.sf.game_mode_opt = true` & `debug.sf.game_rendering_optimization = true` — Direct hardware composer bypass for lower GPU rendering latency.
+
+---
+
+## 🎮 Game Mode & Game Space Implementation Architecture
+
+### 1. GameSpace Package (`packages/apps/GameSpace`)
+* Bundled via [`manifests/fogos.xml`](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/blob/main/manifests/fogos.xml) from `RisingOS-Revived/android_packages_apps_GameSpace`.
+* Dedicated launcher UI for fast game library access and per-game performance profiles.
+
+### 2. Doze & App Standby Exemptions (`sysconfig/gaming_power_whitelist.xml`)
+* Whitelists popular games (BGMI, PUBG Mobile, Call of Duty: Mobile, Genshin Impact, Free Fire Max, Mobile Legends) from:
+  * Doze idle restrictions.
+  * App Standby network buckets.
+  * Location / background service throttling.
+
+### 3. GameManagerService Interventions (`patches/game_mode_config.xml`)
+* **Auto DND (Do Not Disturb):** Heads-up notifications, alerts, and calls are automatically silenced when entering a game match (`disable_notifications = true`).
+* **FPS Throttle Unlock:** Overrides framework FPS caps to allow true 90 FPS and 120 FPS render loops.
+* **Resolution Override:** Supports 0.75x resolution scaling (720p on 1080p panel) for GPU-intensive games (Warzone / Genshin) to maintain locked 60+ FPS without heat buildup.
+
+### 4. 50Hz Fast Gaming Sensors (`system_ext.prop`)
+* `ro.sensor.game_gesture = true` — Real-time gesture recognition in games.
+* `ro.sensor.rate.fastest = 20000` (50Hz) — High-rate sensor reporting for instant gyroscope aiming response.

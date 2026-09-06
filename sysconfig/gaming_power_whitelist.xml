@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FogOS Gaming Edition - Battery & Doze Exceptions for Games -->
+<!-- Developer: Prince · VirgoYT (VirgoYT707) -->
+<config>
+    <!-- BGMI / Battlegrounds Mobile India -->
+    <allow-in-power-save package="com.pubg.imobile" />
+    <allow-in-data-usage-save package="com.pubg.imobile" />
+    <allow-unthrottled-location package="com.pubg.imobile" />
+
+    <!-- PUBG Mobile Global & Variants -->
+    <allow-in-power-save package="com.tencent.ig" />
+    <allow-in-data-usage-save package="com.tencent.ig" />
+    <allow-in-power-save package="com.pubg.krmobile" />
+    <allow-in-power-save package="com.vng.pubgmobile" />
+
+    <!-- Call of Duty: Mobile -->
+    <allow-in-power-save package="com.activision.callofduty.shooter" />
+    <allow-in-data-usage-save package="com.activision.callofduty.shooter" />
+    <allow-in-power-save package="com.garena.game.codm" />
+
+    <!-- Mobile Legends: Bang Bang -->
+    <allow-in-power-save package="com.mobile.legends" />
+    <allow-in-data-usage-save package="com.mobile.legends" />
+
+    <!-- Genshin Impact & Honkai Star Rail -->
+    <allow-in-power-save package="com.miHoYo.GenshinImpact" />
+    <allow-in-power-save package="com.HoYoverse.hkrpgoversea" />
+
+    <!-- Free Fire Max -->
+    <allow-in-power-save package="com.dts.freefiremax" />
+    <allow-in-power-save package="com.dts.freefireth" />
+</config>

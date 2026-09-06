@@ -28,3 +28,7 @@ debug.sf.game_rendering_optimization=true
 
 # --- GYRO / SENSORS (Precision Aiming for BGMI/PUBG/CODM) ---
 ro.sensor.gyro.cal=true
+
+# --- GAMING SENSORS & GESTURES ---
+ro.sensor.game_gesture=true
+ro.sensor.rate.fastest=20000

@@ -75,6 +75,7 @@ mkdir -p "$OUT_DIR/config"
 cp patches/fogos_gaming.prop "$OUT_DIR/config/fogos_gaming.prop"
 cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml"
 cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml"
+cp sysconfig/gaming_power_whitelist.xml "$OUT_DIR/config/gaming_power_whitelist.xml" || true
 cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc"
 cp rootdir/init.fogos.rc "$OUT_DIR/config/init.fogos.rc" || true
 cp system_ext.prop "$OUT_DIR/config/system_ext.prop" || true

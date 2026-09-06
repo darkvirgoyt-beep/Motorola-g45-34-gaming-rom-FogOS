@@ -26,8 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     steps:
+      - name: Checkout FogOS Repository
+        uses: actions/checkout@v4
+
       - name: Maximize Runner Disk Space
         run: |
           sudo rm -rf /usr/share/dotnet
@@ -71,10 +73,15 @@ jobs:
             <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common" path="vendor/motorola/sm6375-common" remote="github" revision="${{ github.event.inputs.android_branch }}" />
             <project name="LineageOS/android_kernel_motorola_sm6375" path="kernel/motorola/sm6375" remote="github" revision="${{ github.event.inputs.android_branch }}" />
             <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="${{ github.event.inputs.android_branch }}" />
+            <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fifteen" />
           </manifest>
           MANIFEST
 
       - name: Sync Source Repositories
+        run: |
+          cd /home/runner/work/lineage
+          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
+
       - name: Apply Device Tree Overlays (Game Mode & QS Tiles)
         run: |
           cd /home/runner/work/lineage
@@ -83,9 +90,8 @@ jobs:
           mkdir -p device/motorola/fogos/rootdir
           cp -r $GITHUB_WORKSPACE/rootdir/* device/motorola/fogos/rootdir/ || true
           cp $GITHUB_WORKSPACE/system_ext.prop device/motorola/fogos/system_ext.prop || true
-        run: |
-          cd /home/runner/work/lineage
-          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
+          mkdir -p device/motorola/fogos/sysconfig
+          cp -r $GITHUB_WORKSPACE/sysconfig/* device/motorola/fogos/sysconfig/ || true
 
       - name: Inject VirgoYT Gaming Optimizations and Branding
         run: |
