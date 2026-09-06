@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.VirgoXController" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#070a12</item>
+        <item name="android:navigationBarColor">#070a12</item>
+    </style>
+</resources>
