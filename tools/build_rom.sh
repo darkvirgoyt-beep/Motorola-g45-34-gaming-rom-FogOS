@@ -2,7 +2,7 @@
 set -e
 
 # ==============================================================================
-# FogOS Gaming ROM Builder Script for Motorola Moto G45 5G (fogos)
+# FogOS Elite Gaming ROM Builder Script for Motorola Moto G45 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
@@ -11,18 +11,18 @@ OUT_DIR="$(pwd)/out"
 mkdir -p "$WORK_DIR" "$OUT_DIR"
 
 echo "=============================================================================="
-echo "          Starting FogOS Gaming ROM Build for Moto G45 (fogos)"
+echo "      Starting FogOS Elite Gaming ROM Build for Moto G45 (fogos)"
 echo "                   Developer: Prince · VirgoYT"
 echo "=============================================================================="
 
-# 1. Check or Fetch Base LineageOS ROM for fogos
+# 1. Fetch Base LineageOS ROM for fogos
 echo "[1/6] Fetching latest official base ROM for fogos..."
 BUILDS_JSON=$(curl -s "https://download.lineageos.org/api/v2/devices/fogos/builds")
 LATEST_ZIP_URL=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .url')
 LATEST_ZIP_NAME=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .filename')
 
 if [ -z "$LATEST_ZIP_URL" ] || [ "$LATEST_ZIP_URL" == "null" ]; then
-    echo "[!] Could not fetch from API directly, using fallback nightly mirror..."
+    echo "[!] Fallback to nightly mirror URL..."
     LATEST_ZIP_URL="https://mirrorbits.lineageos.org/full/fogos/20260905/lineage-23.2-20260905-nightly-fogos-signed.zip"
     LATEST_ZIP_NAME="lineage-fogos-base.zip"
 fi
@@ -64,11 +64,13 @@ if [ -f "$PULSE_APK" ]; then
     cp "$PULSE_APK" "$OUT_DIR/FogOS-PulseControl.apk"
 fi
 
-# 4. Integrate Gaming Tweaks & VirgoYT Branding
-echo "[4/6] Injecting FogOS Gaming props and 120Hz unlocker..."
+# 4. Integrate Elite Gaming Tweaks & Configurations
+echo "[4/6] Injecting FogOS Elite Gaming configs, init.rc, and GameManager interventions..."
 mkdir -p "$OUT_DIR/config"
 cp patches/fogos_gaming.prop "$OUT_DIR/config/fogos_gaming.prop"
 cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml"
+cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml"
+cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc"
 
 # Copy Flasher scripts
 cp flasher/flash_all.bat "$OUT_DIR/"
@@ -80,15 +82,15 @@ echo "[5/6] Assembling flashable partition images..."
 cp "$WORK_DIR"/extracted/*.img "$OUT_DIR/"
 
 # 5. Create Fastboot Flashable ZIP
-echo "[6/6] Packaging FogOS Gaming ROM distribution..."
+echo "[6/6] Packaging FogOS Elite Gaming ROM distribution..."
 BUILD_DATE=$(date +'%Y%m%d')
-RELEASE_ZIP_NAME="FogOS-v1.0-Gaming-fogos-VirgoYT-${BUILD_DATE}.zip"
+RELEASE_ZIP_NAME="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}.zip"
 
 cd "$OUT_DIR"
 sha256sum *.img > SHA256SUMS.txt
 zip -r -9 "../$RELEASE_ZIP_NAME" ./*
 
 echo "=============================================================================="
-echo "[SUCCESS] FogOS Gaming ROM built successfully!"
+echo "[SUCCESS] FogOS Elite Gaming ROM built successfully!"
 echo "Package: $RELEASE_ZIP_NAME"
 echo "=============================================================================="

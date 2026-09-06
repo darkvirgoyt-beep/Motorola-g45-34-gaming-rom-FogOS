@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FogOS Gaming Edition - GameManagerService Interventions -->
+<!-- Developer: Prince · VirgoYT -->
+<game-mode-config>
+    <!-- BGMI / PUBG Mobile -->
+    <package name="com.pubg.imobile">
+        <game-mode mode="2" fps="90" downscale="1.0" />
+        <game-mode mode="1" fps="120" downscale="0.85" />
+    </package>
+    <package name="com.tencent.ig">
+        <game-mode mode="2" fps="90" downscale="1.0" />
+        <game-mode mode="1" fps="120" downscale="0.85" />
+    </package>
+
+    <!-- Call of Duty: Mobile -->
+    <package name="com.activision.callofduty.shooter">
+        <game-mode mode="2" fps="90" downscale="1.0" />
+        <game-mode mode="1" fps="120" downscale="0.85" />
+    </package>
+
+    <!-- Genshin Impact -->
+    <package name="com.miHoYo.GenshinImpact">
+        <game-mode mode="2" fps="60" downscale="0.85" />
+        <game-mode mode="1" fps="60" downscale="0.75" />
+    </package>
+
+    <!-- Mobile Legends -->
+    <package name="com.mobile.legends">
+        <game-mode mode="2" fps="120" downscale="1.0" />
+    </package>
+</game-mode-config>

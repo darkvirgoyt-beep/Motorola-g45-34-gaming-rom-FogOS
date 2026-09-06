@@ -1,0 +1,81 @@
+# ==============================================================================
+# FogOS Elite Gaming Kernel & Low-Level Tuning - Moto G45 (fogos / SM6375)
+# Developer : Prince · VirgoYT (VirgoYT707)
+# ==============================================================================
+
+on early-init
+    # Set I/O schedulers to bfq / mq-deadline for rapid game asset streaming
+    write /sys/block/sda/queue/scheduler bfq
+    write /sys/block/sdb/queue/scheduler bfq
+    write /sys/block/sdc/queue/scheduler bfq
+    write /sys/block/sda/queue/read_ahead_kb 512
+    write /sys/block/sdb/queue/read_ahead_kb 512
+    write /sys/block/sda/queue/nr_requests 256
+    write /sys/block/sda/queue/iostats 0
+
+on init
+    # Sched-boost for top-app and foreground cgroups
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/cpus 0-5,7
+    write /dev/stune/top-app/schedtune.boost 30
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /dev/stune/foreground/schedtune.boost 10
+
+    # Minimum task util boost thresholds for fast thread placement
+    write /proc/sys/kernel/sched_min_task_util_for_boost 51
+    write /proc/sys/kernel/sched_min_task_util_for_colocation 35
+
+on boot
+    # --------------------------------------------------------------------------
+    # 1. CPU / GPU Frequency & Governor Boost (SM6375 / Holi)
+    # --------------------------------------------------------------------------
+    # CPU Input Boost (40ms - 60ms boost on touch events)
+    write /sys/devices/system/cpu/cpu_boost/input_boost_freq "0:1200000 6:1800000"
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 60
+
+    # Schedutil Transition Tuning (0.5ms ramp-up, 20ms hold)
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/hispeed_load 85
+
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/hispeed_load 85
+
+    # Adreno 619 GPU Tunings
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
+    write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
+    write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
+    write /sys/class/kgsl/kgsl-3d0/idle_timer 64
+    write /sys/class/kgsl/kgsl-3d0/throttling 0
+
+    # --------------------------------------------------------------------------
+    # 2. Input / Touch / Double-Tap-To-Wake
+    # --------------------------------------------------------------------------
+    write /sys/android_touch/double_tap_enable 1
+    write /sys/devices/virtual/touch/touch_dev/double_tap 1
+    write /sys/devices/virtual/touch/touch_dev/game_mode 1
+
+    # --------------------------------------------------------------------------
+    # 3. Memory & Virtual Memory (zRAM, Swappiness, MGLRU)
+    # --------------------------------------------------------------------------
+    write /proc/sys/vm/swappiness 100
+    write /proc/sys/vm/vfs_cache_pressure 70
+    write /proc/sys/vm/dirty_ratio 20
+    write /proc/sys/vm/dirty_background_ratio 5
+
+    # Multi-Gen LRU (MGLRU) enablement if kernel supports
+    write /sys/kernel/mm/lru_gen/enabled 7
+    write /sys/kernel/mm/lru_gen/min_ttl_ms 1000
+
+    # --------------------------------------------------------------------------
+    # 4. Network: TCP BBR & Gaming Socket Buffers
+    # --------------------------------------------------------------------------
+    write /proc/sys/net/ipv4/tcp_congestion_control bbr
+    write /proc/sys/net/core/default_qdisc fq
+    write /proc/sys/net/ipv4/tcp_low_latency 1
+    write /proc/sys/net/ipv4/tcp_fastopen 3
+    write /proc/sys/net/ipv4/tcp_rmem "4096 87380 6291456"
+    write /proc/sys/net/ipv4/tcp_wmem "4096 16384 4194304"
+    write /proc/sys/net/core/rmem_max 8388608
+    write /proc/sys/net/core/wmem_max 8388608

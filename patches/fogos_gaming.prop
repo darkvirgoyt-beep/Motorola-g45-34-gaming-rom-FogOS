@@ -1,31 +1,47 @@
 # ==============================================================================
-# FogOS Gaming ROM - Motorola Moto G45 5G / G34 5G (fogos)
+# FogOS Elite Gaming Properties - Motorola Moto G45 5G / G34 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
-# Custom ROM Branding & Maintainer Credits
-ro.build.display.id=FogOS-v1.0-Gaming-VirgoYT
-ro.fogos.version=1.0-Gaming
+# --- BRANDING & CREDITS ---
+ro.build.display.id=FogOS-v1.0-EliteGaming-VirgoYT
+ro.fogos.version=1.0-EliteGaming
 ro.fogos.maintainer=Prince · VirgoYT
 ro.build.user=VirgoYT
 ro.build.host=VirgoYT-Gaming-Lab
 persist.sys.custom.maintainer=VirgoYT
 ro.modversion=FogOS-v1.0-fogos-VirgoYT
 
-# Display & Refresh Rate (Force 120Hz lock in games)
+# --- CPU, SCHEDULER & THREAD BOOST ---
+sched.colocate.enable=1
+ro.vendor.qti.sys.perf.tuning=1
+persist.sys.game_mode=1
+ro.vendor.extension_library=libqti-perfd-client.so
+
+# --- DISPLAY, 120HZ LOCK & FRAME PACING (SWAPPY / VULKAN) ---
 ro.surface_flinger.use_content_detection_for_refresh_rate=false
 ro.surface_flinger.set_idle_timer_ms=0
 ro.surface_flinger.set_touch_timer_ms=200
 ro.surface_flinger.set_display_power_timer_ms=0
+ro.surface_flinger.enable_frame_rate_override=true
+ro.surface_flinger.supports_background_blur=0
 ro.vendor.display.perf_mode=1
 debug.sf.latch_unsignaled=1
 
-# Touch Sampling & Input Latency (240Hz Gaming Sampling)
+# Android Frame Pacing (Swappy) & VK_EXT_present_timing
+ro.sf.present_timing=1
+debug.vulkan.enable_present_timing=1
+ro.vendor.display.frame_pacing=1
+debug.sf.frame_rate_multiple_threshold=60
+
+# --- TOUCH SAMPLING, LOW LATENCY & DOUBLE-TAP-TO-WAKE ---
 windowsmgr.max_events_per_sec=240
 touch.pressure.scale=0.001
 persist.sys.touch.latency_tuning=1
+persist.sys.touch.debounce_ms=0
+ro.vendor.touch.dt2w=1
 
-# Qualcomm Adreno 619 GPU Boost & Rendering Pipeline
+# --- ADRENO 619 GPU BOOST & RENDERING PIPELINE ---
 debug.sf.disable_backpressure=1
 debug.sf.enable_gl_backpressure=0
 debug.cpurend.vsync=false
@@ -33,14 +49,39 @@ debug.hwui.render_dirty_regions=false
 debug.renderengine.backend=skiagl
 debug.egl.hw=1
 debug.sf.hw=1
+debug.hwui.use_buffer_age=true
 
-# Memory Management & zRAM Tuning (Optimized for 4GB & 8GB variants)
+# --- MEMORY, LMKD & ZRAM TUNING ---
 ro.vendor.qti.config.zram=true
 persist.sys.zram_enabled=1
 ro.zram.mark_idle_delay_mins=60
 ro.sys.fw.bg_apps_limit=32
 
-# Thermal Throttling Mitigation & Performance Profiles
-persist.sys.game_mode=1
-ro.vendor.qti.sys.perf.tuning=1
+# LMKD (LowMemoryKiller Daemon) Tuning
+ro.lmk.kill_heaviest_task=true
+ro.lmk.kill_timeout_ms=100
+ro.lmk.use_psi=true
+ro.lmk.psi_complete_stall_ms=700
+ro.lmk.thrashing_limit=80
+ro.lmk.swap_free_low_percentage=10
+ro.lmk.critical_upgrade=false
+
+# --- THERMAL MITIGATION OVERRIDE ---
 persist.vendor.power.thermal_mitigation=0
+persist.sys.thermal.mitigation=0
+vendor.thermal.governor.tuning=gaming
+
+# --- NETWORK & LOW-PING MULTIPLAYER ---
+net.ipv4.tcp_congestion_control=bbr
+net.tcp.default_init_rwnd=60
+net.ipv4.tcp_low_latency=1
+
+# --- DISABLE BLOAT LOGGING, STATSD & TRACING ---
+debug.atrace.tags.enableflags=0
+persist.traced.enable=0
+logcat.live=disable
+profiler.force_disable_err_rpt=1
+profiler.force_disable_ulog=1
+ro.config.nocheckin=1
+ro.kernel.android.checkjni=0
+ro.kernel.checkjni=0
