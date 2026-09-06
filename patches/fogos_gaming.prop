@@ -125,9 +125,56 @@ ro.sf.game_mode_opt=true
 debug.game.optimization=true
 debug.sf.game_rendering_optimization=true
 
-# --- GYROSCOPE CALIBRATION FOR BATTLE ROYALE AIMING ---
-ro.sensor.gyro.cal=true
+# --- INPUT LATENCY REDUCTION & TOUCH FRAME PREDICTION ---
+debug.input.latency=1
+debug.sf.touch_frame_prediction=1
+ro.sf.frame_prediction=true
 
-# --- GAMING SENSORS & GESTURES ---
+# --- GYROSCOPE CALIBRATION & LOW-LATENCY IMU AIMING ---
+ro.sensor.gyro.cal=true
 ro.sensor.game_gesture=true
-ro.sensor.rate.fastest=20000
+ro.sensor.rate.fastest=10000
+persist.vendor.sensors.direct_channel=true
+persist.vendor.sensors.batch_delay=0
+persist.vendor.sensors.hal.imu_filter=0
+ro.vendor.sensors.ssc=true
+ro.vendor.sensors.adsp=true
+persist.fogos.gyro.smoothing=1
+persist.fogos.gyro.sensitivity=1.0
+
+# --- GOODIX GT917S TOUCHSCREEN & WAKE GESTURES ---
+persist.vendor.touch.gt917s.enable=1
+persist.vendor.touchscreen.wake_gestures=1
+persist.vendor.touch.double_tap=1
+
+# --- DOLBY ATMOS, SPATIAL AUDIO & MOTODOLBY / DIRAC ---
+ro.vendor.audio.dolby=true
+ro.vendor.audio.surround=true
+ro.vendor.audio.spatial=true
+persist.vendor.audio.spatializer.enabled=true
+persist.vendor.audio.dolby.ds1.enabled=true
+ro.vendor.audio.motodolby=true
+ro.vendor.audio.dirac=true
+
+# --- WIFI 6E ENABLEMENT FOR FOGOS ---
+persist.vendor.wifi.6e=true
+ro.vendor.wifi.sap.interface=wlan0
+persist.vendor.wifi.softap.wpa3=1
+
+# --- VOLTE / VOWIFI / VILTE ENABLED BY DEFAULT ---
+persist.dbg.volte_avail_ovr=1
+persist.dbg.vt_avail_ovr=1
+persist.dbg.wfc_avail_ovr=1
+persist.vendor.radio.volte_is_avail=1
+persist.vendor.radio.vt_is_avail=1
+persist.vendor.radio.wfc_is_avail=1
+
+# --- CAMERA2 API (HAL3) & MOTO CAMERA PORT ---
+persist.vendor.camera.HAL3.enabled=1
+vendor.camera.aux.packagelist=com.motorola.camera3,com.google.android.GoogleCamera
+ro.vendor.camera.mot_hal3=1
+
+# --- VULKAN VK_EXT_PRESENT_TIMING & GAMEMANAGERSERVICE INTERVENTIONS ---
+debug.sf.enable_present_timing=1
+debug.vulkan.present_timing=1
+ro.vendor.display.enable_vk_present_timing=1

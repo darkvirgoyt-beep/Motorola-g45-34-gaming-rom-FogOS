@@ -85,6 +85,20 @@ on boot
     write /proc/sys/net/ipv4/tcp_congestion_control bbr2
     write /proc/sys/net/ipv4/tcp_congestion_control bbr
 
+    # Goodix GT917S Touchscreen DT2W & Wake Gestures
+    chmod 0660 /sys/devices/platform/goodix_ts.0/double_tap
+    chown system system /sys/devices/platform/goodix_ts.0/double_tap
+    write /sys/devices/platform/goodix_ts.0/double_tap 1
+
+    chmod 0660 /sys/class/touchscreen/primary/wake_gestures
+    chown system system /sys/class/touchscreen/primary/wake_gestures
+    write /sys/class/touchscreen/primary/wake_gestures 1
+
+    # IMU / Gyroscope Low-Latency Polling (SENSOR_RATE_FASTEST)
+    write /sys/devices/platform/soc/soc:sensors/batch_delay 0
+    write /sys/class/sensors/gyro_sensor/poll_delay 5
+    write /sys/class/sensors/accelerometer_sensor/poll_delay 5
+
 # ==============================================================================
 # Dynamic Performance Profiles (Quick Settings Tiles & FogOS PulseControl)
 # ==============================================================================
@@ -94,6 +108,7 @@ on property:persist.fogos.profile=powersave
     write /sys/class/kgsl/kgsl-3d0/max_gpuclk 450000000
     write /proc/sys/vm/swappiness 60
     write /sys/devices/system/cpu/cpu_boost/input_boost_ms 20
+    exec_background - root root -- /system/bin/fogos_game_network.sh 0
 
 on property:persist.fogos.profile=balanced
     write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 1804800
@@ -101,6 +116,7 @@ on property:persist.fogos.profile=balanced
     write /sys/class/kgsl/kgsl-3d0/max_gpuclk 840000000
     write /proc/sys/vm/swappiness 100
     write /sys/devices/system/cpu/cpu_boost/input_boost_ms 40
+    exec_background - root root -- /system/bin/fogos_game_network.sh 0
 
 on property:persist.fogos.profile=gaming
     write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2000000
@@ -111,6 +127,25 @@ on property:persist.fogos.profile=gaming
     write /sys/class/kgsl/kgsl-3d0/throttling 0
     write /proc/sys/vm/swappiness 100
     write /sys/devices/system/cpu/cpu_boost/input_boost_ms 60
+    exec_background - root root -- /system/bin/fogos_game_network.sh 1
+
+on property:persist.fogos.profile=turbo
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2208000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 950000000
+    write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
+    write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
+    write /sys/class/kgsl/kgsl-3d0/throttling 0
+    write /proc/sys/vm/swappiness 100
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 80
+    exec_background - root root -- /system/bin/fogos_game_network.sh 1
+
+# Performance mode toggle hook
+on property:sys.perf.mode=1
+    setprop persist.fogos.profile turbo
+
+on property:sys.perf.mode=0
+    setprop persist.fogos.profile balanced
 
 # --- GAMING SYSCTL & KERNEL GRANULARITY TWEAKS ---
 on boot

@@ -18,4 +18,7 @@
 
   <!-- Custom GameSpace Package (Launcher shortcuts + Gaming Profiles) -->
   <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fifteen" />
+
+  <!-- Dolby Atmos & Spatial Audio (FogOS / InfinityX audio engine) -->
+  <project name="PixelOS-AOSP/android_packages_apps_DolbyAtmos" path="packages/apps/DolbyAtmos" remote="github" revision="sixteen-qpr2" />
 </manifest>

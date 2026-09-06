@@ -195,6 +195,77 @@ After flashing FogOS Elite Gaming Edition on your Motorola G45:
 * **FPS Throttle Unlock:** Overrides framework FPS caps to allow true 90 FPS and 120 FPS render loops.
 * **Resolution Override:** Supports 0.75x resolution scaling (720p on 1080p panel) for GPU-intensive games (Warzone / Genshin) to maintain locked 60+ FPS without heat buildup.
 
-### 4. 50Hz Fast Gaming Sensors (`system_ext.prop`)
+### 4. 100Hz Fast Gaming Sensors & Gyro Precision (`system_ext.prop` & `init.fogos.gaming.rc`)
 * `ro.sensor.game_gesture = true` — Real-time gesture recognition in games.
-* `ro.sensor.rate.fastest = 20000` (50Hz) — High-rate sensor reporting for instant gyroscope aiming response.
+* `ro.sensor.rate.fastest = 10000` (100Hz) — High-rate sensor reporting for instant gyroscope aiming response.
+* `persist.vendor.sensors.direct_channel = true` & `batch_delay = 0` — Zero-delay sensor streaming directly to the game rendering thread.
+* `persist.fogos.gyro.smoothing = 1` & `persist.fogos.gyro.sensitivity = 1.0` — Gyroscope aiming curve smoothing for micro-adjustments in BGMI/PUBG/CODM.
+
+### 5. Dynamic Background Network Restriction (`patches/fogos_game_network.sh`)
+* Automatically activates when entering **Turbo** or **Gaming** mode (`persist.fogos.profile=gaming` / `turbo`).
+* Executes `cmd netpolicy set-restrict-background true` to silence background downloads, social media syncs, and telemetry packets.
+* Directs TOS priority (`TOS 0x10 Minimize-Delay`) to foreground multiplayer game UDP/TCP packets to eliminate in-game ping spikes.
+
+### 6. Touch Latency Reduction & Touch Frame Prediction
+* `config_touchImproveLatency = true` & `config_reduceTouchLatency = true` enabled in framework overlays.
+* `debug.input.latency = 1` — Forces instant input thread dispatching.
+* `debug.sf.touch_frame_prediction = 1` & `ro.sf.frame_prediction = true` — Real-time touch path extrapolation to match display refresh cycles.
+
+---
+
+## 💎 Proven Reference Features from FogOS v3 & Project Infinity X v3.9
+
+* **Dolby Atmos & Spatial Audio:** Native integration via [`packages/apps/DolbyAtmos`](https://github.com/PixelOS-AOSP/android_packages_apps_DolbyAtmos) (`ro.vendor.audio.dolby=true`, `persist.vendor.audio.spatializer.enabled=true`).
+* **Goodix GT917S Touchscreen Gestures:** Full Double-Tap-to-Wake (DT2W) and custom wake gestures enabled via `/sys/devices/platform/goodix_ts.0/double_tap` and `/sys/class/touchscreen/primary/wake_gestures`.
+* **WiFi 6E Ready:** Enabled 6GHz band support on SM6375 platform (`persist.vendor.wifi.6e=true`, `persist.vendor.wifi.softap.wpa3=1`).
+* **Carrier Voice & Video (VoLTE / VoWiFi / ViLTE):** Hardcoded enabled by default for all global SIM cards (`persist.dbg.volte_avail_ovr=1`, `persist.vendor.radio.volte_is_avail=1`).
+* **Camera2 API (HAL3) + Moto Camera Port:** Full HAL3 driver support enabled for GCam and Motorola Camera 3 (`persist.vendor.camera.HAL3.enabled=1`).
+* **Root Solution Integration:** Compatible with KernelSU (embedded in kernel) and Magisk v27+.
+
+---
+
+## 🔨 Exact Source Build Steps
+
+To compile FogOS directly from source on your local machine or a dedicated build server:
+
+```bash
+# ==============================================================================
+# 1. Environment & CCACHE Setup
+# ==============================================================================
+export BUILD_USERNAME=VirgoYT
+export BUILD_HOSTNAME=fogos-build
+export CCACHE_EXEC=/usr/bin/ccache
+export CCACHE_DIR=~/.ccache
+export USE_CCACHE=1
+
+ccache -M 50G
+ccache -o compression=true
+
+# ==============================================================================
+# 2. Source Sync & Device Tree Setup
+# ==============================================================================
+mkdir -p ~/android/lineage
+cd ~/android/lineage
+repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --git-lfs --depth=1
+
+# Copy Roomservice Manifest
+mkdir -p .repo/local_manifests
+cp /path/to/Motorola-g45-34-gaming-rom-FogOS/manifests/fogos.xml .repo/local_manifests/
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
+
+# ==============================================================================
+# 3. Apply Overlays & Compile ROM
+# ==============================================================================
+cp -r /path/to/Motorola-g45-34-gaming-rom-FogOS/overlay/* device/motorola/fogos/overlay/
+cp -r /path/to/Motorola-g45-34-gaming-rom-FogOS/rootdir/* device/motorola/fogos/rootdir/
+cp /path/to/Motorola-g45-34-gaming-rom-FogOS/system_ext.prop device/motorola/fogos/system_ext.prop
+
+source build/envsetup.sh
+croot
+breakfast fogos
+mka bacon -j$(nproc)
+```
+Or simply run the included 1-click build script:
+```bash
+./scripts/build_source.sh ~/android/lineage
+```

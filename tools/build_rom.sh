@@ -77,6 +77,7 @@ cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml"
 cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml"
 cp sysconfig/gaming_power_whitelist.xml "$OUT_DIR/config/gaming_power_whitelist.xml" || true
 cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc"
+cp patches/fogos_game_network.sh "$OUT_DIR/config/fogos_game_network.sh" || true
 cp rootdir/init.fogos.rc "$OUT_DIR/config/init.fogos.rc" || true
 cp system_ext.prop "$OUT_DIR/config/system_ext.prop" || true
 

@@ -110,9 +110,16 @@ jobs:
       - name: Compile LineageOS
         run: |
           cd /home/runner/work/lineage
+          export BUILD_USERNAME=VirgoYT
+          export BUILD_HOSTNAME=fogos-build
+          export CCACHE_EXEC=/usr/bin/ccache
+          export CCACHE_DIR=/home/runner/.ccache
+          ccache -M 50G
+          ccache -o compression=true
           source build/envsetup.sh
+          croot
           breakfast fogos
-          brunch fogos
+          mka bacon -j$(nproc)
 
       - name: Publish Compiled ROM Release
         env:
