@@ -1,279 +1,239 @@
-# 👑 FogOS Elite Gaming Edition — Motorola Moto G45 5G & G34 5G (`fogos`)
+<p align="center">
+  <img src="assets/virgox-elite-gaming-rom-banner.png" alt="VirgoX Elite Gaming ROM banner" width="100%" />
+</p>
+
+<h1 align="center">VirgoX Elite Gaming ROM</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Device-Motorola%20G45%20%2F%20G34%205G-blue.svg?style=for-the-badge&logo=motorola" />
-  <img src="https://img.shields.io/badge/Codename-fogos%20%2F%20SM6375-orange.svg?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Android-17%20(LineageOS%20Base)-green.svg?style=for-the-badge&logo=android" />
-  <img src="https://img.shields.io/badge/RAM%20Support-4GB%20%26%208GB%20Adaptive-purple.svg?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Developer-Prince%20%C2%B7%20VirgoYT-red.svg?style=for-the-badge&logo=youtube" />
-  <a href="https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases"><img src="https://img.shields.io/badge/Download-Latest%20Release-brightgreen.svg?style=for-the-badge&logo=github" /></a>
+  A bootable, performance-focused Android gaming ROM for the Motorola Moto G45 5G and Moto G34 5G.
+</p>
+
+<p align="center">
+  <a href="https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases"><img src="https://img.shields.io/github/v/release/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS?style=for-the-badge&logo=github&label=Release" alt="Latest release" /></a>
+  <img src="https://img.shields.io/badge/Android-17%20targeting-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 17 targeting" />
+  <img src="https://img.shields.io/badge/Device-Moto%20G45%20%2F%20G34%205G-7B61FF?style=for-the-badge&logo=motorola&logoColor=white" alt="Supported devices" />
+  <img src="https://img.shields.io/badge/Codename-fogos%20%7C%20SM6375-FF6B35?style=for-the-badge" alt="fogos codename" />
+  <img src="https://img.shields.io/badge/Status-Bootable-00A86B?style=for-the-badge" alt="Bootable status" />
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#highlights">Highlights</a> •
+  <a href="#supported-devices">Devices</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#building-from-source">Build</a> •
+  <a href="#disclaimer">Disclaimer</a>
 </p>
 
 ---
 
-## 📖 Overview
+## Overview
 
-**FogOS Elite Gaming Edition** is a custom, performance-tuned Android ROM engineered specifically for the **Motorola Moto G45 5G** and **Moto G34 5G** (`fogos` / Qualcomm Snapdragon 6s Gen 3 / SM6375 platform).
+**VirgoX Elite Gaming ROM** is a bootable custom Android ROM project for the Motorola Moto G45 5G and Moto G34 5G, using the `fogos` device family and the Qualcomm SM6375 platform. The project combines a lightweight LineageOS-based foundation with gaming-oriented framework overlays, system properties, device configuration, performance profiles, and release tooling.
 
-Maintained by **Prince · VirgoYT**, this ROM uses a pure, lightweight LineageOS base heavily modified with a custom gaming core, targeted for **Android 17 / Forward-Compatible AOSP architecture**. It features deep kernel tuning, low-level sysfs optimizations, custom GameSpace, and dual-variant adaptive RAM management for both **4GB and 8GB RAM models**.
+The ROM is designed for users who want a responsive daily driver with a dedicated gaming profile, fast touch and sensor response, adaptive memory behavior across 4 GB and 8 GB variants, and a maintainable source tree for future development.
 
----
+> **Project status:** Bootable development ROM. Flash only on a supported device and keep a complete backup of your data, modem, persist, boot, vendor, and original firmware partitions.
 
-## ⚡ Elite Gaming Architectural Enhancements
+## Search keywords
 
-### 1. 🧠 Dynamic Dual-RAM Architecture (4GB & 8GB Variants)
-FogOS automatically inspects `/proc/meminfo` on early boot via `fogos_ram_optimizer.sh` and adapts system memory parameters to the exact hardware variant:
-* **🔥 4GB RAM Model:**
-  * **3.5 GB zRAM** with LZ4 high-speed compression (`comp_algorithm = lz4`).
-  * `vm.swappiness = 160` + `watermark_scale_factor = 200` to prevent memory compaction micro-stutters.
-  * Strict LMKD foreground game priority (`ro.lmk.thrashing_limit=30`, max 24 bg apps).
-  * Tuned Dalvik ART memory thresholds (192MB growth limit, 512MB max heap) to eliminate game crashes under heavy memory load.
-* **🚀 8GB RAM Model:**
-  * **4.0 GB zRAM** with high-throughput ZSTD/LZ4 compression.
-  * `vm.swappiness = 60` + `vfs_cache_pressure = 50` to keep game map assets, textures, and shaders permanently cached in physical RAM for near-instant map loading.
-  * Expanded ART heap (256MB growth limit, 768MB max heap) and 48 background apps limit for heavy multitasking.
+`VirgoX Elite Gaming ROM`, `VirgoX ROM`, `Moto G45 custom ROM`, `Moto G34 custom ROM`, `Motorola fogos ROM`, `SM6375 gaming ROM`, `Android 17 ROM`, `LineageOS fogos`, `Moto G45 gaming ROM`, `Moto G34 gaming ROM`, `KernelSU`, `Magisk`, `GameSpace`, `Fastboot ROM`, `OTA payload.bin`.
 
-### 2. 🚀 CPU & GPU Subsystem (SM6375 / Holi)
-* **Energy-Aware Scheduler (EAS) & Sched-Boost:** Prioritizes `top-app` and `foreground` cgroups with increased task utilization boost (`sched_min_task_util_for_boost = 51`) and `prefer_idle = 1`.
-* **CPU-Boost & Touch Boost:** 60ms CPU boost upon user touch events (`0:1200000 6:1800000`) for instantaneous reaction times in shooter games.
-* **Schedutil Transition Optimization:** 500µs ramp-up (`up_rate_limit_us`) and 20,000µs hold (`down_rate_limit_us`) to prevent 1% low frame dips.
-* **Adreno 619 KGSL Optimization:** `msm-adreno-tz` governor with disabled idle downclocking and unthrottled GPU bus clock during gaming sessions.
+## Supported devices
 
-### 3. 💽 High-Speed Storage & I/O Pipeline
-* **I/O Scheduler:** Tuned `bfq` and `mq-deadline` for UFS storage queues.
-* **Readahead:** 512KB readahead buffer on storage blocks to eliminate in-game texture streaming lag.
-* **NR Requests:** Queue depth expanded to 256 requests with disabled I/O statistics overhead.
+| Device | Codename | Platform | Memory profiles | Status |
+|---|---|---|---|---|
+| Motorola Moto G45 5G | `fogos` | Qualcomm SM6375 / Holi | 4 GB and 8 GB | Bootable development target |
+| Motorola Moto G34 5G | `fogos` | Qualcomm SM6375 / Holi | 4 GB and 8 GB | Shared device-family target |
 
-### 4. 🎯 Aim Precision, Touch Sampling & Gyroscope
-* **100Hz IMU Gyroscope Polling Rate:** Configured `ro.sensor.rate.fastest=10000` (100Hz) routed to Hexagon ADSP for pixel-precise gyro tracking in BGMI and Call of Duty Mobile.
-* **240Hz Touch Sampling Rate:** Eliminates touch latency buffer (`windowsmgr.max_events_per_sec=240`).
-* **Zero Touch Debounce:** Direct touch event routing with reduced debounce time (`persist.sys.touch.debounce_ms=0`, `touch_delay_ms=5`).
-* **Double-Tap-To-Wake (DT2W):** Native support enabled at kernel and sysfs level (`/sys/android_touch/double_tap_enable`).
+Device support depends on matching firmware, bootloader state, partition layout, and hardware revision. Do not flash images intended for another codename.
 
-### 5. 🎛️ Quick Settings Tiles & Dynamic Performance Modes
-Switch on the fly between profiles via Quick Settings tile or the pre-bundled **FogOS PulseControl** app:
-* **🔋 Powersave:** Caps clocks, low GPU frequency, maximizes battery longevity.
-* **⚖️ Balanced:** Default daily driver with smooth 120Hz scrolling and standard thermal curve.
-* **🚀 Gaming:** Uncaps Adreno 619 GPU, forces high bus clock, bypasses thermal throttling, and triggers 240Hz sampling.
+## Highlights
 
-### 6. ❄️ Thermal Throttling Mitigation
-* **Balanced Thermal Trip Thresholds:** Bypasses Motorola's stock 42°C downclock while maintaining safe hardware thermal boundaries (`persist.vendor.power.thermal_mitigation=0`).
+### Gaming performance profiles
 
-### 7. 🌐 Network & Low-Ping Multiplayer
-* **Google BBR/BBR2 TCP Congestion Control:** Enabled as default socket governor (`net.ipv4.tcp_congestion_control=bbr2`).
-* **Low Latency Sockets:** Optimized TCP buffer sizes (`rmem_max = 26MB`, `wmem_max = 26MB`) with `tcp_low_latency = 1` and `tcp_fastopen = 3`.
+VirgoX includes Powersave, Balanced, and Gaming profiles. Profiles are intended to make performance behavior easy to switch without manually editing system properties.
 
----
+| Profile | Intended use |
+|---|---|
+| **Powersave** | Lower clocks and reduced background activity for longer battery life. |
+| **Balanced** | Everyday use with a smoother thermal and performance balance. |
+| **Gaming** | Higher foreground priority, aggressive touch response, GPU scheduling adjustments, and gaming network policy. |
 
-## 🎮 ROM & Framework-Side Interventions
+### Adaptive memory management
 
-### 🕹️ GameManagerService Interventions (`game_mode_config.xml`)
-* **FPS Unlocker:** Enforces 90 FPS & 120 FPS targets for BGMI, PUBG Mobile, Call of Duty: Mobile, and Mobile Legends.
-* **Resolution Downscaling:** Dynamic downscale intervention (0.85x scale) for graphically heavy titles (Genshin Impact / Warzone Mobile) for rock-solid 60/90 FPS.
-* **Performance Mode:** Forces top-app priority when games launch.
+The included RAM optimizer detects the device memory configuration during early boot and applies separate tuning for 4 GB and 8 GB models. The tree contains zRAM, LMKD, ART heap, swappiness, cache-pressure, and background-process adjustments intended to reduce app reloads and gaming stutter.
 
-### 🖼️ Android Frame Pacing & Vulkan Timing
-* **Swappy Integration:** Android Frame Pacing enabled (`ro.vendor.display.frame_pacing=1`, `debug.sf.frame_rate_multiple_threshold=60`).
-* **VK_EXT_present_timing:** Explicit frame presentation control for Vulkan 1.3 engines (`debug.vulkan.enable_present_timing=1`, `ro.sf.present_timing=1`).
-* **120Hz Lock:** Hard-locked SurfaceFlinger refresh rate without dynamic drops (`use_content_detection_for_refresh_rate=false`).
+### Touch, display, and sensor tuning
 
-### 🧹 Clean Environment (No Bloat / No Debug Overhead)
-* Disabled `atrace`, `traced`, `statsd`, checkjni, and system profiling loggers to reclaim CPU cycles exclusively for the game loop.
+The ROM source includes configuration for high-rate touch reporting, reduced touch debounce, frame-pacing behavior, display refresh handling, gyroscope response, and double-tap-to-wake support where the device kernel and panel expose the required interfaces.
 
----
+### CPU, GPU, and I/O tuning
 
-## 🏦 Google Play Integrity & Banking Apps Fix
+The performance layer contains SM6375/Holi-oriented scheduler and boost settings, Adreno/KGSL gaming adjustments, UFS I/O scheduler configuration, readahead tuning, and storage queue settings. These are configuration targets rather than universal performance guarantees; results vary by firmware, temperature, game engine, and device condition.
 
-Passing Google Play Integrity (MEETS_DEVICE_INTEGRITY) and running banking apps (Google Pay, PhonePe, Paytm, etc.) without detection:
+### GameSpace and framework integration
 
-### 1. Built-in Security Props Spoofing
-The ROM includes built-in props that hide unofficial tags:
-* `ro.build.tags=release-keys`
-* `ro.build.type=user`
-* `ro.debuggable=0`
-* `ro.secure=1`
-* `ro.boot.verifiedbootstate=green`
-* `ro.boot.flash.locked=1`
-* `ro.boot.vbmeta.device_state=locked`
+The manifest and overlay structure supports a dedicated GameSpace-style gaming experience, per-game priority behavior, notification suppression during play, frame-pacing configuration, and optional resolution scaling for demanding titles.
 
-### 2. VBMeta dm-verity Bypass
-The flasher script automatically flashes `vbmeta.img` with verification disabled:
-```bash
-fastboot flash vbmeta vbmeta.img --disable-verity --disable-verification
+### Network and background activity controls
+
+The gaming profile includes foreground network prioritization and background-data restriction hooks designed to reduce avoidable contention during multiplayer sessions. Actual latency remains dependent on the carrier, Wi-Fi network, server distance, radio firmware, and game server conditions.
+
+### OTA and release tooling
+
+The repository includes source manifests, build helpers, Fastboot installers, recovery sideload support, OTA packaging helpers, and a release-oriented `payload.bin` package structure.
+
+## Repository layout
+
+```text
+.
+├── assets/                 # README and project visual assets
+├── flasher/                # Fastboot installation scripts
+├── manifests/              # Source and project manifests
+├── overlay/                # Framework and device overlays
+├── patches/                # Gaming, network, RAM, and GameManager patches
+├── rootdir/                # Init and early-boot configuration
+├── scripts/                # Build, signing, and recovery helpers
+├── sysconfig/              # Power and game whitelist configuration
+├── tools/                  # ROM and OTA packaging utilities
+└── system_ext.prop         # System extension performance properties
 ```
 
-### 3. Recommended Root & Banking Stack
-1. **Root Engine:** Use **KernelSU** (built into the VirgoYT kernel) or **Magisk** with **Zygisk** enabled.
-2. **Hide Root from Banking Apps:**
-   * Open Magisk / KernelSU settings -> Enable **Zygisk**.
-   * Turn ON **Enforce Denylist** (or install **Shamiko** module).
-   * In **Configure Denylist**, add Google Play Services (`com.google.android.gms.unstable`), Google Play Store, and your banking apps.
-3. **Pre-bundled Modules:**
-   * Every FogOS release includes the **PlayIntegrityFix** module in `modules/PlayIntegrityFix.zip`.
-   * Flash the module in Magisk / KernelSU to instantly achieve `MEETS_DEVICE_INTEGRITY`.
+## Installation
 
----
+### Requirements
 
-## ⚠️ Flashing Notes & Prerequisites for Moto G45 (`fogos`)
+Before installing, make sure that the device is the correct Motorola Moto G45 5G or Moto G34 5G variant, the bootloader is officially unlocked, the battery is charged, and the required Motorola firmware and platform tools are available. A clean installation can erase user data.
 
-> [!IMPORTANT]
-> **Base Firmware Requirement:** Your phone must be running stock Motorola **Android 14** (or latest official stock OS) before installing FogOS. Flashing over an incompatible or mismatched baseband/firmware can cause a hard brick. Always update to the latest stock firmware first.
+A compatible stock Android 14 firmware base, or the latest supported Motorola firmware for the device, is recommended before flashing. Never mix partitions from unrelated firmware releases.
 
-1. **Bootloader Unlock:** Ensure your bootloader is unlocked officially via Motorola's portal (`fastboot oem get_unlock_data`).
-2. **Release Keys Signing:** Custom private keys are generated via `./scripts/generate_release_keys.sh` so builds are signed with official release-keys rather than generic `test-keys`.
+### Method 1: Fastboot installer
 
----
+1. Download the latest package from the [GitHub Releases page](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases).
+2. Extract the release package on a computer with current Android platform tools.
+3. Boot the phone into Fastboot mode and connect it over USB.
+4. On Windows, run `flasher/flash_all.bat`. On Linux or macOS, make the script executable and run it:
 
-## 📲 How to Flash (Two Supported Methods)
+   ```bash
+   chmod +x flash_all.sh
+   ./flash_all.sh
+   ```
 
-### Method 1: 1-Click Fastboot Installer (Recommended for PC)
-1. Download the release package from the [Releases](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases) page.
-2. Extract the ZIP package on your PC.
-3. Boot phone into Fastboot mode (`Power + Volume Down`) and connect via USB.
-4. **Windows:** Double-click `flash_all.bat`.
-   **Linux / macOS:** Run `chmod +x flash_all.sh && ./flash_all.sh`.
-5. Select **Y** to format userdata if flashing for the first time.
+5. Review every prompt. Format `userdata` only when performing a clean installation and after confirming that your backup is complete.
+6. Reboot and allow the first boot additional time to complete.
 
-### Method 2: Recovery Sideload via ADB
-1. Flash the boot image:
+### Method 2: Recovery and ADB sideload
+
+1. Boot the supported device into Fastboot mode.
+2. Flash the boot image supplied by the matching release and reboot to recovery:
+
    ```bash
    fastboot flash boot boot.img
    fastboot reboot recovery
    ```
-2. In Recovery on your phone:
-   * Select `Factory reset` -> `Format data/factory reset`.
-   * Select `Apply update` -> `Apply from ADB`.
-3. Sideload the ROM:
+
+3. In recovery, use **Factory reset** or **Format data** when required for a clean installation.
+4. Select **Apply update** and then **Apply from ADB**.
+5. Start the sideload from the computer:
+
    ```bash
-   adb sideload FogOS-v1.0-Gaming-fogos-VirgoYT-*.zip
+   adb sideload VirgoX-*.zip
    ```
-4. Reboot system now!
 
----
+6. Reboot to system and complete the initial Android setup.
 
-## 🔬 Recommended Verification & Testing Steps
+> **Important:** Exact filenames and partition requirements depend on the release package. Always read the release notes and inspect the included flashing scripts before executing commands.
 
-After flashing FogOS Elite Gaming Edition on your Motorola G45:
-1. **Benchmark Stability:** Run **AnTuTu v10** and **Geekbench 6** to verify CPU/GPU performance scaling.
-2. **Real-Game FPS Meter:** Test **BGMI / PUBG Mobile**, **Call of Duty: Mobile**, and **Genshin Impact** using PerfDog or Scene 6 FPS overlay to verify 90/120 FPS lock.
-3. **Banking & Play Integrity:** Open **Play Integrity API Checker** (available on Play Store) to confirm `MEETS_DEVICE_INTEGRITY`. Test Google Pay, PhonePe, and Paytm.
-4. **Note on Android 17:** Official SM6375 vendor HALs, RIL, and camera drivers are designed for Android 14/15. LineageOS 23.2 / 21 is currently the optimal, rock-solid gaming foundation until Google and Motorola release public Android 17 BSP drops.
+## Building from source
 
----
-
-## 👤 Credits & Maintainer
-
-* **Lead Developer & Maintainer:** [Prince · VirgoYT](https://github.com/darkvirgoyt-beep) (`VirgoYT707`)
-* **Base Source:** LineageOS Team
-* **Kernel:** [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new)
-
----
-
-## 🎯 Low-Level Sysctl & system_ext Enhancements
-
-### 1. Kernel Sysctl Configuration (`rootdir/init.fogos.rc`)
-* `net.core.somaxconn = 1024` — Expands TCP socket listening queue for zero multiplayer packet drop.
-* `vm.vfs_cache_pressure = 50` — Prioritizes holding filesystem pagecache in RAM.
-* `kernel.sched_min_granularity_ns = 1000000` (1ms) — Faster thread preemption during intense game scenes.
-* `kernel.sched_wakeup_granularity_ns = 3000000` (3ms) — Smooth thread wakeups without jitter.
-
-### 2. High-Performance Display & Touch Properties (`system_ext.prop`)
-* `ro.sf.lcd_density = 320` — Optimized UI scaling for gaming ergonomics.
-* `ro.sf.hwc.disable_metadata_buffer = true` & `debug.sf.disable_triple_frame_buffer = 1` — Eliminates buffer latency for instant touch-to-screen response.
-* `debug.touch.slop_scale = 0.5` & `debug.touch.sensitivity = 1` — Doubled touch detection sensitivity.
-* `ro.sensor.gyro.cal = true` — Real-time sensor calibration for ultra-precise gyroscope aiming in BGMI, PUBG Mobile, and COD Mobile.
-* `ro.sf.game_mode_opt = true` & `debug.sf.game_rendering_optimization = true` — Direct hardware composer bypass for lower GPU rendering latency.
-
----
-
-## 🎮 Game Mode & Game Space Implementation Architecture
-
-### 1. GameSpace Package (`packages/apps/GameSpace`)
-* Bundled via [`manifests/fogos.xml`](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/blob/main/manifests/fogos.xml) from `RisingOS-Revived/android_packages_apps_GameSpace`.
-* Dedicated launcher UI for fast game library access and per-game performance profiles.
-
-### 2. Doze & App Standby Exemptions (`sysconfig/gaming_power_whitelist.xml`)
-* Whitelists popular games (BGMI, PUBG Mobile, Call of Duty: Mobile, Genshin Impact, Free Fire Max, Mobile Legends) from:
-  * Doze idle restrictions.
-  * App Standby network buckets.
-  * Location / background service throttling.
-
-### 3. GameManagerService Interventions (`patches/game_mode_config.xml`)
-* **Auto DND (Do Not Disturb):** Heads-up notifications, alerts, and calls are automatically silenced when entering a game match (`disable_notifications = true`).
-* **FPS Throttle Unlock:** Overrides framework FPS caps to allow true 90 FPS and 120 FPS render loops.
-* **Resolution Override:** Supports 0.75x resolution scaling (720p on 1080p panel) for GPU-intensive games (Warzone / Genshin) to maintain locked 60+ FPS without heat buildup.
-
-### 4. 100Hz Fast Gaming Sensors & Gyro Precision (`system_ext.prop` & `init.fogos.gaming.rc`)
-* `ro.sensor.game_gesture = true` — Real-time gesture recognition in games.
-* `ro.sensor.rate.fastest = 10000` (100Hz) — High-rate sensor reporting for instant gyroscope aiming response.
-* `persist.vendor.sensors.direct_channel = true` & `batch_delay = 0` — Zero-delay sensor streaming directly to the game rendering thread.
-* `persist.fogos.gyro.smoothing = 1` & `persist.fogos.gyro.sensitivity = 1.0` — Gyroscope aiming curve smoothing for micro-adjustments in BGMI/PUBG/CODM.
-
-### 5. Dynamic Background Network Restriction (`patches/fogos_game_network.sh`)
-* Automatically activates when entering **Turbo** or **Gaming** mode (`persist.fogos.profile=gaming` / `turbo`).
-* Executes `cmd netpolicy set-restrict-background true` to silence background downloads, social media syncs, and telemetry packets.
-* Directs TOS priority (`TOS 0x10 Minimize-Delay`) to foreground multiplayer game UDP/TCP packets to eliminate in-game ping spikes.
-
-### 6. Touch Latency Reduction & Touch Frame Prediction
-* `config_touchImproveLatency = true` & `config_reduceTouchLatency = true` enabled in framework overlays.
-* `debug.input.latency = 1` — Forces instant input thread dispatching.
-* `debug.sf.touch_frame_prediction = 1` & `ro.sf.frame_prediction = true` — Real-time touch path extrapolation to match display refresh cycles.
-
----
-
-## 💎 Proven Reference Features from FogOS v3 & Project Infinity X v3.9
-
-* **Dolby Atmos & Spatial Audio:** Native integration via [`packages/apps/DolbyAtmos`](https://github.com/PixelOS-AOSP/android_packages_apps_DolbyAtmos) (`ro.vendor.audio.dolby=true`, `persist.vendor.audio.spatializer.enabled=true`).
-* **Goodix GT917S Touchscreen Gestures:** Full Double-Tap-to-Wake (DT2W) and custom wake gestures enabled via `/sys/devices/platform/goodix_ts.0/double_tap` and `/sys/class/touchscreen/primary/wake_gestures`.
-* **WiFi 6E Ready:** Enabled 6GHz band support on SM6375 platform (`persist.vendor.wifi.6e=true`, `persist.vendor.wifi.softap.wpa3=1`).
-* **Carrier Voice & Video (VoLTE / VoWiFi / ViLTE):** Hardcoded enabled by default for all global SIM cards (`persist.dbg.volte_avail_ovr=1`, `persist.vendor.radio.volte_is_avail=1`).
-* **Camera2 API (HAL3) + Moto Camera Port:** Full HAL3 driver support enabled for GCam and Motorola Camera 3 (`persist.vendor.camera.HAL3.enabled=1`).
-* **Root Solution Integration:** Compatible with KernelSU (embedded in kernel) and Magisk v27+.
-
----
-
-## 🔨 Exact Source Build Steps
-
-To compile FogOS directly from source on your local machine or a dedicated build server:
+The project follows a LineageOS-style source workflow. A Linux build host with sufficient storage, memory, Java/Android build dependencies, Git, Repo, and ccache is required.
 
 ```bash
-# ==============================================================================
-# 1. Environment & CCACHE Setup
-# ==============================================================================
-export BUILD_USERNAME=VirgoYT
-export BUILD_HOSTNAME=fogos-build
-export CCACHE_EXEC=/usr/bin/ccache
-export CCACHE_DIR=~/.ccache
-export USE_CCACHE=1
-
-ccache -M 50G
-ccache -o compression=true
-
-# ==============================================================================
-# 2. Source Sync & Device Tree Setup
-# ==============================================================================
 mkdir -p ~/android/lineage
 cd ~/android/lineage
-repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --git-lfs --depth=1
 
-# Copy Roomservice Manifest
+repo init \
+  -u https://github.com/LineageOS/android.git \
+  -b lineage-21.0 \
+  --git-lfs \
+  --depth=1
+
 mkdir -p .repo/local_manifests
-cp /path/to/Motorola-g45-34-gaming-rom-FogOS/manifests/fogos.xml .repo/local_manifests/
-repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1
+cp /path/to/Motorola-g45-34-gaming-rom-FogOS/manifests/fogos.xml \
+  .repo/local_manifests/
 
-# ==============================================================================
-# 3. Apply Overlays & Compile ROM
-# ==============================================================================
-cp -r /path/to/Motorola-g45-34-gaming-rom-FogOS/overlay/* device/motorola/fogos/overlay/
-cp -r /path/to/Motorola-g45-34-gaming-rom-FogOS/rootdir/* device/motorola/fogos/rootdir/
-cp /path/to/Motorola-g45-34-gaming-rom-FogOS/system_ext.prop device/motorola/fogos/system_ext.prop
+repo sync -c -j$(nproc --all) \
+  --force-sync \
+  --no-clone-bundle \
+  --no-tags \
+  --depth=1
 
 source build/envsetup.sh
-croot
 breakfast fogos
-mka bacon -j$(nproc)
+mka bacon -j$(nproc --all)
 ```
-Or simply run the included 1-click build script:
+
+For the repository helper workflow, review the included script first and then run:
+
 ```bash
 ./scripts/build_source.sh ~/android/lineage
 ```
+
+For release signing and packaging, review:
+
+```bash
+./scripts/generate_release_keys.sh
+./tools/build_rom.sh
+./tools/make_sideload_ota.sh
+```
+
+Build output, signing keys, and private device data should not be committed to the repository.
+
+## Kernel and related projects
+
+| Component | Repository |
+|---|---|
+| VirgoX ROM source | [Motorola-g45-34-gaming-rom-FogOS](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS) |
+| Gaming kernel | [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new) |
+| Device tree | [android17_device_motorola_fogos](https://github.com/darkvirgoyt-beep/android17_device_motorola_fogos) |
+| Common device tree | [android_device_motorola_sm6375-common](https://github.com/darkvirgoyt-beep/android_device_motorola_sm6375-common) |
+| PulseControl utility | [FogOS-PulseControl](https://github.com/darkvirgoyt-beep/FogOS-PulseControl) |
+| Recovery project | [moto-g45-fogos-android17-recovery](https://github.com/darkvirgoyt-beep/moto-g45-fogos-android17-recovery) |
+
+## Testing checklist
+
+After installation, verify that the device boots normally, mobile radio and Wi-Fi work, audio and cameras function, charging is stable, touch and gyroscope input respond correctly, and the device remains within safe operating temperatures. Test the actual games and workloads you use instead of relying only on synthetic benchmarks.
+
+For a release candidate, test clean flashing, dirty updating where supported, recovery access, Fastboot recovery, OTA package integrity, both RAM variants, thermal behavior, suspend/resume, Bluetooth, GPS, VoLTE/VoWiFi, camera, fingerprint or biometric behavior, and rollback procedures.
+
+## Safety and disclaimer
+
+This is enthusiast-developed software. Unlocking the bootloader and flashing custom software can erase data, trip device security features, break banking or DRM applications, void warranty coverage, or render a device unbootable if incompatible images are used. The maintainer and contributors are not responsible for data loss, hardware damage, boot loops, modem failure, account restrictions, or any other consequence of flashing.
+
+Do not treat performance properties as a guarantee of higher frame rate, lower temperature, longer battery life, or lower network latency. Keep thermal protections enabled where possible, stop testing if the device becomes abnormally hot, and retain a known-good stock firmware package for recovery.
+
+## Contributing
+
+Bug reports should include the exact device model, storage and RAM variant, base firmware version, VirgoX build or commit, reproduction steps, relevant logs, and whether the issue occurs on a clean flash. Feature requests should explain the user problem and include measurable acceptance criteria when possible.
+
+Pull requests should remain focused, document changed properties or scripts, avoid hard-coded private paths, and include validation notes. Do not submit proprietary firmware, private signing keys, personal data, or redistributed files without permission.
+
+## Credits
+
+- **Lead developer and maintainer:** [Prince · VirgoYT](https://github.com/darkvirgoyt-beep)
+- **Project:** VirgoX Elite Gaming ROM
+- **Base architecture:** [LineageOS](https://github.com/LineageOS)
+- **Target platform:** Qualcomm SM6375 / Holi
+- **Related kernel:** [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new)
+
+## License
+
+Review the licenses of the upstream Android, LineageOS, kernel, device-tree, vendor, and application components before redistribution. Files in this repository remain subject to their individual upstream licenses unless a file states otherwise.
+
+---
+
+<p align="center">
+  <strong>VirgoX Elite Gaming ROM</strong><br />
+  Built for responsive Android gaming on Moto G45 5G and Moto G34 5G.
+</p>
