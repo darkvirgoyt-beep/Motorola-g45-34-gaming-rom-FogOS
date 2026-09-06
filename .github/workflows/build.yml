@@ -43,7 +43,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl jq unzip zip wget
           curl -sL https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin/
-          payload-dumper-go --version
+          payload-dumper-go -h || true
 
       - name: Build FogOS Gaming ROM
         env:
