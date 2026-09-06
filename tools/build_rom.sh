@@ -46,7 +46,7 @@ payload-dumper-go -o "$WORK_DIR/extracted" "$WORK_DIR/payload.bin"
 echo "[3/6] Pulling VirgoYT Gaming Kernel and PulseControl app..."
 KERNEL_REPO="darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new"
 mkdir -p "$WORK_DIR/kernel_assets"
-gh release download --repo "$KERNEL_REPO" --dir "$WORK_DIR/kernel_assets" || true
+gh release download --repo "$KERNEL_REPO" --dir "$WORK_DIR/kernel_assets" --pattern "*" || true
 
 # Find VirgoYT custom boot.img
 VIRGO_BOOT=$(find "$WORK_DIR/kernel_assets" -name "*boot*.img" | head -n 1)

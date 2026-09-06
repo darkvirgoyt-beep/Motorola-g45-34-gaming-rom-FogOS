@@ -97,7 +97,11 @@ jobs:
           Credits to Prince · VirgoYT707 and the SM6375 Dev Community.
           NOTES
 
-          gh release create "$TAG" "$ZIP_FILE" out/boot.img out/SHA256SUMS.txt out/FogOS-PulseControl.apk \
+          # Collect release assets
+          RELEASE_ASSETS=("$ZIP_FILE" "out/boot.img" "out/SHA256SUMS.txt")
+          [ -f "out/FogOS-PulseControl.apk" ] && RELEASE_ASSETS+=("out/FogOS-PulseControl.apk")
+
+          gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
             --title "👑 FogOS Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
             --notes-file release_notes.md \
             $PRERELEASE_FLAG
