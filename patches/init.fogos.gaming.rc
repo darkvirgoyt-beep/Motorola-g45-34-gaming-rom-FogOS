@@ -79,3 +79,30 @@ on boot
     write /proc/sys/net/ipv4/tcp_wmem "4096 16384 4194304"
     write /proc/sys/net/core/rmem_max 8388608
     write /proc/sys/net/core/wmem_max 8388608
+
+# ==============================================================================
+# Dynamic Performance Profiles (Quick Settings Tiles & FogOS PulseControl)
+# ==============================================================================
+on property:persist.fogos.profile=powersave
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 1500000
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 1800000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 450000000
+    write /proc/sys/vm/swappiness 60
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 20
+
+on property:persist.fogos.profile=balanced
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 1804800
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2208000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 840000000
+    write /proc/sys/vm/swappiness 100
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 40
+
+on property:persist.fogos.profile=gaming
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2000000
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2208000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 950000000
+    write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
+    write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
+    write /sys/class/kgsl/kgsl-3d0/throttling 0
+    write /proc/sys/vm/swappiness 100
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 60

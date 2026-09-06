@@ -67,20 +67,29 @@ jobs:
           ZIP_FILE=$(ls FogOS-*.zip | head -n 1)
 
           cat << 'NOTES' > release_notes.md
-          ### 🚀 FogOS Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
+          ### 🚀 FogOS Elite Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
           **Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
           **Base:** Android 14 / Holi SM6375 Platform
 
           ---
 
-          ### 🎮 Gaming Features & Optimizations:
-          - **Embedded VirgoYT Gaming Kernel:** Optimized scheduler, touchboost, and overclocked Adreno 619 GPU pipeline.
-          - **120Hz Refresh Rate Lock:** Enforced display refresh rate without dynamic drops in games.
-          - **240Hz Touch Sampling Rate:** Ultra-low touch latency for BGMI, PUBG, and COD Mobile.
-          - **Game Spoofing Profiles:** ROG Phone 8 Pro device profile spoofing to unlock 90 FPS / 120 FPS graphics settings.
-          - **Thermal Engine Override:** Prevents thermal downclocking at 42°C.
-          - **zRAM LZ4 Tuning:** Enhanced background app holding and memory compression for 4GB/8GB models.
-          - **PulseControl App Preloaded:** On-the-fly gaming profile switcher and monitoring.
+          ### 🎮 Elite Gaming Features:
+          - **VirgoYT Gaming Kernel:** CPU & GPU sched-boost, Adreno 619 clock force, touchboost (60ms).
+          - **Dynamic Profiles via QS Tiles & PulseControl:** Powersave, Balanced, and Elite Gaming modes.
+          - **120Hz Refresh Rate Lock:** Hard-locked SurfaceFlinger refresh rate without throttling.
+          - **240Hz Touch Sampling Rate:** Zero debounce latency (`persist.sys.touch.debounce_ms=0`).
+          - **Swappy & VK_EXT_present_timing:** Android Frame Pacing enabled for Vulkan & OpenGL.
+          - **Game Spoofing:** ROG Phone 8 Pro device profile for BGMI / PUBG Mobile 90/120 FPS.
+          - **Storage & I/O:** BFQ scheduler with 512KB readahead.
+          - **Multiplayer Low Ping:** Google BBR TCP congestion control with low-latency socket buffers.
+
+          ---
+
+          ### 🏦 Google Play Integrity & Banking Setup:
+          - Pre-configured `release-keys`, `ro.debuggable=0`, `ro.secure=1`, and green boot state.
+          - Flash with `--disable-verity --disable-verification` to bypass dm-verity.
+          - Use KernelSU or Magisk + Zygisk + Denylist (GPay, PhonePe, Paytm).
+          - Pre-packaged **PlayIntegrityFix** module included in `modules/` folder!
 
           ---
 
@@ -99,9 +108,11 @@ jobs:
 
           # Collect release assets
           RELEASE_ASSETS=("$ZIP_FILE" "out/boot.img" "out/SHA256SUMS.txt")
-          [ -f "out/FogOS-PulseControl.apk" ] && RELEASE_ASSETS+=("out/FogOS-PulseControl.apk")
+          [ -f "out/tools/FogOS-PulseControl.apk" ] && RELEASE_ASSETS+=("out/tools/FogOS-PulseControl.apk")
+          [ -f "out/tools/SmartPack-Kernel-Manager.apk" ] && RELEASE_ASSETS+=("out/tools/SmartPack-Kernel-Manager.apk")
+          [ -f "out/modules/PlayIntegrityFix.zip" ] && RELEASE_ASSETS+=("out/modules/PlayIntegrityFix.zip")
 
           gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
-            --title "👑 FogOS Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
+            --title "👑 FogOS Elite Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
             --notes-file release_notes.md \
             $PRERELEASE_FLAG

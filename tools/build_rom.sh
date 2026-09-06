@@ -8,7 +8,7 @@ set -e
 
 WORK_DIR="$(pwd)/workspace"
 OUT_DIR="$(pwd)/out"
-mkdir -p "$WORK_DIR" "$OUT_DIR"
+mkdir -p "$WORK_DIR" "$OUT_DIR" "$OUT_DIR/tools" "$OUT_DIR/modules"
 
 echo "=============================================================================="
 echo "      Starting FogOS Elite Gaming ROM Build for Moto G45 (fogos)"
@@ -16,7 +16,7 @@ echo "                   Developer: Prince · VirgoYT"
 echo "=============================================================================="
 
 # 1. Fetch Base LineageOS ROM for fogos
-echo "[1/6] Fetching latest official base ROM for fogos..."
+echo "[1/7] Fetching latest official base ROM for fogos..."
 BUILDS_JSON=$(curl -s "https://download.lineageos.org/api/v2/devices/fogos/builds")
 LATEST_ZIP_URL=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .url')
 LATEST_ZIP_NAME=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .filename')
@@ -31,7 +31,7 @@ echo "[*] Downloading base ROM: $LATEST_ZIP_NAME"
 curl -L "$LATEST_ZIP_URL" -o "$WORK_DIR/base_rom.zip"
 
 # 2. Extract payload.bin
-echo "[2/6] Extracting partitions from base ROM..."
+echo "[2/7] Extracting partitions from base ROM..."
 unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" -d "$WORK_DIR"
 
 # Install payload-dumper-go if missing
@@ -43,7 +43,7 @@ fi
 payload-dumper-go -o "$WORK_DIR/extracted" "$WORK_DIR/payload.bin"
 
 # 3. Pull VirgoYT Gaming Kernel & PulseControl
-echo "[3/6] Pulling VirgoYT Gaming Kernel and PulseControl app..."
+echo "[3/7] Pulling VirgoYT Gaming Kernel and PulseControl app..."
 KERNEL_REPO="darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new"
 mkdir -p "$WORK_DIR/kernel_assets"
 gh release download --repo "$KERNEL_REPO" --dir "$WORK_DIR/kernel_assets" --pattern "*" || true
@@ -61,11 +61,16 @@ fi
 PULSE_APK=$(find "$WORK_DIR/kernel_assets" -name "*PulseControl*.apk" | head -n 1)
 if [ -f "$PULSE_APK" ]; then
     echo "[*] Found PulseControl companion APK: $(basename "$PULSE_APK")"
-    cp "$PULSE_APK" "$OUT_DIR/FogOS-PulseControl.apk"
+    cp "$PULSE_APK" "$OUT_DIR/tools/FogOS-PulseControl.apk"
 fi
 
-# 4. Integrate Elite Gaming Tweaks & Configurations
-echo "[4/6] Injecting FogOS Elite Gaming configs, init.rc, and GameManager interventions..."
+# 4. Download Companion Tools (SmartPack Kernel Manager & Play Integrity Fix)
+echo "[4/7] Downloading Kernel Manager and Play Integrity Fix..."
+curl -sL "https://github.com/SmartPack/SmartPack-Kernel-Manager/releases/download/v17.7/app-fdroid-release.apk" -o "$OUT_DIR/tools/SmartPack-Kernel-Manager.apk" || true
+curl -sL "https://github.com/KOWX712/PlayIntegrityFix/releases/download/v4.7-inject-s/PlayIntegrityFix_v4.7-1-inject-s.zip" -o "$OUT_DIR/modules/PlayIntegrityFix.zip" || true
+
+# 5. Integrate Elite Gaming Tweaks & Configurations
+echo "[5/7] Injecting FogOS Elite Gaming configs, init.rc, and GameManager interventions..."
 mkdir -p "$OUT_DIR/config"
 cp patches/fogos_gaming.prop "$OUT_DIR/config/fogos_gaming.prop"
 cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml"
@@ -78,11 +83,11 @@ cp flasher/flash_all.sh "$OUT_DIR/"
 chmod +x "$OUT_DIR/flash_all.sh"
 
 # Copy image files to output directory
-echo "[5/6] Assembling flashable partition images..."
+echo "[6/7] Assembling flashable partition images..."
 cp "$WORK_DIR"/extracted/*.img "$OUT_DIR/"
 
-# 5. Create Fastboot Flashable ZIP
-echo "[6/6] Packaging FogOS Elite Gaming ROM distribution..."
+# 6. Create Fastboot Flashable ZIP
+echo "[7/7] Packaging FogOS Elite Gaming ROM distribution..."
 BUILD_DATE=$(date +'%Y%m%d')
 RELEASE_ZIP_NAME="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}.zip"
 

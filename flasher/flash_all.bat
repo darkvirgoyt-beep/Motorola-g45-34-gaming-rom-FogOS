@@ -1,8 +1,8 @@
 @echo off
 color 0b
-title FogOS Gaming ROM Flasher - Moto G45 5G (fogos)
+title FogOS Elite Gaming Flasher - Moto G45 5G (fogos)
 echo ==============================================================================
-echo              FogOS Gaming Edition for Motorola G45 / G34 5G
+echo           FogOS Elite Gaming Edition for Motorola G45 / G34 5G
 echo                   Maintained by: Prince . VirgoYT
 echo ==============================================================================
 echo.
@@ -19,6 +19,16 @@ if errorlevel 1 (
 )
 del devices.txt
 echo [OK] Device detected!
+echo.
+
+echo [*] Flashing VBMeta with dm-verity and verification disabled...
+if exist vbmeta.img (
+    fastboot flash vbmeta vbmeta.img --disable-verity --disable-verification
+)
+if exist vbmeta_system.img (
+    fastboot flash vbmeta_system vbmeta_system.img --disable-verity --disable-verification
+)
+
 echo.
 echo [*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Partitions...
 fastboot flash boot boot.img
@@ -57,5 +67,6 @@ echo.
 echo [*] Rebooting device into FogOS Gaming ROM...
 fastboot reboot
 echo.
-echo Enjoy ultra-smooth gaming on your Moto G45! Credits to Prince . VirgoYT.
+echo Enjoy ultra-smooth gaming and Play Integrity support on your Moto G45!
+echo Credits to Prince . VirgoYT.
 pause

@@ -2,13 +2,13 @@
 set -e
 
 # ==============================================================================
-# FogOS Gaming ROM Flasher - Motorola Moto G45 5G / G34 5G (fogos)
+# FogOS Elite Gaming Flasher - Motorola Moto G45 5G / G34 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
 echo "=============================================================================="
-echo "             FogOS Gaming Edition for Motorola G45 / G34 5G"
-echo "                  Maintained by: Prince · VirgoYT"
+echo "          FogOS Elite Gaming Edition for Motorola G45 / G34 5G"
+echo "                   Maintained by: Prince · VirgoYT"
 echo "=============================================================================="
 echo ""
 
@@ -20,6 +20,11 @@ if ! fastboot devices | grep -q 'fastboot'; then
 fi
 
 echo "[OK] Device detected!"
+
+echo "[*] Flashing VBMeta (disabling dm-verity and verification)..."
+[ -f vbmeta.img ] && fastboot flash vbmeta vbmeta.img --disable-verity --disable-verification
+[ -f vbmeta_system.img ] && fastboot flash vbmeta_system vbmeta_system.img --disable-verity --disable-verification
+
 echo "[*] Flashing FogOS Gaming Kernel (VirgoYT)..."
 fastboot flash boot boot.img
 [ -f vendor_boot.img ] && fastboot flash vendor_boot vendor_boot.img
