@@ -1,10 +1,4 @@
-name: FogOS Gaming ROM — Build & Release
-
-###############################################################################
-# Builds FogOS Gaming Edition for Motorola G45 5G / G34 5G (fogos / SM6375)
-# Developer : Prince · VirgoYT (VirgoYT707)
-# Repos     : darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS
-###############################################################################
+name: "FogOS Gaming ROM - Build and Release"
 
 on:
   workflow_dispatch:
