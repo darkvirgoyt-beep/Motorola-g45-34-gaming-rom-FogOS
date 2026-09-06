@@ -1,0 +1,46 @@
+# ==============================================================================
+# FogOS Gaming ROM - Motorola Moto G45 5G / G34 5G (fogos)
+# Developer : Prince · VirgoYT (VirgoYT707)
+# ==============================================================================
+
+# Custom ROM Branding & Maintainer Credits
+ro.build.display.id=FogOS-v1.0-Gaming-VirgoYT
+ro.fogos.version=1.0-Gaming
+ro.fogos.maintainer=Prince · VirgoYT
+ro.build.user=VirgoYT
+ro.build.host=VirgoYT-Gaming-Lab
+persist.sys.custom.maintainer=VirgoYT
+ro.modversion=FogOS-v1.0-fogos-VirgoYT
+
+# Display & Refresh Rate (Force 120Hz lock in games)
+ro.surface_flinger.use_content_detection_for_refresh_rate=false
+ro.surface_flinger.set_idle_timer_ms=0
+ro.surface_flinger.set_touch_timer_ms=200
+ro.surface_flinger.set_display_power_timer_ms=0
+ro.vendor.display.perf_mode=1
+debug.sf.latch_unsignaled=1
+
+# Touch Sampling & Input Latency (240Hz Gaming Sampling)
+windowsmgr.max_events_per_sec=240
+touch.pressure.scale=0.001
+persist.sys.touch.latency_tuning=1
+
+# Qualcomm Adreno 619 GPU Boost & Rendering Pipeline
+debug.sf.disable_backpressure=1
+debug.sf.enable_gl_backpressure=0
+debug.cpurend.vsync=false
+debug.hwui.render_dirty_regions=false
+debug.renderengine.backend=skiagl
+debug.egl.hw=1
+debug.sf.hw=1
+
+# Memory Management & zRAM Tuning (Optimized for 4GB & 8GB variants)
+ro.vendor.qti.config.zram=true
+persist.sys.zram_enabled=1
+ro.zram.mark_idle_delay_mins=60
+ro.sys.fw.bg_apps_limit=32
+
+# Thermal Throttling Mitigation & Performance Profiles
+persist.sys.game_mode=1
+ro.vendor.qti.sys.perf.tuning=1
+persist.vendor.power.thermal_mitigation=0

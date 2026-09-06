@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FogOS Gaming Edition - High FPS Game Spoofing Profiles -->
+<!-- Maintained by Prince · VirgoYT -->
+<game-spoofing>
+    <!-- BGMI / PUBG Mobile 90FPS & 120FPS Unlock -->
+    <package name="com.pubg.imobile" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+    <package name="com.tencent.ig" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+    <package name="com.pubg.krmobile" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+    <package name="com.vng.pubgmobile" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+    <package name="com.reindex.pubgmobile" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+
+    <!-- Call of Duty: Mobile 120FPS Ultra -->
+    <package name="com.activision.callofduty.shooter" spoof="Sony" brand="Sony" model="XQ-BC72" />
+    <package name="com.garena.game.codm" spoof="Sony" brand="Sony" model="XQ-BC72" />
+
+    <!-- Mobile Legends Bang Bang 120FPS Super -->
+    <package name="com.mobile.legends" spoof="Xiaomi" brand="Xiaomi" model="2210132G" />
+
+    <!-- Genshin Impact & Honkai Star Rail -->
+    <package name="com.miHoYo.GenshinImpact" spoof="OnePlus" brand="OnePlus" model="PGP110" />
+    <package name="com.HoYoverse.hkrpgoversea" spoof="OnePlus" brand="OnePlus" model="PGP110" />
+</game-spoofing>
