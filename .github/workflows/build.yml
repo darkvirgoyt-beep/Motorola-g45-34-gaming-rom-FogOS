@@ -133,6 +133,10 @@ jobs:
 
           # Collect release assets
           RELEASE_ASSETS=("$ZIP_FILE" "out/boot.img" "out/SHA256SUMS.txt")
+          [ -f "out/vbmeta.img" ] && RELEASE_ASSETS+=("out/vbmeta.img")
+          [ -f "out/vbmeta_system.img" ] && RELEASE_ASSETS+=("out/vbmeta_system.img")
+          [ -f "out/dtbo.img" ] && RELEASE_ASSETS+=("out/dtbo.img")
+          [ -f "out/vendor_boot.img" ] && RELEASE_ASSETS+=("out/vendor_boot.img")
           [ -n "$SIDELOAD_ZIP" ] && [ -f "$SIDELOAD_ZIP" ] && RELEASE_ASSETS+=("$SIDELOAD_ZIP")
           [ -f "out/tools/FogOS-PulseControl.apk" ] && RELEASE_ASSETS+=("out/tools/FogOS-PulseControl.apk")
           [ -f "out/tools/SmartPack-Kernel-Manager.apk" ] && RELEASE_ASSETS+=("out/tools/SmartPack-Kernel-Manager.apk")

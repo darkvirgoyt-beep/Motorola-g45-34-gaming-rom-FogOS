@@ -104,7 +104,7 @@ cd "$WORK_DIR/.."
 
 # 8. Build Sideload OTA package (adb apply update compatible)
 echo "[8/8] Building FogOS Sideload OTA package (adb sideload)..."
-bash tools/make_sideload_ota.sh
+FOGOS_BASE_ZIP="$WORK_DIR/base_rom.zip" bash tools/make_sideload_ota.sh
 
 echo "=============================================================================="
 echo "[SUCCESS] FogOS Elite Gaming ROM built successfully!"

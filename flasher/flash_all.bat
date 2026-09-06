@@ -30,10 +30,17 @@ if exist vbmeta_system.img (
 )
 
 echo.
+echo.
 echo [*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Partitions...
 fastboot flash boot boot.img
 if exist vendor_boot.img fastboot flash vendor_boot vendor_boot.img
 if exist dtbo.img fastboot flash dtbo dtbo.img
+
+echo.
+echo [*] Flashing Radio, Modem & DSP firmware...
+if exist modem.img fastboot flash modem modem.img
+if exist bluetooth.img fastboot flash bluetooth bluetooth.img
+if exist dsp.img fastboot flash dsp dsp.img
 
 echo.
 echo [*] Rebooting to fastbootd mode for dynamic partitions...
@@ -42,14 +49,17 @@ echo Waiting 5 seconds for fastbootd...
 timeout /t 5 /nobreak > nul
 
 echo.
-echo [*] Flashing System and Vendor dynamic partitions...
+echo [*] Flashing System and Vendor dynamic partitions into super...
 if exist super.img (
+    echo [*] Flashing unified super.img...
     fastboot flash super super.img
 ) else (
+    echo [*] Flashing individual dynamic partitions directly into super partition...
     if exist system.img fastboot flash system system.img
     if exist system_ext.img fastboot flash system_ext system_ext.img
     if exist product.img fastboot flash product product.img
     if exist vendor.img fastboot flash vendor vendor.img
+    if exist odm.img fastboot flash odm odm.img
 )
 
 echo.
