@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FogOS Elite Gaming Power Profile - Motorola Moto G45 5G / G34 5G (SM6375) -->
+<!-- Developer: Prince · VirgoYT (VirgoYT707) -->
+<device name="Android">
+    <item name="none">0</item>
+    <item name="screen.on">65</item>
+    <item name="screen.full">180</item>
+    <item name="bluetooth.active">15</item>
+    <item name="bluetooth.on">0.2</item>
+    <item name="wifi.on">0.3</item>
+    <item name="wifi.active">110</item>
+    <item name="dsp.audio">8</item>
+    <item name="dsp.video">20</item>
+    <item name="camera.flashlight">160</item>
+    <item name="camera.avg">500</item>
+    <item name="gps.on">20</item>
+
+    <!-- SM6375 (6x A55 Little Cluster + 2x A78 Big Cluster) Gaming Clocks -->
+    <array name="cpu.core_speeds.cluster0">
+        <value>300000</value>
+        <value>576000</value>
+        <value>844800</value>
+        <value>1113600</value>
+        <value>1401600</value>
+        <value>1612800</value>
+        <value>1804800</value>
+        <value>2000000</value>
+    </array>
+    <array name="cpu.core_power.cluster0">
+        <value>15</value>
+        <value>28</value>
+        <value>45</value>
+        <value>70</value>
+        <value>110</value>
+        <value>150</value>
+        <value>200</value>
+        <value>260</value>
+    </array>
+
+    <array name="cpu.core_speeds.cluster1">
+        <value>633600</value>
+        <value>940800</value>
+        <value>1248000</value>
+        <value>1555200</value>
+        <value>1862400</value>
+        <value>2054400</value>
+        <value>2208000</value>
+    </array>
+    <array name="cpu.core_power.cluster1">
+        <value>45</value>
+        <value>90</value>
+        <value>160</value>
+        <value>250</value>
+        <value>380</value>
+        <value>490</value>
+        <value>620</value>
+    </array>
+
+    <item name="cpu.cluster_power.cluster0">2</item>
+    <item name="cpu.cluster_power.cluster1">5</item>
+
+    <!-- Adreno 619 GPU Power Profile -->
+    <array name="gpu.core_speeds">
+        <value>300000000</value>
+        <value>450000000</value>
+        <value>650000000</value>
+        <value>840000000</value>
+        <value>950000000</value>
+    </array>
+    <array name="gpu.core_power">
+        <value>40</value>
+        <value>90</value>
+        <value>190</value>
+        <value>340</value>
+        <value>480</value>
+    </array>
+
+    <!-- Battery Capacity -->
+    <item name="battery.capacity">5000</item>
+</device>

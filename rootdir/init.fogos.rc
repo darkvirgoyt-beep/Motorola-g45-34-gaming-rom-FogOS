@@ -3,25 +3,6 @@
 # Developer : Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 
-on boot
-    # Gaming Sysctl & Kernel Scheduler
-    write /proc/sys/net/ipv4/tcp_congestion_control bbr
-    write /proc/sys/net/core/somaxconn 1024
-    write /proc/sys/vm/swappiness 100
-    write /proc/sys/vm/vfs_cache_pressure 50
-    write /proc/sys/kernel/sched_min_granularity_ns 1000000
-    write /proc/sys/kernel/sched_wakeup_granularity_ns 3000000
-    start fogos_ram_tuner
-
-on property:sys.boot_completed=1
-    start fogos_ram_tuner
-
-# Dynamic 4GB / 8GB RAM Optimizer Service
-service fogos_ram_tuner /system/bin/fogos_ram_optimizer.sh
-    class late_start
-    user root
-    group root system
-    oneshot
-    disabled
-    seclabel u:r:init:s0
-
+# NOTE: All properties, services, and sysctl tweaks have been consolidated into 
+# the comprehensive master file: init.fogos.gaming.rc to avoid conflicts.
+import /vendor/etc/init/hw/init.fogos.gaming.rc

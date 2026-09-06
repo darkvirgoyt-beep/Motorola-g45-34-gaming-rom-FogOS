@@ -48,18 +48,10 @@ if [ "$TOTAL_RAM_MB" -lt 5000 ]; then
         log_info "zRAM initialized: 3.5GB with LZ4 compression"
     fi
 
-    # Dalvik ART Heap Limits tuned specifically for 4GB
-    # Note: dalvik.vm.* properties are only read at Zygote start.
-    setprop dalvik.vm.heapstartsize 8m
-    setprop dalvik.vm.heapgrowthlimit 192m
-    setprop dalvik.vm.heapsize 512m
-    setprop dalvik.vm.heaptargetutilization 0.75
-    setprop dalvik.vm.heapminfree 512k
-    setprop dalvik.vm.heapmaxfree 8m
-
-    # LMKD (Low Memory Killer) tuned for 4GB gaming (prevents game stutters)
-    # Note: ro.* properties cannot be set at runtime by the Android property service.
-    # These properties (ro.lmk.*, ro.sys.fw.bg_apps_limit) must be set statically in build.prop instead.
+    # Dalvik ART Heap Limits and LMKD properties have been removed from here.
+    # REASON: dalvik.vm.* properties are read once during Zygote boot and have no effect here.
+    # ro.lmk.* properties are read-only after init and will be rejected.
+    # These values have been moved to virgox_dalvik_props_4gb.prop to be baked into build.prop.
 
 else
     log_info "========================================================"
@@ -93,18 +85,10 @@ else
         log_info "zRAM initialized: 4.0GB with ultra throughput"
     fi
 
-    # Dalvik ART Heap Limits tuned for 8GB high-res assets & textures
-    # Note: dalvik.vm.* properties are only read at Zygote start.
-    setprop dalvik.vm.heapstartsize 16m
-    setprop dalvik.vm.heapgrowthlimit 256m
-    setprop dalvik.vm.heapsize 768m
-    setprop dalvik.vm.heaptargetutilization 0.65
-    setprop dalvik.vm.heapminfree 2m
-    setprop dalvik.vm.heapmaxfree 16m
-
-    # LMKD for 8GB (Permissive multitasking + sustained background game state)
-    # Note: ro.* properties cannot be set at runtime by the Android property service.
-    # These properties (ro.lmk.*, ro.sys.fw.bg_apps_limit) must be set statically in build.prop instead.
+    # Dalvik ART Heap Limits and LMKD properties have been removed from here.
+    # REASON: dalvik.vm.* properties are read once during Zygote boot and have no effect here.
+    # ro.lmk.* properties are read-only after init and will be rejected.
+    # These values have been moved to virgox_dalvik_props_8gb.prop to be baked into build.prop.
 fi
 
 # Multi-Gen LRU (MGLRU) enablement across both models

@@ -1,13 +1,15 @@
 #!/bin/bash
 # ==============================================================================
-# VirgoX-Elite-GamingOS-Rom Source Compilation Script (fogos)
+# VirgoX Elite GamingOS — Full Source Compilation Script
+# Target: Motorola Moto G45 5G / G34 5G (fogos) — SM6375
+# Android: 17 (LineageOS / Evolution X 12.1 base)
 # Developer: Prince · VirgoYT (VirgoYT707)
 # ==============================================================================
 set -e
 
-echo "=== [1/4] Setting up FogOS Build Environment ==="
+echo "=== [1/4] Setting up VirgoX Elite GamingOS Build Environment ==="
 export BUILD_USERNAME=VirgoYT
-export BUILD_HOSTNAME=fogos-build
+export BUILD_HOSTNAME=virgox-build
 export CCACHE_EXEC=/usr/bin/ccache
 export CCACHE_DIR=~/.ccache
 export USE_CCACHE=1
@@ -26,8 +28,9 @@ fi
 cd "$LINEAGE_DIR"
 
 if [ ! -f "build/envsetup.sh" ]; then
-    echo "=== [2/4] Initializing and Syncing LineageOS Source ==="
+    echo "=== [2/4] Initializing and Syncing LineageOS Source (Android 17) ==="
     ROM_BASE_BRANCH="${ROM_BASE_BRANCH:-lineage-23.2}"
+    echo "[*] Using base branch: $ROM_BASE_BRANCH"
     repo init -u https://github.com/LineageOS/android.git -b "$ROM_BASE_BRANCH" --depth=1
     mkdir -p .repo/local_manifests
     cp "$PROJECT_ROOT/manifests/fogos.xml" .repo/local_manifests/fogos.xml 2>/dev/null || true

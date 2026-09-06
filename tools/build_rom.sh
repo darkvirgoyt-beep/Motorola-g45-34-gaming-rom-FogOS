@@ -15,19 +15,42 @@ echo "      Starting VirgoX Elite Gaming OS Build for Moto G45 (fogos)"
 echo "                   Developer: Prince · VirgoYT"
 echo "=============================================================================="
 
-# 1. Fetch Base LineageOS ROM for fogos
-echo "[1/7] Fetching latest official base ROM for fogos..."
-BUILDS_JSON=$(curl -s "https://download.lineageos.org/api/v2/devices/fogos/builds")
-LATEST_ZIP_URL=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .url')
-LATEST_ZIP_NAME=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .filename')
+# 1. Obtain Base ROM for fogos
+echo "[1/7] Obtaining base ROM for fogos..."
 
-if [ -z "$LATEST_ZIP_URL" ] || [ "$LATEST_ZIP_URL" == "null" ]; then
-    echo "[!] Could not fetch LineageOS builds for fogos. Exiting."
+# ── Configure base ROM source ──
+# Set BASE_ROM_PATH to a local zip, or BASE_ROM_URL to a direct download link.
+# fogos is NOT available on official LineageOS downloads, so we need an
+# unofficial LineageOS/EvoX build or a local file.
+#
+# Examples:
+#   export BASE_ROM_PATH="/path/to/lineage-23.2-fogos-unofficial.zip"
+#   export BASE_ROM_URL="https://sourceforge.net/.../lineage-23.2-fogos.zip"
+#   export BASE_ROM_URL="https://github.com/user/repo/releases/download/v1/base.zip"
+
+if [ -n "$BASE_ROM_PATH" ] && [ -f "$BASE_ROM_PATH" ]; then
+    echo "[*] Using local base ROM: $BASE_ROM_PATH"
+    cp "$BASE_ROM_PATH" "$WORK_DIR/base_rom.zip"
+elif [ -n "$BASE_ROM_URL" ]; then
+    echo "[*] Downloading base ROM from: $BASE_ROM_URL"
+    curl -L "$BASE_ROM_URL" -o "$WORK_DIR/base_rom.zip"
+else
+    echo "[!] ERROR: No base ROM configured."
+    echo "    fogos is not available on official LineageOS downloads."
+    echo ""
+    echo "    Set one of these environment variables before running:"
+    echo "      export BASE_ROM_PATH=\"/path/to/base-rom-fogos.zip\""
+    echo "      export BASE_ROM_URL=\"https://example.com/base-rom-fogos.zip\""
+    echo ""
+    echo "    Use any unofficial LineageOS or Evolution X build for fogos (Android 17)."
     exit 1
 fi
 
-echo "[*] Downloading base ROM: $LATEST_ZIP_NAME"
-curl -L "$LATEST_ZIP_URL" -o "$WORK_DIR/base_rom.zip"
+if [ ! -f "$WORK_DIR/base_rom.zip" ]; then
+    echo "[!] Base ROM zip not found. Exiting."
+    exit 1
+fi
+echo "[*] Base ROM ready: $(du -h "$WORK_DIR/base_rom.zip" | cut -f1)"
 
 # 2. Extract payload.bin
 echo "[2/7] Extracting partitions from base ROM..."
@@ -141,8 +164,27 @@ if [ -f "$SYSTEM_IMG" ]; then
         fi
     fi
     
-    if [ -d "overlay" ]; then
-        sudo cp -r overlay/* "$SYS_ROOT/overlay/" || true
+    # Install compiled RRO overlay APKs (NOT raw XML — Android ignores raw XML overlays)
+    if [ -d "overlay/VirgoXFrameworkOverlay" ] || [ -d "overlay/VirgoXSystemUIOverlay" ]; then
+        sudo mkdir -p "$SYS_ROOT/product/overlay"
+        echo "[*] Note: RRO overlays must be compiled into APKs before injection."
+        echo "    Use 'aapt2 compile' + 'aapt2 link' or a full source build to produce APKs."
+        echo "    Raw XML overlay files are kept in the repo for source reference only."
+    fi
+
+    # Install custom boot animation if present
+    if [ -f "prebuilt/bootanimation/bootanimation.zip" ]; then
+        echo "[*] Installing VirgoX custom boot animation..."
+        sudo mkdir -p "$SYS_ROOT/product/media"
+        sudo cp "prebuilt/bootanimation/bootanimation.zip" "$SYS_ROOT/product/media/bootanimation.zip"
+        sudo chmod 644 "$SYS_ROOT/product/media/bootanimation.zip"
+    fi
+
+    # Install custom wallpapers if present
+    if [ -d "prebuilt/wallpapers" ]; then
+        echo "[*] Installing VirgoX wallpapers..."
+        sudo mkdir -p "$SYS_ROOT/product/media/wallpaper"
+        sudo cp prebuilt/wallpapers/*.{jpg,png} "$SYS_ROOT/product/media/wallpaper/" 2>/dev/null || true
     fi
     
     sudo umount "$MNT_DIR"
@@ -188,7 +230,8 @@ cp "$WORK_DIR"/extracted/*.img "$OUT_DIR/"
 # 6. Create Fastboot Flashable ZIP
 echo "[7/7] Packaging VirgoX Elite Gaming OS distribution..."
 BUILD_DATE=$(date +'%Y%m%d')
-RELEASE_ZIP_NAME="VirgoX-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}.zip"
+VIRGOX_VERSION="1.0"
+RELEASE_ZIP_NAME="VirgoX-Elite-GamingOS-v${VIRGOX_VERSION}-fogos-Android17-${BUILD_DATE}.zip"
 
 cd "$OUT_DIR"
 sha256sum *.img > SHA256SUMS.txt
@@ -209,7 +252,7 @@ unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" "payload_properties.txt" "car
 cp "$WORK_DIR/payload.bin" "$OUT_DIR/payload.bin"
 [ -f "$OTA_PKG_DIR/payload_properties.txt" ] && cp "$OTA_PKG_DIR/payload_properties.txt" "$OUT_DIR/payload_properties.txt"
 
-OFFICIAL_OTA_ZIP="VirgoX-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-Official-OTA.zip"
+OFFICIAL_OTA_ZIP="VirgoX-Elite-GamingOS-v${VIRGOX_VERSION}-fogos-Android17-${BUILD_DATE}-OTA.zip"
 cd "$OTA_PKG_DIR"
 zip -r -0 "../$OFFICIAL_OTA_ZIP" ./*
 cd "$WORK_DIR/.."

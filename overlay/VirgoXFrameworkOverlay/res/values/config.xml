@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FogOS Elite Gaming Framework Overlays -->
+<!-- Developer: Prince · VirgoYT -->
+<resources>
+    <!-- Force Game Mode Interventions & GameManagerService -->
+    <bool name="config_gameManagerSupported">true</bool>
+
+    <!-- Force 120Hz Maximum and Minimum Refresh Rates -->
+    <integer name="config_defaultRefreshRate">120</integer>
+    <integer name="config_defaultPeakRefreshRate">120</integer>
+
+    <!-- Double-Tap to Wake Native Support -->
+    <bool name="config_supportDoubleTapWake">true</bool>
+
+    <!-- Goodix GT917S Touchscreen Wake Gestures & DT2W -->
+    <string name="config_touchscreenGesturePath">/sys/class/touchscreen/primary/wake_gestures</string>
+    <string name="config_touchscreenDoubleTapPath">/sys/devices/platform/goodix_ts.0/double_tap</string>
+</resources>

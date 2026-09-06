@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- VirgoX-Elite-GamingOS-Rom - Motorola Moto G45 5G / G34 5G (fogos) -->
-<!-- Maintainer: VIRGOYT707 -->
+<!-- ============================================================================== -->
+<!-- VirgoX Elite GamingOS — Android 17 Local Manifest                              -->
+<!-- Target: Motorola Moto G45 5G / G34 5G (fogos) — SM6375 / Holi                 -->
+<!-- Maintainer: Prince · VirgoYT (VIRGOYT707)                                     -->
+<!-- Base: LineageOS / Evolution X 12.1 — Android 17                                -->
+<!-- ============================================================================== -->
 <manifest>
   <remote name="github" fetch="https://github.com/" />
+  <remote name="virgox" fetch="https://github.com/darkvirgoyt-beep/" />
 
-  <!-- Audited fogos device tree and shared SM6375 platform. -->
-  <project name="darkvirgoyt-beep/android17_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="main" />
-  <project name="darkvirgoyt-beep/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="lineage-23.2" />
+  <!-- ═══ Device Trees (Android 17) ═══ -->
+  <project name="android17_device_motorola_fogos"
+           path="device/motorola/fogos"
+           remote="virgox"
+           revision="main" />
 
-  <!-- Vendor blobs must come from the matching Motorola firmware and Android base. -->
-  <!-- Keep proprietary vendor projects out of this manifest until their revision is confirmed. -->
+  <project name="android_device_motorola_sm6375-common"
+           path="device/motorola/sm6375-common"
+           remote="virgox"
+           revision="lineage-23.2" />
 
-  <!-- Audited gaming kernel source. -->
-  <project name="darkvirgoyt-beep/android_kernel_motorola_fogos" path="kernel/motorola/fogos" remote="github" revision="sixteen-qpr2" />
+  <!-- ═══ Kernel (Gaming Kernel — Android 17 compatible) ═══ -->
+  <project name="android_kernel_motorola_fogos"
+           path="kernel/motorola/fogos"
+           remote="virgox"
+           revision="seventeen" />
 
-  <!-- Connected FogOS Controller source/reference. -->
-  <project name="darkvirgoyt-beep/FogOS-PulseControl" path="vendor/virgox/FogOS-PulseControl" remote="github" revision="main" />
+  <!-- ═══ Vendor Blobs ═══ -->
+  <!-- TODO: Uncomment and set correct revision once vendor blobs are extracted
+       from matching Android 17 Motorola stock firmware.
+  <project name="TheMuppets/proprietary_vendor_motorola_fogos"
+           path="vendor/motorola/fogos"
+           remote="github"
+           revision="lineage-23.2" />
+  <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common"
+           path="vendor/motorola/sm6375-common"
+           remote="github"
+           revision="lineage-23.2" />
+  -->
 
-  <!-- Hardware HAL modules must match the selected ROM base. -->
-  <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="lineage-23.2" />
+  <!-- ═══ VirgoX Custom Layer ═══ -->
+  <project name="FogOS-PulseControl"
+           path="vendor/virgox/FogOS-PulseControl"
+           remote="virgox"
+           revision="main" />
 
-  <!-- Gaming profiles are provided by FogOS PulseControl; unrelated GameSpace and Dolby projects are intentionally excluded. -->
+  <!-- ═══ Hardware HALs (Android 17 era) ═══ -->
+  <project name="LineageOS/android_hardware_motorola"
+           path="hardware/motorola"
+           remote="github"
+           revision="lineage-23.2" />
+
+  <!-- Gaming profiles provided by FogOS PulseControl.
+       Unrelated GameSpace and Dolby projects are intentionally excluded. -->
 </manifest>

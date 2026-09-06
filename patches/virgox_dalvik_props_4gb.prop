@@ -1,0 +1,8 @@
+# VirgoX 4GB RAM Profile - Static Properties
+# These must be set in build.prop at compile time, NOT at runtime
+# This file must be baked into the build via the product makefile for the 4GB RAM variant.
+dalvik.vm.heapgrowthlimit=192m
+dalvik.vm.heapsize=512m
+dalvik.vm.heapminfree=512k
+dalvik.vm.heapmaxfree=8m
+dalvik.vm.heaptargetutilization=0.75

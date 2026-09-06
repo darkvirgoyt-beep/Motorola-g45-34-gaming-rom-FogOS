@@ -1,0 +1,10 @@
+runtime_resource_overlay {
+    name: "VirgoXSystemUIOverlay",
+    theme: "VirgoXSystemUIOverlay",
+    sdk_version: "current",
+    product_specific: true,
+    aaptflags: [
+        "--no-resource-deduping",
+        "--no-resource-removal",
+    ],
+}
