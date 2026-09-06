@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="assets/virgox-elite-gaming-rom-banner.png" alt="VirgoX Elite Gaming ROM banner" width="100%" />
+  <img src="assets/virgox-elite-gaming-rom-banner.png" alt="VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM banner" width="100%" />
 </p>
 
-<h1 align="center">VirgoX Elite Gaming ROM</h1>
+<h1 align="center">VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM</h1>
 
 <p align="center">
   A bootable, performance-focused Android gaming ROM for the Motorola Moto G45 5G and Moto G34 5G.
 </p>
 
 <p align="center">
-  <a href="https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases"><img src="https://img.shields.io/github/v/release/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS?style=for-the-badge&logo=github&label=Release" alt="Latest release" /></a>
+  <a href="https://github.com/darkvirgoyt-beep/VirgoX-Elite-GamingOS/releases"><img src="https://img.shields.io/github/v/release/darkvirgoyt-beep/VirgoX-Elite-GamingOS?style=for-the-badge&logo=github&label=Release" alt="Latest release" /></a>
   <img src="https://img.shields.io/badge/Android-17%20targeting-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 17 targeting" />
   <img src="https://img.shields.io/badge/Device-Moto%20G45%20%2F%20G34%205G-7B61FF?style=for-the-badge&logo=motorola&logoColor=white" alt="Supported devices" />
   <img src="https://img.shields.io/badge/Codename-fogos%20%7C%20SM6375-FF6B35?style=for-the-badge" alt="fogos codename" />
@@ -29,7 +29,7 @@
 
 ## Overview
 
-**VirgoX Elite Gaming ROM** is a bootable custom Android ROM project for the Motorola Moto G45 5G and Moto G34 5G, using the `fogos` device family and the Qualcomm SM6375 platform. The project combines a lightweight LineageOS-based foundation with gaming-oriented framework overlays, system properties, device configuration, performance profiles, and release tooling.
+**VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM** is a bootable custom Android ROM project for the Motorola Moto G45 5G and Moto G34 5G, using the `fogos` device family and the Qualcomm SM6375 platform. The project combines a lightweight LineageOS-based foundation with gaming-oriented framework overlays, system properties, device configuration, performance profiles, and release tooling.
 
 The ROM is designed for users who want a responsive daily driver with a dedicated gaming profile, fast touch and sensor response, adaptive memory behavior across 4 GB and 8 GB variants, and a maintainable source tree for future development.
 
@@ -37,7 +37,7 @@ The ROM is designed for users who want a responsive daily driver with a dedicate
 
 ## Search keywords
 
-`VirgoX Elite Gaming ROM`, `VirgoX ROM`, `Moto G45 custom ROM`, `Moto G34 custom ROM`, `Motorola fogos ROM`, `SM6375 gaming ROM`, `Android 17 ROM`, `LineageOS fogos`, `Moto G45 gaming ROM`, `Moto G34 gaming ROM`, `KernelSU`, `Magisk`, `GameSpace`, `Fastboot ROM`, `OTA payload.bin`.
+`VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM`, `VirgoX ROM`, `Moto G45 custom ROM`, `Moto G34 custom ROM`, `Motorola fogos ROM`, `SM6375 gaming ROM`, `Android 17 ROM`, `LineageOS fogos`, `Moto G45 gaming ROM`, `Moto G34 gaming ROM`, `KernelSU`, `Magisk`, `GameSpace`, `Fastboot ROM`, `OTA payload.bin`.
 
 ## Supported devices
 
@@ -110,7 +110,7 @@ A compatible stock Android 14 firmware base, or the latest supported Motorola fi
 
 ### Method 1: Fastboot installer
 
-1. Download the latest package from the [GitHub Releases page](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS/releases).
+1. Download the latest package from the [GitHub Releases page](https://github.com/darkvirgoyt-beep/VirgoX-Elite-GamingOS/releases).
 2. Extract the release package on a computer with current Android platform tools.
 3. Boot the phone into Fastboot mode and connect it over USB.
 4. On Windows, run `flasher/flash_all.bat`. On Linux or macOS, make the script executable and run it:
@@ -194,7 +194,7 @@ Build output, signing keys, and private device data should not be committed to t
 
 | Component | Repository |
 |---|---|
-| VirgoX ROM source | [Motorola-g45-34-gaming-rom-FogOS](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-rom-FogOS) |
+| VirgoX ROM source | [VirgoX-Elite-GamingOS](https://github.com/darkvirgoyt-beep/VirgoX-Elite-GamingOS) |
 | Gaming kernel | [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new) |
 | Device tree | [android17_device_motorola_fogos](https://github.com/darkvirgoyt-beep/android17_device_motorola_fogos) |
 | Common device tree | [android_device_motorola_sm6375-common](https://github.com/darkvirgoyt-beep/android_device_motorola_sm6375-common) |
@@ -222,7 +222,7 @@ Pull requests should remain focused, document changed properties or scripts, avo
 ## Credits
 
 - **Lead developer and maintainer:** [Prince · VirgoYT](https://github.com/darkvirgoyt-beep)
-- **Project:** VirgoX Elite Gaming ROM
+- **Project:** VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM
 - **Base architecture:** [LineageOS](https://github.com/LineageOS)
 - **Target platform:** Qualcomm SM6375 / Holi
 - **Related kernel:** [Motorola-g45-34-gaming-kernel-Fogos-new](https://github.com/darkvirgoyt-beep/Motorola-g45-34-gaming-kernel-Fogos-new)
@@ -234,6 +234,6 @@ Review the licenses of the upstream Android, LineageOS, kernel, device-tree, ven
 ---
 
 <p align="center">
-  <strong>VirgoX Elite Gaming ROM</strong><br />
+  <strong>VirgoX-Elite-GamingOS — VirgoX Elite Gaming ROM</strong><br />
   Built for responsive Android gaming on Moto G45 5G and Moto G34 5G.
 </p>
