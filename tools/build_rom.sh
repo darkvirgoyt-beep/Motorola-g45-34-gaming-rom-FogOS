@@ -57,8 +57,15 @@ else
 fi
 
 # Find PulseControl APK
-PULSE_APK=$(find "$WORK_DIR/kernel_assets" -name "*PulseControl*.apk" | head -n 1)
-if [ -f "$PULSE_APK" ]; then
+PULSE_APK=$(find "$WORK_DIR/kernel_assets" -name "*PulseControl*.apk" 2>/dev/null | head -n 1)
+if [ -z "$PULSE_APK" ] || [ ! -f "$PULSE_APK" ]; then
+    echo "[*] Downloading PulseControl APK from FogOS-PulseControl repository..."
+    mkdir -p "$WORK_DIR/pulse_assets"
+    gh release download --repo "darkvirgoyt-beep/FogOS-PulseControl" --dir "$WORK_DIR/pulse_assets" --pattern "*.apk" || true
+    PULSE_APK=$(find "$WORK_DIR/pulse_assets" -name "*PulseControl*.apk" 2>/dev/null | head -n 1)
+fi
+
+if [ -n "$PULSE_APK" ] && [ -f "$PULSE_APK" ]; then
     echo "[*] Found PulseControl companion APK: $(basename "$PULSE_APK")"
     cp "$PULSE_APK" "$OUT_DIR/tools/FogOS-PulseControl.apk"
 fi
@@ -110,7 +117,13 @@ if [ -f "$SYSTEM_IMG" ]; then
         SYS_ROOT="$MNT_DIR"
     fi
     
-    sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/overlay"
+    sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/overlay" "$SYS_ROOT/priv-app/FogOS-PulseControl"
+    
+    if [ -f "$OUT_DIR/tools/FogOS-PulseControl.apk" ]; then
+        echo "[*] Pre-installing FogOS-PulseControl into /system/priv-app/..."
+        sudo cp "$OUT_DIR/tools/FogOS-PulseControl.apk" "$SYS_ROOT/priv-app/FogOS-PulseControl/FogOS-PulseControl.apk"
+        sudo chmod 644 "$SYS_ROOT/priv-app/FogOS-PulseControl/FogOS-PulseControl.apk"
+    fi
     
     [ -f "patches/fogos_ram_optimizer.sh" ] && sudo cp patches/fogos_ram_optimizer.sh "$SYS_ROOT/bin/fogos_ram_optimizer.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_ram_optimizer.sh"
     [ -f "patches/fogos_game_network.sh" ] && sudo cp patches/fogos_game_network.sh "$SYS_ROOT/bin/fogos_game_network.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_game_network.sh"
