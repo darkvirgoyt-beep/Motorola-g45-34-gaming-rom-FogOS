@@ -2,6 +2,8 @@
 <!-- FogOS Elite Gaming ROM Manifest - Motorola Moto G45 5G / G34 5G (fogos) -->
 <!-- Lead Developer: Prince · VirgoYT (VirgoYT707) -->
 <manifest>
+  <remote name="github" fetch="https://github.com/" />
+
   <!-- Device Tree & Common SM6375 Holi Platform -->
   <project name="LineageOS/android_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="lineage-21.0" />
   <project name="LineageOS/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="lineage-21.0" />
@@ -17,8 +19,8 @@
   <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="lineage-21.0" />
 
   <!-- Custom GameSpace Package (Launcher shortcuts + Gaming Profiles) -->
-  <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fifteen" />
+  <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fourteen" />
 
   <!-- Dolby Atmos & Spatial Audio (FogOS / InfinityX audio engine) -->
-  <project name="PixelOS-AOSP/android_packages_apps_DolbyAtmos" path="packages/apps/DolbyAtmos" remote="github" revision="sixteen-qpr2" />
+  <project name="PixelOS-AOSP/android_packages_apps_DolbyAtmos" path="packages/apps/DolbyAtmos" remote="github" revision="fourteen" />
 </manifest>

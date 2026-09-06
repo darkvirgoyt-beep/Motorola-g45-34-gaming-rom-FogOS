@@ -49,6 +49,7 @@ if [ "$TOTAL_RAM_MB" -lt 5000 ]; then
     fi
 
     # Dalvik ART Heap Limits tuned specifically for 4GB
+    # Note: dalvik.vm.* properties are only read at Zygote start.
     setprop dalvik.vm.heapstartsize 8m
     setprop dalvik.vm.heapgrowthlimit 192m
     setprop dalvik.vm.heapsize 512m
@@ -57,11 +58,8 @@ if [ "$TOTAL_RAM_MB" -lt 5000 ]; then
     setprop dalvik.vm.heapmaxfree 8m
 
     # LMKD (Low Memory Killer) tuned for 4GB gaming (prevents game stutters)
-    setprop ro.lmk.kill_heaviest_task true
-    setprop ro.lmk.kill_timeout_ms 100
-    setprop ro.lmk.thrashing_limit 30
-    setprop ro.lmk.swap_free_low_percentage 15
-    setprop ro.sys.fw.bg_apps_limit 24
+    # Note: ro.* properties cannot be set at runtime by the Android property service.
+    # These properties (ro.lmk.*, ro.sys.fw.bg_apps_limit) must be set statically in build.prop instead.
 
 else
     log_info "========================================================"
@@ -96,6 +94,7 @@ else
     fi
 
     # Dalvik ART Heap Limits tuned for 8GB high-res assets & textures
+    # Note: dalvik.vm.* properties are only read at Zygote start.
     setprop dalvik.vm.heapstartsize 16m
     setprop dalvik.vm.heapgrowthlimit 256m
     setprop dalvik.vm.heapsize 768m
@@ -104,11 +103,8 @@ else
     setprop dalvik.vm.heapmaxfree 16m
 
     # LMKD for 8GB (Permissive multitasking + sustained background game state)
-    setprop ro.lmk.kill_heaviest_task false
-    setprop ro.lmk.kill_timeout_ms 250
-    setprop ro.lmk.thrashing_limit 50
-    setprop ro.lmk.swap_free_low_percentage 10
-    setprop ro.sys.fw.bg_apps_limit 48
+    # Note: ro.* properties cannot be set at runtime by the Android property service.
+    # These properties (ro.lmk.*, ro.sys.fw.bg_apps_limit) must be set statically in build.prop instead.
 fi
 
 # Multi-Gen LRU (MGLRU) enablement across both models

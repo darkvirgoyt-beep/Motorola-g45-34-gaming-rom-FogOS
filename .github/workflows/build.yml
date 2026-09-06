@@ -44,7 +44,7 @@ jobs:
       - name: Install Dependencies and Payload Dumper
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl jq unzip zip wget
+          sudo apt-get install -y curl jq unzip zip wget android-sdk-libsparse-utils e2fsprogs
           curl -sL https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin/
           payload-dumper-go -h || true
 
@@ -74,7 +74,7 @@ jobs:
           cat << 'NOTES' > release_notes.md
           ### 🚀 VirgoX Elite Gaming OS v1.0 — Motorola Moto G45 5G / G34 5G (fogos)
           **Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
-          **Base System:** LineageOS Platform (Android 17 / Forward-Compatible Core)
+          **Base System:** LineageOS Platform (Android 14 / LineageOS 21 Core)
           **Hardware Support:** Motorola Moto G45 5G & G34 5G (Qualcomm Snapdragon 6s Gen 3 / SM6375)
 
           ---

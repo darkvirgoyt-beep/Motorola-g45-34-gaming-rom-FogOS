@@ -32,21 +32,21 @@ if exist vbmeta_system.img (
 echo.
 echo.
 echo [*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Partitions...
-fastboot flash boot boot.img
+if exist boot.img fastboot flash boot boot.img
 if exist vendor_boot.img fastboot flash vendor_boot vendor_boot.img
 if exist dtbo.img fastboot flash dtbo dtbo.img
 
 echo.
 echo [*] Flashing Radio, Modem & DSP firmware...
-if exist modem.img fastboot flash modem modem.img
-if exist bluetooth.img fastboot flash bluetooth bluetooth.img
-if exist dsp.img fastboot flash dsp dsp.img
+if exist modem.img fastboot flash modem modem.img --slot=all
+if exist bluetooth.img fastboot flash bluetooth bluetooth.img --slot=all
+if exist dsp.img fastboot flash dsp dsp.img --slot=all
 
 echo.
 echo [*] Rebooting to fastbootd mode for dynamic partitions...
 fastboot reboot fastboot
-echo Waiting 5 seconds for fastbootd...
-timeout /t 5 /nobreak > nul
+echo Waiting 15 seconds for fastbootd...
+timeout /t 15 /nobreak > nul
 
 echo.
 echo [*] Flashing System and Vendor dynamic partitions into super...
@@ -69,7 +69,6 @@ echo.
 set /p WIPE="[*] Do you want to format userdata/factory reset? (Recommended for 1st flash) [Y/N]: "
 if /i "%WIPE%"=="Y" (
     echo [*] Formatting userdata...
-    fastboot erase userdata
     fastboot -w
 )
 

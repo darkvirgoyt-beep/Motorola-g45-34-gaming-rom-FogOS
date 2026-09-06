@@ -86,7 +86,10 @@ STOCK_PRESENT=0
 
 WRAPPER="$PKG_DIR/META-INF/com/google/android/update-binary"
 cat > "$WRAPPER" <<'WRAPEOF'
-#!/sbin/sh
+#!/system/bin/sh
+# Fallback for systems where /system/bin/sh is not present but /sbin/sh is
+[ ! -x /system/bin/sh ] && [ -x /sbin/sh ] && exec /sbin/sh "$0" "$@"
+
 # FogOS Elite Gaming update-binary (wrapper)
 # $1 = recovery API version, $2 = ui fd, $3 = zip path
 OUTFD=$2
@@ -129,24 +132,21 @@ ui ""
 ui "Flashing FogOS Gaming Kernel..."
 
 # --- stage 2: flash FogOS gaming kernel ---
+SLOT=$(getprop ro.boot.slot_suffix 2>/dev/null)
+if [ -z "$SLOT" ]; then
+    SLOT=$(cat /proc/cmdline 2>/dev/null | grep -o 'androidboot.slot_suffix=_[a-b]' | cut -d= -f2)
+fi
+if [ -z "$SLOT" ]; then
+    ui "WARNING: Could not detect slot suffix, assuming empty (non-A/B)"
+fi
+
 for img in boot vendor_boot dtbo; do
     if unzip -l "$ZIP" "$img.img" >/dev/null 2>&1; then
         unzip -o -j "$ZIP" "$img.img" -d $TMP >/dev/null 2>&1
-        ui "  Flashing $img..."
-        dd if=$TMP/$img.img of=/dev/block/by-name/$img bs=4096 2>/dev/null
+        ui "  Flashing $img to slot ${SLOT}..."
+        dd if=$TMP/$img.img of=/dev/block/by-name/${img}${SLOT} bs=4096 2>/dev/null
     fi
 done
-
-# --- stage 3: install FogOS configs + PlayIntegrityFix to /data/fogos ---
-ui "Installing FogOS configs to /data/fogos..."
-mkdir -p /data/fogos/modules
-unzip -o "$ZIP" "config/*" -d /data/fogos >/dev/null 2>&1 || true
-chmod -R 0755 /data/fogos 2>/dev/null || true
-
-if unzip -l "$ZIP" "modules/*" >/dev/null 2>&1; then
-    unzip -o -j "$ZIP" "modules/PlayIntegrityFix.zip" -d /data/fogos/modules >/dev/null 2>&1 || true
-    ui "PlayIntegrityFix module saved to /data/fogos/modules/"
-fi
 
 ui ""
 ui "Done! Rebooting into FogOS Elite Gaming."

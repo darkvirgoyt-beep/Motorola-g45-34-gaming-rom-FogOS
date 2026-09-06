@@ -26,18 +26,18 @@ echo "[*] Flashing VBMeta (disabling dm-verity and verification)..."
 [ -f vbmeta_system.img ] && fastboot flash vbmeta_system vbmeta_system.img --disable-verity --disable-verification
 
 echo "[*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Boot Partitions..."
-fastboot flash boot boot.img
+[ -f boot.img ] && fastboot flash boot boot.img
 [ -f vendor_boot.img ] && fastboot flash vendor_boot vendor_boot.img
 [ -f dtbo.img ] && fastboot flash dtbo dtbo.img
 
 echo "[*] Flashing Radio, Modem & DSP firmware..."
-[ -f modem.img ] && fastboot flash modem modem.img
-[ -f bluetooth.img ] && fastboot flash bluetooth bluetooth.img
-[ -f dsp.img ] && fastboot flash dsp dsp.img
+[ -f modem.img ] && fastboot flash modem modem.img --slot=all
+[ -f bluetooth.img ] && fastboot flash bluetooth bluetooth.img --slot=all
+[ -f dsp.img ] && fastboot flash dsp dsp.img --slot=all
 
 echo "[*] Rebooting into fastbootd mode (userspace fastboot for super/dynamic partitions)..."
 fastboot reboot fastboot
-sleep 5
+sleep 15
 
 echo "[*] Flashing System, Vendor & Product partitions into super..."
 if [ -f super.img ]; then

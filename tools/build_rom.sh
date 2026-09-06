@@ -22,9 +22,8 @@ LATEST_ZIP_URL=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | 
 LATEST_ZIP_NAME=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .filename')
 
 if [ -z "$LATEST_ZIP_URL" ] || [ "$LATEST_ZIP_URL" == "null" ]; then
-    echo "[!] Fallback to nightly mirror URL..."
-    LATEST_ZIP_URL="https://mirrorbits.lineageos.org/full/fogos/20260905/lineage-23.2-20260905-nightly-fogos-signed.zip"
-    LATEST_ZIP_NAME="lineage-fogos-base.zip"
+    echo "[!] Could not fetch LineageOS builds for fogos. Exiting."
+    exit 1
 fi
 
 echo "[*] Downloading base ROM: $LATEST_ZIP_NAME"
@@ -72,15 +71,97 @@ curl -sL "https://github.com/KOWX712/PlayIntegrityFix/releases/download/v4.7-inj
 # 5. Integrate Elite Gaming Tweaks & Configurations
 echo "[5/7] Injecting FogOS Elite Gaming configs, init.rc, and GameManager interventions..."
 mkdir -p "$OUT_DIR/config"
-cp patches/fogos_gaming.prop "$OUT_DIR/config/fogos_gaming.prop"
-cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml"
-cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml"
+cp patches/fogos_gaming.prop "$OUT_DIR/config/fogos_gaming.prop" || true
+cp patches/game_spoofing.xml "$OUT_DIR/config/game_spoofing.xml" || true
+cp patches/game_mode_config.xml "$OUT_DIR/config/game_mode_config.xml" || true
 cp sysconfig/gaming_power_whitelist.xml "$OUT_DIR/config/gaming_power_whitelist.xml" || true
-cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc"
+cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc" || true
 cp patches/fogos_game_network.sh "$OUT_DIR/config/fogos_game_network.sh" || true
 cp patches/fogos_ram_optimizer.sh "$OUT_DIR/config/fogos_ram_optimizer.sh" || true
 cp rootdir/init.fogos.rc "$OUT_DIR/config/init.fogos.rc" || true
 cp system_ext.prop "$OUT_DIR/config/system_ext.prop" || true
+echo "These configs have been baked into the system partitions. They are kept here for documentation purposes." > "$OUT_DIR/config/README.txt"
+
+# Install required tools for image manipulation
+if ! command -v simg2img &> /dev/null; then
+    echo "[*] Installing android-sdk-libsparse-utils and e2fsprogs..."
+    sudo apt-get update -y && sudo apt-get install -y android-sdk-libsparse-utils e2fsprogs || true
+fi
+
+SYSTEM_IMG="$WORK_DIR/extracted/system.img"
+if [ -f "$SYSTEM_IMG" ]; then
+    echo "[*] Injecting configs into system.img..."
+    # Convert to raw
+    simg2img "$SYSTEM_IMG" "$WORK_DIR/extracted/system.raw.img" 2>/dev/null || cp "$SYSTEM_IMG" "$WORK_DIR/extracted/system.raw.img"
+    
+    # Check and resize
+    sudo e2fsck -y -f "$WORK_DIR/extracted/system.raw.img" || true
+    sudo resize2fs "$WORK_DIR/extracted/system.raw.img" +100M || true
+    
+    # Mount
+    MNT_DIR="$WORK_DIR/mnt_system"
+    mkdir -p "$MNT_DIR"
+    sudo mount -o loop,rw "$WORK_DIR/extracted/system.raw.img" "$MNT_DIR"
+    
+    # Check if system is root or system/system
+    if [ -d "$MNT_DIR/system" ]; then
+        SYS_ROOT="$MNT_DIR/system"
+    else
+        SYS_ROOT="$MNT_DIR"
+    fi
+    
+    sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/overlay"
+    
+    [ -f "patches/fogos_ram_optimizer.sh" ] && sudo cp patches/fogos_ram_optimizer.sh "$SYS_ROOT/bin/fogos_ram_optimizer.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_ram_optimizer.sh"
+    [ -f "patches/fogos_game_network.sh" ] && sudo cp patches/fogos_game_network.sh "$SYS_ROOT/bin/fogos_game_network.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_game_network.sh"
+    [ -f "patches/init.fogos.gaming.rc" ] && sudo cp patches/init.fogos.gaming.rc "$SYS_ROOT/etc/init/init.fogos.gaming.rc"
+    [ -f "rootdir/init.fogos.rc" ] && sudo cp rootdir/init.fogos.rc "$SYS_ROOT/etc/init/init.fogos.rc"
+    [ -f "patches/game_mode_config.xml" ] && sudo cp patches/game_mode_config.xml "$SYS_ROOT/etc/game_mode_config.xml"
+    [ -f "patches/game_spoofing.xml" ] && sudo cp patches/game_spoofing.xml "$SYS_ROOT/etc/game_spoofing.xml"
+    [ -f "sysconfig/gaming_power_whitelist.xml" ] && sudo cp sysconfig/gaming_power_whitelist.xml "$SYS_ROOT/etc/sysconfig/gaming_power_whitelist.xml"
+    
+    if [ -f "patches/fogos_gaming.prop" ]; then
+        if [ -f "$SYS_ROOT/build.prop" ]; then
+            sudo sh -c "cat patches/fogos_gaming.prop >> $SYS_ROOT/build.prop"
+        elif [ -f "$SYS_ROOT/etc/build.prop" ]; then
+            sudo sh -c "cat patches/fogos_gaming.prop >> $SYS_ROOT/etc/build.prop"
+        fi
+    fi
+    
+    if [ -d "overlay" ]; then
+        sudo cp -r overlay/* "$SYS_ROOT/overlay/" || true
+    fi
+    
+    sudo umount "$MNT_DIR"
+    
+    rm "$SYSTEM_IMG"
+    img2simg "$WORK_DIR/extracted/system.raw.img" "$SYSTEM_IMG" || mv "$WORK_DIR/extracted/system.raw.img" "$SYSTEM_IMG"
+    rm -f "$WORK_DIR/extracted/system.raw.img"
+fi
+
+SYS_EXT_IMG="$WORK_DIR/extracted/system_ext.img"
+if [ -f "$SYS_EXT_IMG" ] && [ -f "system_ext.prop" ]; then
+    echo "[*] Injecting configs into system_ext.img..."
+    simg2img "$SYS_EXT_IMG" "$WORK_DIR/extracted/system_ext.raw.img" 2>/dev/null || cp "$SYS_EXT_IMG" "$WORK_DIR/extracted/system_ext.raw.img"
+    sudo e2fsck -y -f "$WORK_DIR/extracted/system_ext.raw.img" || true
+    sudo resize2fs "$WORK_DIR/extracted/system_ext.raw.img" +10M || true
+    
+    MNT_EXT="$WORK_DIR/mnt_system_ext"
+    mkdir -p "$MNT_EXT"
+    sudo mount -o loop,rw "$WORK_DIR/extracted/system_ext.raw.img" "$MNT_EXT"
+    
+    if [ -f "$MNT_EXT/build.prop" ]; then
+        sudo sh -c "cat system_ext.prop >> $MNT_EXT/build.prop"
+    elif [ -f "$MNT_EXT/etc/build.prop" ]; then
+        sudo sh -c "cat system_ext.prop >> $MNT_EXT/etc/build.prop"
+    fi
+    
+    sudo umount "$MNT_EXT"
+    
+    rm "$SYS_EXT_IMG"
+    img2simg "$WORK_DIR/extracted/system_ext.raw.img" "$SYS_EXT_IMG" || mv "$WORK_DIR/extracted/system_ext.raw.img" "$SYS_EXT_IMG"
+    rm -f "$WORK_DIR/extracted/system_ext.raw.img"
+fi
 
 # Copy Flasher scripts
 cp flasher/flash_all.bat "$OUT_DIR/"

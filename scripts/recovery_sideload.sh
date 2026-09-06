@@ -9,7 +9,7 @@ set -e
 ROM_ZIP="$1"
 
 if [ -z "$ROM_ZIP" ]; then
-    ROM_ZIP=$(ls FogOS-*.zip 2>/dev/null | head -n 1)
+    ROM_ZIP=$(ls VirgoX-*.zip FogOS-*.zip *.zip 2>/dev/null | head -n 1)
 fi
 
 if [ ! -f "$ROM_ZIP" ]; then

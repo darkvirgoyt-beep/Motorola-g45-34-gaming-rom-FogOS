@@ -4,9 +4,9 @@
 <resources>
     <!-- Default Quick Settings Tiles with Gaming Mode Tile -->
     <string name="quick_settings_tiles_default" translatable="false">
-        internet,bt,flashlight,dnd,alarm,airplane,gamemode,caffeine,rotation,battery,night
+        internet,bt,flashlight,dnd,alarm,airplane,caffeine,rotation,battery,night
     </string>
     <string name="quick_settings_tiles_stock" translatable="false">
-        internet,bt,flashlight,dnd,alarm,airplane,gamemode,caffeine,rotation,battery,night
+        internet,bt,flashlight,dnd,alarm,airplane,caffeine,rotation,battery,night
     </string>
 </resources>

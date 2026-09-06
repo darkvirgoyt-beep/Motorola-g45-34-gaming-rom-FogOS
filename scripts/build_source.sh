@@ -15,23 +15,41 @@ export USE_CCACHE=1
 ccache -M 50G
 ccache -o compression=true
 
+PROJECT_ROOT="$PWD"
 LINEAGE_DIR="${1:-$HOME/android/lineage}"
 
 if [ ! -d "$LINEAGE_DIR" ]; then
-    echo "[!] Lineage directory not found at $LINEAGE_DIR. Creating and initializing..."
+    echo "[!] Lineage directory not found at $LINEAGE_DIR. Creating..."
     mkdir -p "$LINEAGE_DIR"
 fi
 
 cd "$LINEAGE_DIR"
 
-echo "=== [2/4] Initializing Environment Setup ==="
+if [ ! -f "build/envsetup.sh" ]; then
+    echo "=== [2/4] Initializing and Syncing LineageOS Source ==="
+    repo init -u https://github.com/LineageOS/android.git -b lineage-21.0 --depth=1
+    mkdir -p .repo/local_manifests
+    cp "$PROJECT_ROOT/manifests/fogos.xml" .repo/local_manifests/fogos.xml 2>/dev/null || true
+    repo sync -c -j"$(nproc)" --force-sync --no-clone-bundle --no-tags
+else
+    echo "=== [2/4] Source tree found. Skipping sync. ==="
+fi
+
+echo "=== [3/4] Copying Device Configurations ==="
+mkdir -p device/motorola/fogos/overlay
+mkdir -p device/motorola/fogos/rootdir
+mkdir -p device/motorola/fogos/patches
+mkdir -p device/motorola/fogos/sysconfig
+
+cp -r "$PROJECT_ROOT/overlay/"* device/motorola/fogos/overlay/ 2>/dev/null || true
+cp -r "$PROJECT_ROOT/rootdir/"* device/motorola/fogos/rootdir/ 2>/dev/null || true
+cp "$PROJECT_ROOT/system_ext.prop" device/motorola/fogos/system_ext.prop 2>/dev/null || true
+cp -r "$PROJECT_ROOT/patches/"* device/motorola/fogos/patches/ 2>/dev/null || true
+cp -r "$PROJECT_ROOT/sysconfig/"* device/motorola/fogos/sysconfig/ 2>/dev/null || true
+
+echo "=== [4/4] Starting Full Build ==="
 source build/envsetup.sh
-croot
-
-echo "=== [3/4] Configuring Target Device: fogos ==="
 breakfast fogos
-
-echo "=== [4/4] Starting Full Build: mka bacon ==="
 mka bacon -j"$(nproc)"
 
 echo "=== [✓] FogOS Build Complete for Motorola G45 5G! ==="

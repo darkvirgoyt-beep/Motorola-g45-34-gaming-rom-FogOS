@@ -12,14 +12,6 @@
     <!-- Double-Tap to Wake Native Support -->
     <bool name="config_supportDoubleTapWake">true</bool>
 
-    <!-- Enable Dynamic High-Performance Mode -->
-    <bool name="config_enablePerfMode">true</bool>
-
-    <!-- Fast touch feedback and minimum touch latency -->
-    <integer name="config_touchLatencyDelay">5</integer>
-    <bool name="config_touchImproveLatency">true</bool>
-    <bool name="config_reduceTouchLatency">true</bool>
-
     <!-- Goodix GT917S Touchscreen Wake Gestures & DT2W -->
     <string name="config_touchscreenGesturePath">/sys/class/touchscreen/primary/wake_gestures</string>
     <string name="config_touchscreenDoubleTapPath">/sys/devices/platform/goodix_ts.0/double_tap</string>

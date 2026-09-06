@@ -1,6 +1,8 @@
 # ==============================================================================
 # VirgoX Elite Gaming OS Properties - Motorola Moto G45 5G / G34 5G (fogos)
 # Developer : Prince · VirgoYT (VirgoYT707)
+# Description: This file defines custom system properties that are set during 
+#              build time to configure performance, display, and gaming optimizations.
 # ==============================================================================
 
 # --- BRANDING & CREDITS ---
@@ -90,13 +92,7 @@ ro.build.tags=release-keys
 ro.debuggable=0
 ro.secure=1
 ro.adb.secure=1
-ro.boot.flash.locked=1
-ro.boot.verifiedbootstate=green
-ro.boot.veritymode=enforcing
-ro.boot.vbmeta.device_state=locked
 ro.warranty_bit=0
-ro.boot.warranty_bit=0
-ro.boot.selinux=enforcing
 
 # --- DISABLE BLOAT LOGGING, STATSD & TRACING ---
 debug.atrace.tags.enableflags=0

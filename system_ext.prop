@@ -19,12 +19,7 @@ ro.input.event_per_port=8
 debug.touch.slop_scale=0.5
 debug.touch.sensitivity=1
 
-# --- GAMING ---
-ro.game_maxtemp.enable=true
-ro.game.overlay=true
-ro.sf.game_mode_opt=true
-debug.game.optimization=true
-debug.sf.game_rendering_optimization=true
+# --- GAMING (Valid Android Properties) ---
 
 # --- INPUT LATENCY & TOUCH PREDICTION ---
 debug.input.latency=1
@@ -40,10 +35,6 @@ persist.vendor.sensors.batch_delay=0
 persist.vendor.sensors.hal.imu_filter=0
 ro.vendor.sensors.ssc=true
 ro.vendor.sensors.adsp=true
-persist.virgox.gyro.smoothing=1
-persist.virgox.gyro.sensitivity=1.0
-persist.fogos.gyro.smoothing=1
-persist.fogos.gyro.sensitivity=1.0
 
 # --- GOODIX GT917S TOUCHSCREEN DT2W ---
 persist.vendor.touch.gt917s.enable=1

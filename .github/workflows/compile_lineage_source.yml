@@ -6,11 +6,11 @@ on:
       android_branch:
         description: 'Android Base Version (LineageOS / AOSP)'
         required: true
-        default: 'lineage-22.0'
+        default: 'lineage-21.0'
         type: choice
         options:
-          - 'lineage-22.0'
           - 'lineage-21.0'
+          - 'lineage-22.0'
           - 'lineage-23.0'
           - 'main'
       ram_target:
@@ -31,11 +31,19 @@ on:
           - 'userdebug'
           - 'eng'
           - 'user'
+      runner_type:
+        description: 'Runner environment (ubuntu-22.04 or self-hosted)'
+        required: false
+        default: 'ubuntu-22.04'
+        type: choice
+        options:
+          - 'ubuntu-22.04'
+          - 'self-hosted'
 
 jobs:
   compile-source:
     name: Compile FogOS Gaming ROM from Source
-    runs-on: ubuntu-22.04
+    runs-on: ${{ github.event.inputs.runner_type || 'ubuntu-22.04' }}
     permissions:
       contents: write
     steps:
@@ -77,18 +85,7 @@ jobs:
         run: |
           cd /home/runner/work/lineage
           mkdir -p .repo/local_manifests
-          cat << 'MANIFEST' > .repo/local_manifests/fogos.xml
-          <?xml version="1.0" encoding="UTF-8"?>
-          <manifest>
-            <project name="LineageOS/android_device_motorola_fogos" path="device/motorola/fogos" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="LineageOS/android_device_motorola_sm6375-common" path="device/motorola/sm6375-common" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="TheMuppets/proprietary_vendor_motorola_fogos" path="vendor/motorola/fogos" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="TheMuppets/proprietary_vendor_motorola_sm6375-common" path="vendor/motorola/sm6375-common" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="LineageOS/android_kernel_motorola_sm6375" path="kernel/motorola/sm6375" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" revision="${{ github.event.inputs.android_branch }}" />
-            <project name="RisingOS-Revived/android_packages_apps_GameSpace" path="packages/apps/GameSpace" remote="github" revision="fifteen" />
-          </manifest>
-          MANIFEST
+          cp $GITHUB_WORKSPACE/manifests/fogos.xml .repo/local_manifests/fogos.xml
 
       - name: Sync Source Repositories
         run: |
@@ -117,7 +114,7 @@ jobs:
           ro.build.display.id=VirgoX-Elite-Gaming-OS-v1.0
           ro.virgox.version=1.0-EliteGaming
           ro.virgox.base=LineageOS
-          ro.virgox.target.android=17
+          ro.virgox.target.android=14
           ro.virgox.ram.support=4GB-8GB-Unified
           ro.virgox.maintainer=Prince · VirgoYT
           ro.surface_flinger.use_content_detection_for_refresh_rate=false
@@ -165,5 +162,5 @@ jobs:
           RELEASE_FILES+=("SHA256SUMS.txt")
 
           gh release create "VirgoX-Source-$(date +'%Y%m%d')" "${RELEASE_FILES[@]}" \
-            --title "👑 VirgoX Elite Gaming OS (Android 17 Source / payload.bin) — Motorola G45 / G34" \
-            --notes "Official VirgoX Elite Gaming OS 400GB+ full source compilation for Motorola Moto G45 5G / G34 5G (fogos). Includes official signed OTA with payload.bin, standalone payload.bin, VirgoYT Gaming Kernel, and dynamic 4GB/8GB RAM engine."
+            --title "👑 VirgoX Elite Gaming OS (Android 14 / LineageOS 21 Source) — Motorola G45 / G34" \
+            --notes "Official VirgoX Elite Gaming OS full source compilation for Motorola Moto G45 5G / G34 5G (fogos). Includes official signed OTA with payload.bin, standalone payload.bin, VirgoYT Gaming Kernel, and dynamic 4GB/8GB RAM engine."
