@@ -50,11 +50,12 @@ on boot
     write /sys/class/kgsl/kgsl-3d0/throttling 0
 
     # --------------------------------------------------------------------------
-    # 2. Input / Touch / Double-Tap-To-Wake
+    # 2. Input / Touch / Latency Delay (LAY_MS = 5 or lower) & DT2W
     # --------------------------------------------------------------------------
     write /sys/android_touch/double_tap_enable 1
     write /sys/devices/virtual/touch/touch_dev/double_tap 1
     write /sys/devices/virtual/touch/touch_dev/game_mode 1
+    write /sys/devices/virtual/touch/touch_dev/touch_delay_ms 5
 
     # --------------------------------------------------------------------------
     # 3. Memory & Virtual Memory (zRAM, Swappiness, MGLRU)
@@ -64,21 +65,25 @@ on boot
     write /proc/sys/vm/dirty_ratio 20
     write /proc/sys/vm/dirty_background_ratio 5
 
-    # Multi-Gen LRU (MGLRU) enablement if kernel supports
+    # Multi-Gen LRU (MGLRU) enablement
     write /sys/kernel/mm/lru_gen/enabled 7
     write /sys/kernel/mm/lru_gen/min_ttl_ms 1000
 
     # --------------------------------------------------------------------------
-    # 4. Network: TCP BBR & Gaming Socket Buffers
+    # 4. Network: TCP BBR / BBR2 & Ultra-Low Ping 26MB Socket Buffers
     # --------------------------------------------------------------------------
-    write /proc/sys/net/ipv4/tcp_congestion_control bbr
+    # Buffer sizes for zero packet drops and lowest ping
+    write /proc/sys/net/core/rmem_max 26214400
+    write /proc/sys/net/core/wmem_max 26214400
     write /proc/sys/net/core/default_qdisc fq
+    write /proc/sys/net/ipv4/tcp_rmem "4096 87380 134217728"
+    write /proc/sys/net/ipv4/tcp_wmem "4096 65536 134217728"
     write /proc/sys/net/ipv4/tcp_low_latency 1
     write /proc/sys/net/ipv4/tcp_fastopen 3
-    write /proc/sys/net/ipv4/tcp_rmem "4096 87380 6291456"
-    write /proc/sys/net/ipv4/tcp_wmem "4096 16384 4194304"
-    write /proc/sys/net/core/rmem_max 8388608
-    write /proc/sys/net/core/wmem_max 8388608
+
+    # Enable BBR2 with fallback to BBR
+    write /proc/sys/net/ipv4/tcp_congestion_control bbr2
+    write /proc/sys/net/ipv4/tcp_congestion_control bbr
 
 # ==============================================================================
 # Dynamic Performance Profiles (Quick Settings Tiles & FogOS PulseControl)

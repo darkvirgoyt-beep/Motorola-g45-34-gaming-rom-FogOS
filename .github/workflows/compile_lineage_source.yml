@@ -75,6 +75,11 @@ jobs:
           MANIFEST
 
       - name: Sync Source Repositories
+      - name: Apply Device Tree Overlays (Game Mode & QS Tiles)
+        run: |
+          cd /home/runner/work/lineage
+          mkdir -p device/motorola/fogos/overlay
+          cp -r $GITHUB_WORKSPACE/overlay/* device/motorola/fogos/overlay/ || true
         run: |
           cd /home/runner/work/lineage
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --depth=1

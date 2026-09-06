@@ -18,10 +18,10 @@ ro.vendor.qti.sys.perf.tuning=1
 persist.sys.game_mode=1
 ro.vendor.extension_library=libqti-perfd-client.so
 
-# --- DISPLAY, 120HZ LOCK & FRAME PACING (SWAPPY / VULKAN) ---
+# --- DISPLAY, 120HZ LOCK & TOUCH LATENCY (LAY_MS = 5) ---
 ro.surface_flinger.use_content_detection_for_refresh_rate=false
 ro.surface_flinger.set_idle_timer_ms=0
-ro.surface_flinger.set_touch_timer_ms=200
+ro.surface_flinger.set_touch_timer_ms=5
 ro.surface_flinger.set_display_power_timer_ms=0
 ro.surface_flinger.enable_frame_rate_override=true
 ro.surface_flinger.supports_background_blur=0
@@ -39,6 +39,7 @@ windowsmgr.max_events_per_sec=240
 touch.pressure.scale=0.001
 persist.sys.touch.latency_tuning=1
 persist.sys.touch.debounce_ms=0
+persist.sys.touch.delay_ms=5
 ro.vendor.touch.dt2w=1
 
 # --- ADRENO 619 GPU BOOST & RENDERING PIPELINE ---
@@ -71,20 +72,14 @@ persist.vendor.power.thermal_mitigation=0
 persist.sys.thermal.mitigation=0
 vendor.thermal.governor.tuning=gaming
 
-# --- NETWORK & LOW-PING MULTIPLAYER ---
-net.ipv4.tcp_congestion_control=bbr
+# --- NETWORK: TCP BBR2 & 26MB BUFFER SIZES FOR LOW PING ---
+net.core.rmem_max=26214400
+net.core.wmem_max=26214400
+net.ipv4.tcp_rmem=4096 87380 134217728
+net.ipv4.tcp_wmem=4096 65536 134217728
+net.ipv4.tcp_congestion_control=bbr2
 net.tcp.default_init_rwnd=60
 net.ipv4.tcp_low_latency=1
-
-# --- DISABLE BLOAT LOGGING, STATSD & TRACING ---
-debug.atrace.tags.enableflags=0
-persist.traced.enable=0
-logcat.live=disable
-profiler.force_disable_err_rpt=1
-profiler.force_disable_ulog=1
-ro.config.nocheckin=1
-ro.kernel.android.checkjni=0
-ro.kernel.checkjni=0
 
 # --- GOOGLE PLAY INTEGRITY & BANKING APPS SPOOFING ---
 ro.build.type=user
@@ -99,3 +94,13 @@ ro.boot.vbmeta.device_state=locked
 ro.warranty_bit=0
 ro.boot.warranty_bit=0
 ro.boot.selinux=enforcing
+
+# --- DISABLE BLOAT LOGGING, STATSD & TRACING ---
+debug.atrace.tags.enableflags=0
+persist.traced.enable=0
+logcat.live=disable
+profiler.force_disable_err_rpt=1
+profiler.force_disable_ulog=1
+ro.config.nocheckin=1
+ro.kernel.android.checkjni=0
+ro.kernel.checkjni=0
