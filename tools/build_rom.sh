@@ -118,9 +118,10 @@ if [ -f "$SYSTEM_IMG" ]; then
     # Convert to raw
     simg2img "$SYSTEM_IMG" "$WORK_DIR/extracted/system.raw.img" 2>/dev/null || cp "$SYSTEM_IMG" "$WORK_DIR/extracted/system.raw.img"
     
-    # Check and resize
+    # Check and resize filesystem cleanly
     sudo e2fsck -y -f "$WORK_DIR/extracted/system.raw.img" || true
-    sudo resize2fs "$WORK_DIR/extracted/system.raw.img" +100M || true
+    truncate -s +100M "$WORK_DIR/extracted/system.raw.img" 2>/dev/null || true
+    sudo resize2fs "$WORK_DIR/extracted/system.raw.img" || true
     
     # Mount
     MNT_DIR="$WORK_DIR/mnt_system"
@@ -134,7 +135,7 @@ if [ -f "$SYSTEM_IMG" ]; then
         SYS_ROOT="$MNT_DIR"
     fi
     
-    sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/overlay" "$SYS_ROOT/priv-app/FogOS-PulseControl"
+    sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/priv-app/FogOS-PulseControl" "$SYS_ROOT/media"
     
     if [ -f "$OUT_DIR/tools/FogOS-PulseControl.apk" ]; then
         echo "[*] Pre-installing FogOS-PulseControl into /system/priv-app/..."
@@ -158,33 +159,26 @@ if [ -f "$SYSTEM_IMG" ]; then
         fi
     fi
     
-    # Install compiled RRO overlay APKs (NOT raw XML — Android ignores raw XML overlays)
-    if [ -d "overlay/VirgoXFrameworkOverlay" ] || [ -d "overlay/VirgoXSystemUIOverlay" ]; then
-        sudo mkdir -p "$SYS_ROOT/product/overlay"
-        echo "[*] Note: RRO overlays must be compiled into APKs before injection."
-        echo "    Use 'aapt2 compile' + 'aapt2 link' or a full source build to produce APKs."
-        echo "    Raw XML overlay files are kept in the repo for source reference only."
-    fi
-
-    # Install custom boot animation if present
+    # Package custom boot animation if not yet compiled
     if [ ! -f "prebuilt/bootanimation/bootanimation.zip" ] && [ -f "bootanimation/desc.txt" ]; then
         echo "[*] Packaging custom bootanimation.zip from frames..."
         mkdir -p prebuilt/bootanimation
         (cd bootanimation && zip -r -0 ../prebuilt/bootanimation/bootanimation.zip desc.txt part0/ part1/ part2/ part3/ 2>/dev/null || true)
     fi
 
+    # Install custom boot animation into /system/media/
     if [ -f "prebuilt/bootanimation/bootanimation.zip" ]; then
-        echo "[*] Installing VirgoX custom boot animation..."
-        sudo mkdir -p "$SYS_ROOT/product/media"
-        sudo cp "prebuilt/bootanimation/bootanimation.zip" "$SYS_ROOT/product/media/bootanimation.zip"
-        sudo chmod 644 "$SYS_ROOT/product/media/bootanimation.zip"
+        echo "[*] Installing VirgoX custom boot animation into /system/media/..."
+        sudo mkdir -p "$SYS_ROOT/media"
+        sudo cp "prebuilt/bootanimation/bootanimation.zip" "$SYS_ROOT/media/bootanimation.zip"
+        sudo chmod 644 "$SYS_ROOT/media/bootanimation.zip"
     fi
 
-    # Install custom wallpapers if present
+    # Install custom wallpapers
     if [ -d "prebuilt/wallpapers" ]; then
         echo "[*] Installing VirgoX wallpapers..."
-        sudo mkdir -p "$SYS_ROOT/product/media/wallpaper"
-        sudo cp prebuilt/wallpapers/*.{jpg,png} "$SYS_ROOT/product/media/wallpaper/" 2>/dev/null || true
+        sudo mkdir -p "$SYS_ROOT/media/wallpaper"
+        sudo cp prebuilt/wallpapers/*.{jpg,png} "$SYS_ROOT/media/wallpaper/" 2>/dev/null || true
     fi
     
     sudo umount "$MNT_DIR"
@@ -199,7 +193,8 @@ if [ -f "$SYS_EXT_IMG" ] && [ -f "system_ext.prop" ]; then
     echo "[*] Injecting configs into system_ext.img..."
     simg2img "$SYS_EXT_IMG" "$WORK_DIR/extracted/system_ext.raw.img" 2>/dev/null || cp "$SYS_EXT_IMG" "$WORK_DIR/extracted/system_ext.raw.img"
     sudo e2fsck -y -f "$WORK_DIR/extracted/system_ext.raw.img" || true
-    sudo resize2fs "$WORK_DIR/extracted/system_ext.raw.img" +10M || true
+    truncate -s +20M "$WORK_DIR/extracted/system_ext.raw.img" 2>/dev/null || true
+    sudo resize2fs "$WORK_DIR/extracted/system_ext.raw.img" || true
     
     MNT_EXT="$WORK_DIR/mnt_system_ext"
     mkdir -p "$MNT_EXT"
@@ -216,6 +211,31 @@ if [ -f "$SYS_EXT_IMG" ] && [ -f "system_ext.prop" ]; then
     rm "$SYS_EXT_IMG"
     img2simg "$WORK_DIR/extracted/system_ext.raw.img" "$SYS_EXT_IMG" || mv "$WORK_DIR/extracted/system_ext.raw.img" "$SYS_EXT_IMG"
     rm -f "$WORK_DIR/extracted/system_ext.raw.img"
+fi
+
+PRODUCT_IMG="$WORK_DIR/extracted/product.img"
+if [ -f "$PRODUCT_IMG" ]; then
+    echo "[*] Injecting boot animation and configs into product.img..."
+    simg2img "$PRODUCT_IMG" "$WORK_DIR/extracted/product.raw.img" 2>/dev/null || cp "$PRODUCT_IMG" "$WORK_DIR/extracted/product.raw.img"
+    sudo e2fsck -y -f "$WORK_DIR/extracted/product.raw.img" || true
+    truncate -s +50M "$WORK_DIR/extracted/product.raw.img" 2>/dev/null || true
+    sudo resize2fs "$WORK_DIR/extracted/product.raw.img" || true
+    
+    MNT_PROD="$WORK_DIR/mnt_product"
+    mkdir -p "$MNT_PROD"
+    sudo mount -o loop,rw "$WORK_DIR/extracted/product.raw.img" "$MNT_PROD"
+    
+    if [ -f "prebuilt/bootanimation/bootanimation.zip" ]; then
+        sudo mkdir -p "$MNT_PROD/media"
+        sudo cp "prebuilt/bootanimation/bootanimation.zip" "$MNT_PROD/media/bootanimation.zip"
+        sudo chmod 644 "$MNT_PROD/media/bootanimation.zip"
+    fi
+    
+    sudo umount "$MNT_PROD"
+    
+    rm "$PRODUCT_IMG"
+    img2simg "$WORK_DIR/extracted/product.raw.img" "$PRODUCT_IMG" || mv "$WORK_DIR/extracted/product.raw.img" "$PRODUCT_IMG"
+    rm -f "$WORK_DIR/extracted/product.raw.img"
 fi
 
 # Copy Flasher scripts
