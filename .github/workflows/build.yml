@@ -1,0 +1,99 @@
+name: FogOS Gaming ROM - Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release version tag (e.g. v1.0-gaming)'
+        required: false
+        default: 'v1.0-gaming'
+      prerelease:
+        description: 'Mark as pre-release / beta'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  build:
+    name: Build FogOS Gaming ROM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Free Runner Disk Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          df -h
+
+      - name: Checkout FogOS ROM Builder
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies & Payload Dumper
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip zip wget
+          curl -sL https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin/
+          payload-dumper-go --version
+
+      - name: Build FogOS Gaming ROM
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x tools/build_rom.sh
+          ./tools/build_rom.sh
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ github.event.inputs.release_tag }}"
+          [ -z "$TAG" ] && TAG="FogOS-v1.0-$(date +'%Y%m%d')"
+
+          PRERELEASE_FLAG=""
+          if [ "${{ github.event.inputs.prerelease }}" = "true" ]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+
+          ZIP_FILE=$(ls FogOS-*.zip | head -n 1)
+
+          gh release create "$TAG" "$ZIP_FILE" out/boot.img out/SHA256SUMS.txt out/FogOS-PulseControl.apk \
+            --title "👑 FogOS Gaming Edition v1.0 — Motorola G45 / G34 5G (fogos)" \
+            --notes "### 🚀 FogOS Gaming Edition v1.0 for Motorola Moto G45 5G / G34 5G (fogos)
+**Developer & Maintainer:** Prince · VirgoYT (@darkvirgoyt-beep)
+**Base:** Android 14 / Holi SM6375 Platform
+
+---
+
+### 🎮 Gaming Features & Optimizations:
+* **Embedded VirgoYT Gaming Kernel:** Optimized scheduler, touchboost, and overclocked Adreno 619 GPU pipeline.
+* **120Hz Refresh Rate Lock:** Enforced display refresh rate without dynamic drops in games.
+* **240Hz Touch Sampling Rate:** Ultra-low touch latency for BGMI, PUBG, and COD Mobile.
+* **Game Spoofing Profiles:** ROG Phone 8 Pro device profile spoofing to unlock 90 FPS / 120 FPS graphics settings.
+* **Thermal Engine Override:** Prevents thermal downclocking at 42°C.
+* **zRAM LZ4 Tuning:** Enhanced background app holding and memory compression for 4GB/8GB models.
+* **PulseControl App Preloaded:** On-the-fly gaming profile switcher and monitoring.
+
+---
+
+### 📦 Flashing Instructions:
+1. Extract the downloaded ZIP package on your PC.
+2. Reboot your Motorola G45 into Bootloader / Fastboot mode (\`Power + Volume Down\`).
+3. Connect your phone via USB.
+4. **Windows:** Double-click \`flash_all.bat\`.
+5. **Linux / Mac:** Run \`chmod +x flash_all.sh && ./flash_all.sh\`.
+6. Select **Y** to format userdata if this is your first time flashing.
+7. Reboot and enjoy smooth high-FPS gaming!
+
+---
+*Credits to Prince · VirgoYT707 and the SM6375 Dev Community.*" \
+            $PRERELEASE_FLAG
