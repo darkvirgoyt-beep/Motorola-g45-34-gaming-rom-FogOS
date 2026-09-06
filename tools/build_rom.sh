@@ -16,38 +16,32 @@ echo "                   Developer: Prince · VirgoYT"
 echo "=============================================================================="
 
 # 1. Obtain Base ROM for fogos
-echo "[1/7] Obtaining base ROM for fogos..."
-
-# ── Configure base ROM source ──
-# Set BASE_ROM_PATH to a local zip, or BASE_ROM_URL to a direct download link.
-# fogos is NOT available on official LineageOS downloads, so we need an
-# unofficial LineageOS/EvoX build or a local file.
-#
-# Examples:
-#   export BASE_ROM_PATH="/path/to/lineage-23.2-fogos-unofficial.zip"
-#   export BASE_ROM_URL="https://sourceforge.net/.../lineage-23.2-fogos.zip"
-#   export BASE_ROM_URL="https://github.com/user/repo/releases/download/v1/base.zip"
+echo "[1/7] Fetching base ROM for fogos..."
 
 if [ -n "$BASE_ROM_PATH" ] && [ -f "$BASE_ROM_PATH" ]; then
-    echo "[*] Using local base ROM: $BASE_ROM_PATH"
+    echo "[*] Using local base ROM override: $BASE_ROM_PATH"
     cp "$BASE_ROM_PATH" "$WORK_DIR/base_rom.zip"
 elif [ -n "$BASE_ROM_URL" ]; then
-    echo "[*] Downloading base ROM from: $BASE_ROM_URL"
+    echo "[*] Downloading base ROM override from: $BASE_ROM_URL"
     curl -L "$BASE_ROM_URL" -o "$WORK_DIR/base_rom.zip"
 else
-    echo "[!] ERROR: No base ROM configured."
-    echo "    fogos is not available on official LineageOS downloads."
-    echo ""
-    echo "    Set one of these environment variables before running:"
-    echo "      export BASE_ROM_PATH=\"/path/to/base-rom-fogos.zip\""
-    echo "      export BASE_ROM_URL=\"https://example.com/base-rom-fogos.zip\""
-    echo ""
-    echo "    Use any unofficial LineageOS or Evolution X build for fogos (Android 17)."
-    exit 1
+    echo "[*] Querying latest official LineageOS base ROM for fogos..."
+    BUILDS_JSON=$(curl -s "https://download.lineageos.org/api/v2/devices/fogos/builds" || true)
+    LATEST_ZIP_URL=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .url' 2>/dev/null || true)
+    LATEST_ZIP_NAME=$(echo "$BUILDS_JSON" | jq -r '.[0].files[] | select(.filename | endswith(".zip")) | .filename' 2>/dev/null || true)
+
+    if [ -z "$LATEST_ZIP_URL" ] || [ "$LATEST_ZIP_URL" == "null" ]; then
+        echo "[!] LineageOS API unavailable or empty, falling back to direct nightly mirror..."
+        LATEST_ZIP_URL="https://mirrorbits.lineageos.org/full/fogos/20260905/lineage-23.2-20260905-nightly-fogos-signed.zip"
+        LATEST_ZIP_NAME="lineage-23.2-20260905-nightly-fogos-signed.zip"
+    fi
+
+    echo "[*] Downloading base ROM: $LATEST_ZIP_NAME"
+    curl -L --retry 3 --retry-delay 5 "$LATEST_ZIP_URL" -o "$WORK_DIR/base_rom.zip"
 fi
 
 if [ ! -f "$WORK_DIR/base_rom.zip" ]; then
-    echo "[!] Base ROM zip not found. Exiting."
+    echo "[!] ERROR: Failed to obtain base ROM zip. Exiting."
     exit 1
 fi
 echo "[*] Base ROM ready: $(du -h "$WORK_DIR/base_rom.zip" | cut -f1)"
@@ -173,6 +167,12 @@ if [ -f "$SYSTEM_IMG" ]; then
     fi
 
     # Install custom boot animation if present
+    if [ ! -f "prebuilt/bootanimation/bootanimation.zip" ] && [ -f "bootanimation/desc.txt" ]; then
+        echo "[*] Packaging custom bootanimation.zip from frames..."
+        mkdir -p prebuilt/bootanimation
+        (cd bootanimation && zip -r -0 ../prebuilt/bootanimation/bootanimation.zip desc.txt part0/ part1/ part2/ part3/ 2>/dev/null || true)
+    fi
+
     if [ -f "prebuilt/bootanimation/bootanimation.zip" ]; then
         echo "[*] Installing VirgoX custom boot animation..."
         sudo mkdir -p "$SYS_ROOT/product/media"
@@ -252,7 +252,7 @@ unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" "payload_properties.txt" "car
 cp "$WORK_DIR/payload.bin" "$OUT_DIR/payload.bin"
 [ -f "$OTA_PKG_DIR/payload_properties.txt" ] && cp "$OTA_PKG_DIR/payload_properties.txt" "$OUT_DIR/payload_properties.txt"
 
-OFFICIAL_OTA_ZIP="VirgoX-Elite-GamingOS-v${VIRGOX_VERSION}-fogos-Android17-${BUILD_DATE}-OTA.zip"
+OFFICIAL_OTA_ZIP="VirgoX-Elite-GamingOS-v${VIRGOX_VERSION}-fogos-Android17-${BUILD_DATE}-Official-OTA.zip"
 cd "$OTA_PKG_DIR"
 zip -r -0 "../$OFFICIAL_OTA_ZIP" ./*
 cd "$WORK_DIR/.."
