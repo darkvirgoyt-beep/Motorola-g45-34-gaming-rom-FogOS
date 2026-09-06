@@ -67,8 +67,9 @@ jobs:
             PRERELEASE_FLAG="--prerelease"
           fi
 
-          ZIP_FILE=$(ls FogOS-*.zip | grep -v -- '-sideload.zip' | head -n 1)
-          SIDELOAD_ZIP=$(ls FogOS-*-sideload.zip | head -n 1)
+          ZIP_FILE=$(ls FogOS-*.zip | grep -v -- '-sideload.zip' | grep -v -- '-Official-OTA.zip' | head -n 1)
+          SIDELOAD_ZIP=$(ls FogOS-*-sideload.zip 2>/dev/null | head -n 1)
+          OTA_ZIP=$(ls FogOS-*-Official-OTA.zip 2>/dev/null | head -n 1)
 
           cat << 'NOTES' > release_notes.md
           ### 🚀 FogOS Elite Gaming Edition v1.0 — Motorola Moto G45 5G / G34 5G (fogos)
@@ -133,6 +134,9 @@ jobs:
 
           # Collect release assets
           RELEASE_ASSETS=("$ZIP_FILE" "out/boot.img" "out/SHA256SUMS.txt")
+          [ -n "$OTA_ZIP" ] && [ -f "$OTA_ZIP" ] && RELEASE_ASSETS+=("$OTA_ZIP")
+          [ -f "out/payload.bin" ] && RELEASE_ASSETS+=("out/payload.bin")
+          [ -f "out/payload_properties.txt" ] && RELEASE_ASSETS+=("out/payload_properties.txt")
           [ -f "out/vbmeta.img" ] && RELEASE_ASSETS+=("out/vbmeta.img")
           [ -f "out/vbmeta_system.img" ] && RELEASE_ASSETS+=("out/vbmeta_system.img")
           [ -f "out/dtbo.img" ] && RELEASE_ASSETS+=("out/dtbo.img")

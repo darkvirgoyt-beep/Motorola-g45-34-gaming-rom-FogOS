@@ -102,12 +102,29 @@ zip -r -9 "../$RELEASE_ZIP_NAME" ./*
 
 cd "$WORK_DIR/.."
 
-# 8. Build Sideload OTA package (adb apply update compatible)
-echo "[8/8] Building FogOS Sideload OTA package (adb sideload)..."
+echo "[8/9] Building FogOS Sideload OTA package (adb sideload)..."
 FOGOS_BASE_ZIP="$WORK_DIR/base_rom.zip" bash tools/make_sideload_ota.sh
+
+# 9. Build Official Android A/B OTA package with payload.bin and correct structure
+echo "[9/9] Assembling Official Android A/B OTA package with payload.bin..."
+OTA_PKG_DIR="$WORK_DIR/official_ota"
+mkdir -p "$OTA_PKG_DIR"
+unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" "payload_properties.txt" "care_map.pb" "apex_info.pb" "META-INF/*" -d "$OTA_PKG_DIR" || true
+
+# Copy standalone payload.bin to output directory so users can download raw payload.bin directly
+cp "$WORK_DIR/payload.bin" "$OUT_DIR/payload.bin"
+[ -f "$OTA_PKG_DIR/payload_properties.txt" ] && cp "$OTA_PKG_DIR/payload_properties.txt" "$OUT_DIR/payload_properties.txt"
+
+OFFICIAL_OTA_ZIP="FogOS-v1.0-EliteGaming-fogos-VirgoYT-${BUILD_DATE}-Official-OTA.zip"
+cd "$OTA_PKG_DIR"
+zip -r -0 "../$OFFICIAL_OTA_ZIP" ./*
+cd "$WORK_DIR/.."
+mv "$WORK_DIR/$OFFICIAL_OTA_ZIP" "./$OFFICIAL_OTA_ZIP"
 
 echo "=============================================================================="
 echo "[SUCCESS] FogOS Elite Gaming ROM built successfully!"
 echo "Fastboot package: $RELEASE_ZIP_NAME"
+echo "Official OTA package (payload.bin): $OFFICIAL_OTA_ZIP"
 echo "Sideload package: $(ls FogOS-*-sideload.zip 2>/dev/null | head -n 1)"
+echo "Standalone payload.bin: out/payload.bin"
 echo "=============================================================================="

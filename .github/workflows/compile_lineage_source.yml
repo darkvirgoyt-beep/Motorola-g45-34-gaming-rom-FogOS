@@ -147,6 +147,22 @@ jobs:
         run: |
           cd /home/runner/work/lineage/out/target/product/fogos
           ROM_ZIP=$(ls lineage-*-fogos.zip | head -n 1)
-          gh release create "FogOS-Source-$(date +'%Y%m%d')" "$ROM_ZIP" boot.img \
-            --title "👑 FogOS Elite Gaming Edition (Android 17 / Lineage Base) — Motorola G45 / G34 (4GB/8GB)" \
-            --notes "FogOS Elite Gaming Edition compiled from source for Motorola Moto G45 5G / G34 5G (fogos). Includes VirgoYT Gaming Kernel, Dynamic 4GB/8GB RAM Optimizer, Aim precision engine, and GameSpace."
+
+          # Extract payload.bin and metadata directly from the compiled source package
+          mkdir -p payload_out
+          unzip -q -o "$ROM_ZIP" "payload.bin" "payload_properties.txt" "care_map.pb" "apex_info.pb" -d payload_out/ || true
+
+          RELEASE_FILES=("$ROM_ZIP" "boot.img")
+          [ -f "payload_out/payload.bin" ] && RELEASE_FILES+=("payload_out/payload.bin")
+          [ -f "payload_out/payload_properties.txt" ] && RELEASE_FILES+=("payload_out/payload_properties.txt")
+          [ -f "recovery.img" ] && RELEASE_FILES+=("recovery.img")
+          [ -f "dtbo.img" ] && RELEASE_FILES+=("dtbo.img")
+          [ -f "vendor_boot.img" ] && RELEASE_FILES+=("vendor_boot.img")
+          [ -f "super_empty.img" ] && RELEASE_FILES+=("super_empty.img")
+
+          sha256sum "${RELEASE_FILES[@]}" > SHA256SUMS.txt
+          RELEASE_FILES+=("SHA256SUMS.txt")
+
+          gh release create "FogOS-Source-$(date +'%Y%m%d')" "${RELEASE_FILES[@]}" \
+            --title "👑 FogOS Elite Gaming Edition (Android 17 Source / payload.bin) — Motorola G45 / G34" \
+            --notes "Official LineageOS/FogOS 400GB+ full source compilation for Motorola Moto G45 5G / G34 5G (fogos). Includes official signed OTA with payload.bin, standalone payload.bin, VirgoYT Gaming Kernel, and dynamic 4GB/8GB RAM engine."
