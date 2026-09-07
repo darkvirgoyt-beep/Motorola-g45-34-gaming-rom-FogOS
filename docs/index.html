@@ -472,6 +472,276 @@
       box-shadow: var(--cyan-glow);
     }
 
+    /* Phone Mockup Frame (Moto G45 20:9 Aspect) */
+    .phone-mockup-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 740px;
+      background: #070a12;
+      border-radius: 42px;
+      border: 3px solid rgba(0, 229, 255, 0.4);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    .phone-punchhole {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: #000;
+      border: 2px solid #1a2333;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .phone-status-bar {
+      height: 38px;
+      padding: 6px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #e0f2fe;
+      z-index: 5;
+      background: linear-gradient(to bottom, rgba(7, 10, 18, 0.95), transparent);
+    }
+
+    .status-left, .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fps-pill {
+      background: rgba(0, 255, 102, 0.15);
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .phone-screen-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--cyan) transparent;
+    }
+
+    /* Quick Settings Drawer in Simulator */
+    .qs-panel {
+      background: rgba(16, 23, 38, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 20px;
+      padding: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .qs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .qs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .qs-tile {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .qs-tile i {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: var(--text-dim);
+      display: block;
+      transition: all 0.25s;
+    }
+
+    .qs-tile span {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-dim);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .qs-tile.active {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
+    }
+
+    .qs-tile.active i {
+      color: var(--cyan);
+      transform: scale(1.1);
+    }
+
+    .qs-tile.active span {
+      color: #fff;
+    }
+
+    .qs-tile.magenta.active {
+      background: rgba(255, 0, 127, 0.15);
+      border-color: var(--magenta);
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.35);
+    }
+
+    .qs-tile.magenta.active i {
+      color: var(--magenta);
+    }
+
+    /* Game Space HUD Overlay */
+    .gamespace-hud {
+      background: linear-gradient(135deg, rgba(16, 23, 38, 0.95), rgba(7, 10, 18, 0.98));
+      border: 1px solid var(--border-magenta);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.2);
+    }
+
+    .hud-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--magenta);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .hud-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .hud-metric-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .hud-metric-box .label {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .hud-metric-box .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: #00ff66;
+      margin-top: 4px;
+    }
+
+    /* Icon Pack Grid Gallery */
+    .icon-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin: 25px 0;
+    }
+
+    .icon-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--magenta);
+      box-shadow: var(--magenta-glow);
+    }
+
+    .icon-svg-wrapper {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(255, 0, 127, 0.1));
+      border: 1.5px solid var(--border-cyan);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+      transition: all 0.3s;
+    }
+
+    .icon-card:hover .icon-svg-wrapper {
+      transform: scale(1.1) rotate(5deg);
+      border-color: var(--magenta);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+    }
+
+    .icon-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .icon-sub {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .icon-badge-pill {
+      display: inline-block;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--cyan);
+      margin-top: 6px;
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -563,6 +833,15 @@
       </button>
       <button class="tab-btn" onclick="switchTab('bootanim')">
         <i class="fas fa-film"></i> Boot Animation
+      </button>
+      <button class="tab-btn" onclick="switchTab('uipreview')">
+        <i class="fas fa-mobile-screen"></i> System UI
+      </button>
+      <button class="tab-btn" onclick="switchTab('appspreview')">
+        <i class="fas fa-gamepad"></i> Game Space & Apps
+      </button>
+      <button class="tab-btn" onclick="switchTab('iconspreview')">
+        <i class="fas fa-icons"></i> Neon Icons
       </button>
       <button class="tab-btn" onclick="switchTab('app')">
         <i class="fas fa-mobile-alt"></i> Android App / PWA
@@ -723,6 +1002,342 @@
           </a>
         </div>
       </div>
+    <!-- TAB: SYSTEM UI PREVIEW -->
+    <div id="tab-uipreview" class="tab-content">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 class="card-title" style="color: var(--cyan); font-size: 24px;">📱 Interactive System UI & Quick Settings Preview</h3>
+        <p class="card-desc">Simulated Motorola Moto G45 5G (fogos) 20:9 120Hz Cyber-Neon Interface. Tap any quick tile or switch to test live reactions!</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 12px;">
+          <button class="nav-btn primary" onclick="setPhoneView('qs')"><i class="fas fa-sliders"></i> Quick Settings Mode</button>
+          <button class="nav-btn" onclick="setPhoneView('ambient')"><i class="fas fa-clock"></i> Ambient Lock Screen</button>
+        </div>
+      </div>
+
+      <div class="phone-mockup-wrapper">
+        <div class="phone-frame">
+          <div class="phone-punchhole"></div>
+          
+          <!-- Status Bar -->
+          <div class="phone-status-bar">
+            <div class="status-left">
+              <span id="phoneClock">14:55</span>
+              <span class="fps-pill"><i class="fas fa-bolt"></i> 120Hz</span>
+            </div>
+            <div class="status-right">
+              <span><i class="fas fa-gamepad" style="color: var(--magenta);"></i></span>
+              <span><i class="fas fa-wifi"></i></span>
+              <span>5G</span>
+              <span><i class="fas fa-battery-full" style="color: var(--cyan);"></i> 98%</span>
+            </div>
+          </div>
+
+          <!-- Screen Content -->
+          <div class="phone-screen-content">
+            
+            <!-- VIEW: Quick Settings -->
+            <div id="phoneViewQS">
+              <div class="qs-panel">
+                <div class="qs-header">
+                  <span><i class="fas fa-shield-halved" style="color: var(--cyan);"></i> VIRGOX GAMING CORE</span>
+                  <span style="color: #00ff66; font-size: 10px;">● BOOST ACTIVE</span>
+                </div>
+                
+                <div class="qs-grid">
+                  <div class="qs-tile magenta active" onclick="toggleQs(this, 'Game Turbo')">
+                    <i class="fas fa-rocket"></i>
+                    <span>Game Turbo</span>
+                  </div>
+                  <div class="qs-tile active" onclick="toggleQs(this, '120Hz Lock')">
+                    <i class="fas fa-bolt"></i>
+                    <span>120Hz Lock</span>
+                  </div>
+                  <div class="qs-tile active" onclick="toggleQs(this, 'Bypass Charge')">
+                    <i class="fas fa-plug-circle-bolt"></i>
+                    <span>Bypass Chg</span>
+                  </div>
+                  <div class="qs-tile magenta active" onclick="toggleQs(this, '240Hz Touch')">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>240Hz Touch</span>
+                  </div>
+                  <div class="qs-tile active" onclick="toggleQs(this, 'Direct Audio')">
+                    <i class="fas fa-headphones-simple"></i>
+                    <span>Direct PCM</span>
+                  </div>
+                  <div class="qs-tile active" onclick="toggleQs(this, 'AMOLED Pure')">
+                    <i class="fas fa-moon"></i>
+                    <span>AMOLED Dark</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notifications / Quick Player in Simulator -->
+              <div class="qs-panel" style="margin-top: 14px; background: rgba(7, 10, 18, 0.9);">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <div style="width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #00e5ff, #ff007f); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fas fa-music"></i>
+                  </div>
+                  <div style="flex: 1;">
+                    <div style="font-size: 12px; font-weight: 700; color: #fff;">Cyberpunk 2077 OST</div>
+                    <div style="font-size: 10px; color: var(--cyan);">Low Latency Direct PCM · 24-bit 96kHz</div>
+                  </div>
+                  <div>
+                    <i class="fas fa-backward-step" style="color: var(--text-dim); margin-right: 8px; cursor: pointer;"></i>
+                    <i class="fas fa-play" style="color: var(--cyan); cursor: pointer;"></i>
+                    <i class="fas fa-forward-step" style="color: var(--text-dim); margin-left: 8px; cursor: pointer;"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div id="simToast" style="text-align: center; font-size: 11px; color: var(--cyan); background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border-cyan); border-radius: 8px; padding: 6px; margin-top: 12px; display: none;">
+                Tile Toggled
+              </div>
+            </div>
+
+            <!-- VIEW: Ambient Lock Screen -->
+            <div id="phoneViewAmbient" style="display: none; text-align: center; padding-top: 50px;">
+              <div style="font-family: 'Orbitron', sans-serif; font-size: 54px; font-weight: 900; color: var(--cyan); text-shadow: var(--cyan-glow); line-height: 1;">
+                14:55
+              </div>
+              <div style="font-size: 13px; color: var(--text-dim); margin-top: 6px; letter-spacing: 2px;">
+                MONDAY, SEPTEMBER 7
+              </div>
+              <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+                <div style="background: rgba(16, 23, 38, 0.8); border: 1px solid var(--border-cyan); border-radius: 12px; padding: 10px 16px;">
+                  <div style="font-size: 10px; color: var(--text-dim);">BATTERY</div>
+                  <div style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #00ff66; font-weight: 700;">98%</div>
+                </div>
+                <div style="background: rgba(16, 23, 38, 0.8); border: 1px solid var(--border-magenta); border-radius: 12px; padding: 10px 16px;">
+                  <div style="font-size: 10px; color: var(--text-dim);">SOC TEMP</div>
+                  <div style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--magenta); font-weight: 700;">36.5°C</div>
+                </div>
+              </div>
+              <div style="margin-top: 80px; font-size: 28px; color: var(--cyan); animation: pulse 2s infinite;">
+                <i class="fas fa-fingerprint"></i>
+              </div>
+              <div style="font-size: 10px; color: var(--text-dim); margin-top: 8px;">TAP SENSOR TO UNLOCK</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: GAME SPACE & APPS PREVIEW -->
+    <div id="tab-appspreview" class="tab-content">
+      <div style="text-align: center; margin-bottom: 25px;">
+        <h3 class="card-title" style="color: var(--magenta); font-size: 24px;">🎮 VirgoX Game Space & Companion App Suite</h3>
+        <p class="card-desc">Hardware-level Snapdragon 695 5G performance tuning, floating gaming HUD, and custom controller controls.</p>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+        
+        <!-- Game Space HUD Simulator -->
+        <div class="card highlight-magenta">
+          <div class="hud-title">
+            <i class="fas fa-crosshairs"></i> VIRGOX IN-GAME FLOATING HUD
+          </div>
+          <p class="card-desc" style="margin-bottom: 14px;">Real-time low-overhead telemetry overlay rendered in Vulkan/OpenGL during gameplay:</p>
+          
+          <div class="hud-metrics">
+            <div class="hud-metric-box">
+              <div class="label">Display Rate</div>
+              <div class="value" id="hudFpsVal">120 FPS</div>
+            </div>
+            <div class="hud-metric-box">
+              <div class="label">Snapdragon Temp</div>
+              <div class="value" id="hudTempVal" style="color: #ffaa00;">36.8°C</div>
+            </div>
+            <div class="hud-metric-box">
+              <div class="label">Adreno 619 Clock</div>
+              <div class="value" style="color: var(--cyan);">840 MHz</div>
+            </div>
+            <div class="hud-metric-box">
+              <div class="label">Touch Latency</div>
+              <div class="value" style="color: var(--magenta);">3.8 ms</div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="nav-btn" style="justify-content: space-between; font-size: 12px;" onclick="simulateHudAction('Notification Blocker')">
+              <span><i class="fas fa-bell-slash"></i> Block Heads-up Notifications</span>
+              <span style="color: #00ff66;">ENABLED</span>
+            </button>
+            <button class="nav-btn" style="justify-content: space-between; font-size: 12px;" onclick="simulateHudAction('Touch Palm Rejection')">
+              <span><i class="fas fa-hand"></i> Edge Mistouch Prevention</span>
+              <span style="color: #00ff66;">ACTIVE</span>
+            </button>
+            <button class="nav-btn" style="justify-content: space-between; font-size: 12px;" onclick="simulateHudAction('Instant Memory Purge')">
+              <span><i class="fas fa-broom"></i> 1-Tap RAM Purge (Free 1.8GB)</span>
+              <span style="color: var(--cyan);">OPTIMIZE</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- VirgoX Controller Native App Mockup -->
+        <div class="card highlight">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div class="card-title" style="color: var(--cyan); margin: 0;">
+              <i class="fas fa-sliders"></i> VirgoX Controller App
+            </div>
+            <span class="brand-badge">v1.0 Native</span>
+          </div>
+          
+          <p class="card-desc" style="margin-bottom: 15px;">Hardware frequency governor & kernel parameters tuning:</p>
+
+          <div style="margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+              <span>CPU Performance Profile</span>
+              <span id="govLabel" style="color: var(--cyan); font-weight: 700;">GAMING TURBO</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="copy-btn" onclick="setProfile('Power Save', '1.2 GHz', '#00ff66')">Power Save</button>
+              <button class="copy-btn" onclick="setProfile('Balanced', '1.8 GHz', '#00e5ff')">Balanced</button>
+              <button class="copy-btn" style="background: var(--magenta); color: #fff;" onclick="setProfile('Gaming Turbo', '2.21 GHz', '#ff007f')">Turbo (Max)</button>
+            </div>
+          </div>
+
+          <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+              <span>Kryo 660 Gold (2x A78)</span>
+              <span id="goldClock" style="font-family: 'JetBrains Mono', monospace; color: #00ff66;">2208 MHz</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+              <span>Kryo 660 Silver (6x A55)</span>
+              <span style="font-family: 'JetBrains Mono', monospace; color: var(--cyan);">1804 MHz</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px;">
+              <span>ZRAM LZ4 Swap Allocation</span>
+              <span style="font-family: 'JetBrains Mono', monospace; color: var(--magenta);">4096 MB Active</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-download" style="flex: 1; padding: 8px 12px; font-size: 12px;" onclick="alert('VirgoX Controller: Root command issued -> Rebooting into Recovery!')">
+              <i class="fas fa-rotate"></i> Reboot Recovery
+            </button>
+            <button class="btn-download magenta" style="flex: 1; padding: 8px 12px; font-size: 12px;" onclick="alert('VirgoX Controller: Root command issued -> Rebooting into Bootloader!')">
+              <i class="fas fa-terminal"></i> Reboot FastbootD
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB: NEON APP ICONS PREVIEW -->
+    <div id="tab-iconspreview" class="tab-content">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 class="card-title" style="color: var(--cyan); font-size: 24px;">✨ VirgoX Cyber Neon App Icon Pack</h3>
+        <p class="card-desc">Custom handcrafted adaptive vector icon pack designed for 120Hz AMOLED high-contrast gaming. Click any icon to view package details!</p>
+        
+        <!-- Wallpaper Background Selector -->
+        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 15px; flex-wrap: wrap;">
+          <span style="font-size: 12px; color: var(--text-dim); align-self: center; margin-right: 6px;">Preview Wallpaper:</span>
+          <button class="copy-btn" onclick="setIconBg('#070a12')">Cyber Void Black</button>
+          <button class="copy-btn" onclick="setIconBg('#0a192f')">Deep Navy Space</button>
+          <button class="copy-btn" onclick="setIconBg('linear-gradient(135deg, #1f0b35, #070a12)')">Purple Cyberpunk</button>
+          <button class="copy-btn" onclick="setIconBg('linear-gradient(135deg, #002b36, #070a12)')">Matrix Dark Cyan</button>
+        </div>
+      </div>
+
+      <!-- Icon Gallery Grid -->
+      <div id="iconGridContainer" class="icon-gallery-grid">
+        
+        <div class="icon-card" onclick="inspectIcon('Phone Dialer', 'com.android.dialer', 'Ultra-low latency dialer with cyber neon dial pad')">
+          <div class="icon-svg-wrapper"><i class="fas fa-phone" style="color: #00e5ff;"></i></div>
+          <div class="icon-title">Phone</div>
+          <div class="icon-sub">dialer</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Messages', 'com.google.android.apps.messaging', 'Neon magenta message bubbles with instant SMS bypass')">
+          <div class="icon-svg-wrapper"><i class="fas fa-comment-dots" style="color: #ff007f;"></i></div>
+          <div class="icon-title">Messages</div>
+          <div class="icon-sub">messaging</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Aperture Camera', 'org.lineageos.aperture', 'Moto G45 50MP Quad-Pixel hardware optical tuning')">
+          <div class="icon-svg-wrapper"><i class="fas fa-camera" style="color: #00ff66;"></i></div>
+          <div class="icon-title">Camera</div>
+          <div class="icon-sub">aperture</div>
+          <div class="icon-badge-pill">50MP Mod</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('System Settings', 'com.android.settings', 'Complete VirgoX customization hub with cyber categories')">
+          <div class="icon-svg-wrapper"><i class="fas fa-gear" style="color: #ffaa00;"></i></div>
+          <div class="icon-title">Settings</div>
+          <div class="icon-sub">settings</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Gallery 3D', 'com.android.gallery3d', 'Hardware-accelerated 120Hz smooth photo and RAW viewer')">
+          <div class="icon-svg-wrapper"><i class="fas fa-images" style="color: #8a2be2;"></i></div>
+          <div class="icon-title">Gallery</div>
+          <div class="icon-sub">gallery3d</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('VirgoX Game Space', 'com.virgox.gamespace', 'Esports gaming HUD with FPS counters and touch booster')">
+          <div class="icon-svg-wrapper"><i class="fas fa-gamepad" style="color: #ff007f;"></i></div>
+          <div class="icon-title">Game Space</div>
+          <div class="icon-sub">gamespace</div>
+          <div class="icon-badge-pill">Exclusive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('VirgoX Controller', 'com.virgox.controller', 'Kernel manager, CPU/GPU clock switcher and ROM updater')">
+          <div class="icon-svg-wrapper"><i class="fas fa-sliders" style="color: #00e5ff;"></i></div>
+          <div class="icon-title">Controller</div>
+          <div class="icon-sub">controller</div>
+          <div class="icon-badge-pill">System App</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Neon Audio / Music', 'org.lineageos.eleven', '24-bit 96kHz lossless DSP engine with cyberpunk visualizer')">
+          <div class="icon-svg-wrapper"><i class="fas fa-music" style="color: #00ff66;"></i></div>
+          <div class="icon-title">Music</div>
+          <div class="icon-sub">audio-dsp</div>
+          <div class="icon-badge-pill">Hi-Res</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Chromium Browser', 'org.chromium.chrome', 'V8 JIT accelerated web browser with adblock engine')">
+          <div class="icon-svg-wrapper"><i class="fas fa-globe" style="color: #00e5ff;"></i></div>
+          <div class="icon-title">Chromium</div>
+          <div class="icon-sub">chrome</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Cyber Terminal', 'com.virgox.terminal', 'Full Linux shell with root access and bash/zsh support')">
+          <div class="icon-svg-wrapper"><i class="fas fa-terminal" style="color: #00ff66;"></i></div>
+          <div class="icon-title">Terminal</div>
+          <div class="icon-sub">root-cli</div>
+          <div class="icon-badge-pill">Root</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('Files Manager', 'com.android.documentsui', 'Modern dual-pane document manager with root folder explorer')">
+          <div class="icon-svg-wrapper"><i class="fas fa-folder-open" style="color: #ffaa00;"></i></div>
+          <div class="icon-title">Files</div>
+          <div class="icon-sub">documentsui</div>
+          <div class="icon-badge-pill">Adaptive</div>
+        </div>
+
+        <div class="icon-card" onclick="inspectIcon('KernelSU / Root', 'me.weishu.kernelsu', 'Kernel-level root authorization with zero safety net detection')">
+          <div class="icon-svg-wrapper"><i class="fas fa-shield-halved" style="color: #ff007f;"></i></div>
+          <div class="icon-title">KernelSU</div>
+          <div class="icon-sub">root-auth</div>
+          <div class="icon-badge-pill">Kernel Hook</div>
+        </div>
+
+      </div>
+
+      <!-- Icon Detail Inspector Modal -->
+      <div id="iconDetailCard" class="card" style="display: none; background: rgba(16, 23, 38, 0.95); border-color: var(--cyan); margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h4 id="inspectTitle" style="color: var(--cyan); font-size: 16px; margin: 0;">Icon Details</h4>
+          <button class="copy-btn" onclick="document.getElementById('iconDetailCard').style.display='none'">✕ Close</button>
+        </div>
+        <p id="inspectDesc" style="font-size: 13px; color: var(--text-dim); margin: 8px 0;"></p>
+        <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--magenta);" id="inspectPkg"></div>
+      </div>
     </div>
 
     <!-- TAB 5: ANDROID APP / PWA -->
@@ -882,6 +1497,54 @@
           deferredPrompt = null;
         });
       }
+    // Interactive Phone Simulator Controls
+    function setPhoneView(mode) {
+      const qs = document.getElementById('phoneViewQS');
+      const ambient = document.getElementById('phoneViewAmbient');
+      if (mode === 'ambient') {
+        qs.style.display = 'none';
+        ambient.style.display = 'block';
+      } else {
+        qs.style.display = 'block';
+        ambient.style.display = 'none';
+      }
+    }
+
+    function toggleQs(tile, name) {
+      tile.classList.toggle('active');
+      const toast = document.getElementById('simToast');
+      const isActive = tile.classList.contains('active');
+      toast.innerText = `${name}: ${isActive ? 'ACTIVATED' : 'DEACTIVATED'}`;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 1800);
+    }
+
+    function simulateHudAction(action) {
+      alert(`[Game Space HUD]: ${action} toggled in memory!`);
+    }
+
+    function setProfile(name, clock, color) {
+      document.getElementById('govLabel').innerText = name.toUpperCase();
+      document.getElementById('govLabel').style.color = color;
+      document.getElementById('goldClock').innerText = clock;
+      document.getElementById('goldClock').style.color = color;
+    }
+
+    function setIconBg(bg) {
+      const grid = document.getElementById('iconGridContainer');
+      grid.style.background = bg;
+      grid.style.padding = '20px';
+      grid.style.borderRadius = '20px';
+      grid.style.border = '1px solid rgba(0, 229, 255, 0.3)';
+    }
+
+    function inspectIcon(title, pkg, desc) {
+      const card = document.getElementById('iconDetailCard');
+      document.getElementById('inspectTitle').innerText = title;
+      document.getElementById('inspectDesc').innerText = desc;
+      document.getElementById('inspectPkg').innerText = `Package: ${pkg} · 120Hz Vector Rendered`;
+      card.style.display = 'block';
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
 </body>
