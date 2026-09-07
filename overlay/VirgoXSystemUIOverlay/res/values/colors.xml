@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VirgoX Stealth Carbon Crimson Red Theme Overlay (SystemUI) -->
+<!-- Developer: Prince · VirgoYT -->
+<resources>
+    <!-- Primary Crimson Accent -->
+    <color name="theme_accent">#FF0033</color>
+    <color name="theme_accent_crimson">#FF0033</color>
+    <color name="theme_accent_bright">#FF3355</color>
+    
+    <!-- True Carbon Dark Backgrounds -->
+    <color name="theme_bg_carbon">#0D0E12</color>
+    <color name="theme_bg_deep">#060709</color>
+    <color name="theme_surface_card">#161920</color>
+    <color name="theme_surface_glow">#25000A</color>
+
+    <!-- Quick Settings Translucent Dark & Crimson Active States -->
+    <color name="qs_tile_active_crimson">#FF0033</color>
+    <color name="qs_tile_inactive_carbon">#181B24</color>
+    <color name="qs_background_dark">#E60D0E12</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VirgoX Stealth Carbon Crimson Red Framework Overlay -->
+<!-- Developer: Prince · VirgoYT -->
+<resources>
+    <color name="accent_device_default_light">#FF0033</color>
+    <color name="accent_device_default_dark">#FF0033</color>
+    <color name="primary_device_default_dark">#0D0E12</color>
+    <color name="primary_dark_device_default_dark">#050508</color>
+</resources>
