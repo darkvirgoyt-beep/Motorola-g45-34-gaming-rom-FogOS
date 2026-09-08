@@ -135,6 +135,18 @@ if [ -f "$SYSTEM_IMG" ]; then
         SYS_ROOT="$MNT_DIR"
     fi
     
+    echo "[*] [Debloat] Purging bloatware, carrier spam, and telemetry from system.img..."
+    if [ -f "patches/virgox_debloat_list.txt" ]; then
+        while IFS= read -r bloat_pkg || [ -n "$bloat_pkg" ]; do
+            [[ "$bloat_pkg" =~ ^#.*$ ]] && continue
+            [ -z "$bloat_pkg" ] && continue
+            if [ -e "$SYS_ROOT/$bloat_pkg" ]; then
+                echo "  [-] Removing system bloatware: $bloat_pkg"
+                sudo rm -rf "$SYS_ROOT/$bloat_pkg"
+            fi
+        done < "patches/virgox_debloat_list.txt"
+    fi
+    
     sudo mkdir -p "$SYS_ROOT/bin" "$SYS_ROOT/etc/init" "$SYS_ROOT/etc/sysconfig" "$SYS_ROOT/priv-app/FogOS-PulseControl" "$SYS_ROOT/media"
     
     if [ -f "$OUT_DIR/tools/FogOS-PulseControl.apk" ]; then
@@ -200,6 +212,16 @@ if [ -f "$SYS_EXT_IMG" ] && [ -f "system_ext.prop" ]; then
     mkdir -p "$MNT_EXT"
     sudo mount -o loop,rw "$WORK_DIR/extracted/system_ext.raw.img" "$MNT_EXT"
     
+    echo "[*] [Debloat] Purging bloatware and telemetry from system_ext.img..."
+    if [ -f "patches/virgox_debloat_list.txt" ]; then
+        while IFS= read -r bloat_pkg || [ -n "$bloat_pkg" ]; do
+            [[ "$bloat_pkg" =~ ^#.*$ ]] && continue
+            [ -z "$bloat_pkg" ] && continue
+            [ -e "$MNT_EXT/$bloat_pkg" ] && echo "  [-] Removing system_ext bloatware: $bloat_pkg" && sudo rm -rf "$MNT_EXT/$bloat_pkg"
+            [ -e "$MNT_EXT/system_ext/$bloat_pkg" ] && echo "  [-] Removing system_ext bloatware: $bloat_pkg" && sudo rm -rf "$MNT_EXT/system_ext/$bloat_pkg"
+        done < "patches/virgox_debloat_list.txt"
+    fi
+    
     if [ -f "$MNT_EXT/build.prop" ]; then
         sudo sh -c "cat system_ext.prop >> $MNT_EXT/build.prop"
     elif [ -f "$MNT_EXT/etc/build.prop" ]; then
@@ -224,6 +246,16 @@ if [ -f "$PRODUCT_IMG" ]; then
     MNT_PROD="$WORK_DIR/mnt_product"
     mkdir -p "$MNT_PROD"
     sudo mount -o loop,rw "$WORK_DIR/extracted/product.raw.img" "$MNT_PROD"
+    
+    echo "[*] [Debloat] Purging bloatware and redundant apps from product.img..."
+    if [ -f "patches/virgox_debloat_list.txt" ]; then
+        while IFS= read -r bloat_pkg || [ -n "$bloat_pkg" ]; do
+            [[ "$bloat_pkg" =~ ^#.*$ ]] && continue
+            [ -z "$bloat_pkg" ] && continue
+            [ -e "$MNT_PROD/$bloat_pkg" ] && echo "  [-] Removing product bloatware: $bloat_pkg" && sudo rm -rf "$MNT_PROD/$bloat_pkg"
+            [ -e "$MNT_PROD/product/$bloat_pkg" ] && echo "  [-] Removing product bloatware: $bloat_pkg" && sudo rm -rf "$MNT_PROD/product/$bloat_pkg"
+        done < "patches/virgox_debloat_list.txt"
+    fi
     
     if [ -f "prebuilt/bootanimation/bootanimation.zip" ]; then
         sudo mkdir -p "$MNT_PROD/media"

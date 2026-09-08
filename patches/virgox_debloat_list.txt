@@ -1,0 +1,56 @@
+# ==============================================================================
+# 🗑️ VirgoX Elite Gaming OS — Bloatware Removal Manifest
+# Target: Motorola Moto G45 5G / G34 5G (fogos)
+# Developer: Prince · VirgoYT (@darkvirgoyt-beep)
+#
+# Packages listed below are purged from /system, /system_ext, and /product
+# to maximize free RAM, eliminate background CPU wakeups, and remove carrier spam.
+# ==============================================================================
+
+# ── 1. Analytics, Telemetry & Diagnostics ──
+# Removes background telemetry pinging and error report uploaders
+app/LineageStats
+priv-app/LineageStats
+app/Matlog
+priv-app/Feedback
+app/BugReport
+app/BugReportLite
+priv-app/CarrierDefaultApp
+
+# ── 2. Carrier Spam, Push Ads & Flash SMS ──
+# Eliminates intrusive SIM toolkit popups that interrupt full-screen gaming
+app/Stk
+priv-app/Stk
+priv-app/SimAppDialog
+app/WAPPushManager
+
+# ── 3. Redundant / Outdated Stock AOSP Apps ──
+# Lightweight clean base — users install their own preferred modern apps
+app/Jelly
+app/Eleven
+app/Etar
+app/Calendar
+app/Email
+app/ExactCalculator
+app/Recorder
+app/SoundRecorder
+
+# ── 4. Heavy Background Services & Memory Drainers ──
+# Stops network printer discovery polling and background wallpaper engines
+app/PrintSpooler
+app/BuiltInPrintService
+app/LiveWallpapersPicker
+app/WallpaperBackup
+app/HTMLViewer
+app/BookmarkProvider
+app/PartnerBookmarksProvider
+
+# ── 5. Motorola Bloatware (if inherited from OEM vendor/stock) ──
+# Removes carrier promotion loaders, diagnostic monitors, and retail demo mode
+app/com.motorola.brapps
+priv-app/com.motorola.brapps
+app/com.motorola.genie
+priv-app/com.motorola.genie
+app/com.motorola.motocit
+app/com.motorola.demo
+priv-app/com.motorola.gamemode
