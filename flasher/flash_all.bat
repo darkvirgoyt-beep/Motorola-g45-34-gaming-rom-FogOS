@@ -30,6 +30,10 @@ if exist vbmeta_system.img (
 )
 
 echo.
+echo [*] Flashing VirgoX Elite Boot Splash (Eliminating Bootloader Warning)...
+if exist logo.bin fastboot flash logo logo.bin
+if exist logo.img fastboot flash logo logo.img
+
 echo.
 echo [*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Partitions...
 if exist boot.img fastboot flash boot boot.img

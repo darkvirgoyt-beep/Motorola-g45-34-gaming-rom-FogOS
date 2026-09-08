@@ -25,6 +25,10 @@ echo "[*] Flashing VBMeta (disabling dm-verity and verification)..."
 [ -f vbmeta.img ] && fastboot flash vbmeta vbmeta.img --disable-verity --disable-verification
 [ -f vbmeta_system.img ] && fastboot flash vbmeta_system vbmeta_system.img --disable-verity --disable-verification
 
+echo "[*] Flashing VirgoX Elite Boot Splash (Eliminating Bootloader Warning)..."
+[ -f logo.bin ] && fastboot flash logo logo.bin
+[ -f logo.img ] && fastboot flash logo logo.img
+
 echo "[*] Flashing FogOS Gaming Kernel (VirgoYT) & Core Boot Partitions..."
 [ -f boot.img ] && fastboot flash boot boot.img
 [ -f vendor_boot.img ] && fastboot flash vendor_boot vendor_boot.img

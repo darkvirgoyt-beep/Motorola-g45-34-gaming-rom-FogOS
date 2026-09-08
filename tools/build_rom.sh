@@ -278,6 +278,8 @@ chmod +x "$OUT_DIR/flash_all.sh"
 # Copy image files to output directory
 echo "[6/7] Assembling flashable partition images..."
 cp "$WORK_DIR"/extracted/*.img "$OUT_DIR/"
+[ -f "prebuilt/bootlogo/logo.bin" ] && cp "prebuilt/bootlogo/logo.bin" "$OUT_DIR/"
+[ -f "prebuilt/bootlogo/logo.img" ] && cp "prebuilt/bootlogo/logo.img" "$OUT_DIR/"
 
 # 6. Create Fastboot Flashable ZIP
 echo "[7/7] Packaging VirgoX Elite Gaming OS distribution..."
