@@ -53,7 +53,9 @@ unzip -q -o "$WORK_DIR/base_rom.zip" "payload.bin" -d "$WORK_DIR"
 # Install payload-dumper-go if missing
 if ! command -v payload-dumper-go &> /dev/null; then
     echo "[*] Installing payload-dumper-go..."
-    curl -sL https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/
+    wget --tries=5 --timeout=30 -O /tmp/payload-dumper-go.tar.gz https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz
+    sudo tar -xzf /tmp/payload-dumper-go.tar.gz -C /usr/local/bin/
+    rm -f /tmp/payload-dumper-go.tar.gz
 fi
 
 payload-dumper-go -o "$WORK_DIR/extracted" "$WORK_DIR/payload.bin"
