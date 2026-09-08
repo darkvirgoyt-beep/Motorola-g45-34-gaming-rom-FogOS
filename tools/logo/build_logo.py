@@ -43,8 +43,6 @@ def build_virgox_logo(splash_png_path, base_logo_dir, output_bin_path):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from moto_bootlogo import MotoBootLogo
     
-    mbl = MotoBootLogo.__new MotoBootLogo
-    
     # Temp working dir
     import tempfile
     import shutil

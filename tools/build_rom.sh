@@ -159,6 +159,7 @@ if [ -f "$SYSTEM_IMG" ]; then
     
     [ -f "patches/fogos_ram_optimizer.sh" ] && sudo cp patches/fogos_ram_optimizer.sh "$SYS_ROOT/bin/fogos_ram_optimizer.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_ram_optimizer.sh"
     [ -f "patches/fogos_game_network.sh" ] && sudo cp patches/fogos_game_network.sh "$SYS_ROOT/bin/fogos_game_network.sh" && sudo chmod 755 "$SYS_ROOT/bin/fogos_game_network.sh"
+    [ -f "virgox/bin/virgox-boot-customizer" ] && sudo cp virgox/bin/virgox-boot-customizer "$SYS_ROOT/bin/virgox-boot-customizer" && sudo chmod 755 "$SYS_ROOT/bin/virgox-boot-customizer" && sudo ln -sf /system/bin/virgox-boot-customizer "$SYS_ROOT/bin/virgox-bootanim"
     [ -f "patches/init.fogos.gaming.rc" ] && sudo cp patches/init.fogos.gaming.rc "$SYS_ROOT/etc/init/init.fogos.gaming.rc"
     [ -f "rootdir/init.fogos.rc" ] && sudo cp rootdir/init.fogos.rc "$SYS_ROOT/etc/init/init.fogos.rc"
     [ -f "patches/game_mode_config.xml" ] && sudo cp patches/game_mode_config.xml "$SYS_ROOT/etc/game_mode_config.xml"

@@ -1,0 +1,87 @@
+#!/system/bin/sh
+# ==============================================================================
+# 🎮 VirgoX Boot Animation & Splash Customizer (On-Device Manager)
+# Developer : Prince · VirgoYT (VirgoYT707)
+# Device    : Motorola Moto G45 5G / G34 5G (fogos)
+# ==============================================================================
+
+CUSTOM_BOOTANIM="/data/local/bootanimation.zip"
+SYSTEM_BOOTANIM="/system/media/bootanimation.zip"
+LOGO_PARTITION="/dev/block/bootdevice/by-name/logo"
+[ ! -b "$LOGO_PARTITION" ] && LOGO_PARTITION="/dev/block/by-name/logo"
+
+show_help() {
+    echo "=================================================================="
+    echo "⚡ VirgoX Elite Boot Customizer — Moto G45 / G34 (fogos)"
+    echo "=================================================================="
+    echo "Usage: virgox-boot-customizer <command> [argument]"
+    echo ""
+    echo "Commands:"
+    echo "  status                - View currently active boot animation & logo"
+    echo "  install-anim <file>   - Set custom bootanimation.zip"
+    echo "  reset-anim            - Revert to official VirgoX 120FPS animation"
+    echo "  preview               - Test play current boot animation on screen"
+    echo "  flash-splash <file>   - Flash new splash screen (logo.bin) directly"
+    echo "=================================================================="
+}
+
+cmd="$1"
+
+case "$cmd" in
+    status)
+        echo "[*] Boot Animation Status:"
+        if [ -f "$CUSTOM_BOOTANIM" ]; then
+            echo "  Mode: CUSTOM USER BOOT ANIMATION"
+            echo "  Path: $CUSTOM_BOOTANIM ($(ls -lh $CUSTOM_BOOTANIM | awk '{print $5}'))"
+        else
+            echo "  Mode: DEFAULT VIRGOX 120FPS ANIMATION"
+            echo "  Path: $SYSTEM_BOOTANIM"
+        fi
+        echo "[*] Splash Partition: $LOGO_PARTITION"
+        ;;
+    install-anim)
+        file="$2"
+        if [ -z "$file" ] || [ ! -f "$file" ]; then
+            echo "[!] Error: Specify a valid bootanimation.zip file."
+            exit 1
+        fi
+        echo "[*] Installing custom boot animation..."
+        cp "$file" "$CUSTOM_BOOTANIM"
+        chmod 644 "$CUSTOM_BOOTANIM"
+        chown root:root "$CUSTOM_BOOTANIM" 2>/dev/null || chown 0:0 "$CUSTOM_BOOTANIM" 2>/dev/null || true
+        chcon u:object_r:bootanim_data_file:s0 "$CUSTOM_BOOTANIM" 2>/dev/null || true
+        echo "[✓] Custom boot animation successfully installed to $CUSTOM_BOOTANIM!"
+        echo "    Reboot device to see changes."
+        ;;
+    reset-anim)
+        echo "[*] Reverting to stock VirgoX 120 FPS boot animation..."
+        rm -f "$CUSTOM_BOOTANIM"
+        echo "[✓] Reset complete! System will now use official 120 FPS animation."
+        ;;
+    preview)
+        echo "[*] Launching 5-second live boot animation preview on screen..."
+        bootanimation &
+        BOOT_PID=$!
+        sleep 5
+        kill $BOOT_PID 2>/dev/null || true
+        echo "[✓] Preview completed."
+        ;;
+    flash-splash)
+        file="$2"
+        if [ -z "$file" ] || [ ! -f "$file" ]; then
+            echo "[!] Error: Specify a valid logo.bin or logo.img file."
+            exit 1
+        fi
+        if [ "$(id -u)" != "0" ]; then
+            echo "[!] Root permissions required to flash splash screen on device."
+            echo "    Run via 'su' in Termux or use Fastboot: 'fastboot flash logo logo.bin'."
+            exit 1
+        fi
+        echo "[*] Flashing splash screen to $LOGO_PARTITION..."
+        dd if="$file" of="$LOGO_PARTITION" bs=4M conv=fsync
+        echo "[✓] Splash screen updated! Bootloader warning removed."
+        ;;
+    *)
+        show_help
+        ;;
+esac

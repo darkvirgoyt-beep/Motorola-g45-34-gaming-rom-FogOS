@@ -181,3 +181,12 @@ service fogos_ram_tuner /system/bin/fogos_ram_optimizer.sh
     disabled
     seclabel u:r:init:s0
 
+# Custom Boot Animation & Splash Hooks
+on post-fs-data
+    mkdir /data/virgox 0775 system system
+    mkdir /data/virgox/boot 0775 system system
+    chmod 0644 /data/local/bootanimation.zip
+    chmod 0644 /data/virgox/boot/bootanimation.zip
+    chcon u:object_r:bootanim_data_file:s0 /data/local/bootanimation.zip
+    chcon u:object_r:bootanim_data_file:s0 /data/virgox/boot/bootanimation.zip
+
