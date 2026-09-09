@@ -163,8 +163,14 @@ if [ -f "$SYSTEM_IMG" ]; then
     [ -f "patches/init.fogos.gaming.rc" ] && sudo cp patches/init.fogos.gaming.rc "$SYS_ROOT/etc/init/init.fogos.gaming.rc"
     [ -f "rootdir/init.fogos.rc" ] && sudo cp rootdir/init.fogos.rc "$SYS_ROOT/etc/init/init.fogos.rc"
     [ -f "patches/game_mode_config.xml" ] && sudo cp patches/game_mode_config.xml "$SYS_ROOT/etc/game_mode_config.xml"
-    [ -f "patches/game_spoofing.xml" ] && sudo cp patches/game_spoofing.xml "$SYS_ROOT/etc/game_spoofing.xml"
     [ -f "sysconfig/gaming_power_whitelist.xml" ] && sudo cp sysconfig/gaming_power_whitelist.xml "$SYS_ROOT/etc/sysconfig/gaming_power_whitelist.xml"
+    
+    if [ -d "prebuilt/idc" ]; then
+        echo "[*] Installing 1000Hz Esports Touch IDC configurations..."
+        sudo mkdir -p "$SYS_ROOT/usr/idc"
+        sudo cp prebuilt/idc/*.idc "$SYS_ROOT/usr/idc/"
+        sudo chmod 644 "$SYS_ROOT/usr/idc/"*.idc
+    fi
     
     if [ -f "patches/fogos_gaming.prop" ]; then
         if [ -f "$SYS_ROOT/build.prop" ]; then

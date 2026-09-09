@@ -39,12 +39,22 @@ debug.vulkan.enable_present_timing=1
 ro.vendor.display.frame_pacing=1
 debug.sf.frame_rate_multiple_threshold=60
 
-# --- TOUCH SAMPLING, LOW LATENCY & DOUBLE-TAP-TO-WAKE ---
-windowsmgr.max_events_per_sec=240
+# --- TOUCH SAMPLING (1000Hz ESPORTS ENGINE), ZERO LATENCY & DOUBLE-TAP-TO-WAKE ---
+windowsmgr.max_events_per_sec=1000
+persist.sys.touch.sampling_rate=1000
+persist.vendor.touch.sampling_rate=1000
+persist.vendor.touch.rate=1000
+persist.sys.touch.rate=1000
+ro.vendor.touch.polling_rate=1000
+ro.input.sampling_rate=1000
+touch.sampling_rate=1000
 touch.pressure.scale=0.001
+persist.sys.touch.esports=1
 persist.sys.touch.latency_tuning=1
 persist.sys.touch.debounce_ms=0
-persist.sys.touch.delay_ms=5
+persist.sys.touch.delay_ms=0
+persist.sys.touch_delay_ms=0
+ro.surface_flinger.set_touch_timer_ms=0
 ro.vendor.touch.dt2w=1
 
 # --- ADRENO 619 GPU BOOST & RENDERING PIPELINE ---
@@ -111,11 +121,11 @@ debug.sf.disable_triple_frame_buffer=1
 debug.sf.enable_hwc_vds=1
 debug.sf.force_hwc_copy=false
 
-# --- INPUT / TOUCH SAMPLING & SENSITIVITY ---
-ro.input.max_events=50
-ro.input.event_per_port=8
-debug.touch.slop_scale=0.5
-debug.touch.sensitivity=1
+# --- INPUT / 1000Hz TOUCH SAMPLING & AIM SENSITIVITY ---
+ro.input.max_events=2000
+ro.input.event_per_port=128
+debug.touch.slop_scale=0.25
+debug.touch.sensitivity=2
 
 # --- GAMING ENGINE & THERMAL CAP ---
 ro.game_maxtemp.enable=true
@@ -125,7 +135,7 @@ debug.game.optimization=true
 debug.sf.game_rendering_optimization=true
 
 # --- INPUT LATENCY REDUCTION & TOUCH FRAME PREDICTION ---
-debug.input.latency=1
+debug.input.latency=0
 debug.sf.touch_frame_prediction=1
 ro.sf.frame_prediction=true
 

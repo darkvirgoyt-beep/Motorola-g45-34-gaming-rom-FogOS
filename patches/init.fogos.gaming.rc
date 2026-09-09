@@ -50,12 +50,23 @@ on boot
     write /sys/class/kgsl/kgsl-3d0/throttling 0
 
     # --------------------------------------------------------------------------
-    # 2. Input / Touch / Latency Delay (LAY_MS = 5 or lower) & DT2W
+    # 2. Input / Touch / 1000Hz Ultra-High Polling Rate & Zero Debounce
     # --------------------------------------------------------------------------
     write /sys/android_touch/double_tap_enable 1
     write /sys/devices/virtual/touch/touch_dev/double_tap 1
     write /sys/devices/virtual/touch/touch_dev/game_mode 1
-    write /sys/devices/virtual/touch/touch_dev/touch_delay_ms 5
+    write /sys/devices/virtual/touch/touch_dev/touch_delay_ms 0
+    write /sys/devices/virtual/touch/touch_dev/sample_rate 1000
+    write /sys/devices/virtual/touch/touch_dev/report_rate 1000
+    write /sys/devices/virtual/touch/touch_dev/touch_rate 1000
+    write /sys/devices/virtual/touch/touch_dev/continuous_report 1
+    write /sys/class/touchscreen/primary/sample_rate 1000
+    write /sys/class/touchscreen/primary/report_rate 1000
+    write /sys/class/touchscreen/primary/touch_rate 1000
+    write /sys/class/touchscreen/primary/game_mode 1
+    write /sys/class/touchscreen/primary/delay 0
+    write /sys/class/touchscreen/primary/debounce 0
+    write /sys/class/touchscreen/primary/touch_filter 0
 
     # --------------------------------------------------------------------------
     # 3. Memory & Virtual Memory (zRAM, Swappiness, MGLRU)

@@ -7,19 +7,22 @@
       "id": "balanced",
       "controller_value": "balanced",
       "default": true,
-      "thermal_policy": "stock"
+      "thermal_policy": "stock",
+      "touch_sampling_rate_hz": 240
     },
     {
       "id": "performance",
       "controller_value": "performance",
       "default": false,
-      "thermal_policy": "stock"
+      "thermal_policy": "stock",
+      "touch_sampling_rate_hz": 1000
     },
     {
       "id": "extreme_gaming",
       "controller_value": "extreme_gaming",
       "default": false,
-      "thermal_policy": "stock"
+      "thermal_policy": "stock",
+      "touch_sampling_rate_hz": 1000
     }
   ],
   "policy": "The controller must use only the validated /dev/fogos_profile endpoint and must never disable thermal protection or write arbitrary sysfs paths."

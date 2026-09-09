@@ -34,12 +34,14 @@
 - **Resource Allocation:** Background app restriction during gaming
 - **Network QoS:** iptables TOS Low Delay on game traffic
 
-### 3. 📱 Touch & Display
-- **Touch Rate:** 240Hz touch sampling rate
-- **Reduced Latency:** `slop_scale=0.5`
-- **Smoothness:** Frame prediction enabled
-- **Sensors:** Gyroscope 100Hz polling for precision aiming
-- **Features:** Double-tap-to-wake (Goodix GT917S)
+### 3. 📱 Touch & Display (1000Hz Ultra-High Polling Engine)
+- **Touch Rate:** 1000Hz touch sampling / polling rate with 16MHz SPI bus throughput
+- **Zero Input Latency:** `debug.input.latency=0`, `persist.sys.touch.debounce_ms=0`, 0ms touch delay
+- **Esports Crosshair Precision:** Raw Level-0 filter bypass (`touch.filter.level=0`), `slop_scale=0.25`, sensitivity=2
+- **Event Pipeline Throughput:** `max_events_per_sec=1000`, `ro.input.max_events=2000`, `ro.input.event_per_port=128`
+- **Smoothness:** Dynamic frame prediction & SurfaceFlinger touch boost (`ro.sf.frame_prediction=true`)
+- **Sensors:** Low-latency gyroscope calibration (`SENSOR_RATE_FASTEST`) for instantaneous aim alignment
+- **Features:** Double-tap-to-wake (Goodix GT917S, Chipone TDDI, Ilitek)
 
 ### 4. 💾 Smart RAM Management
 - **Auto-Detection:** Detects 4GB vs 8GB variant
