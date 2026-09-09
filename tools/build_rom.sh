@@ -105,6 +105,7 @@ cp patches/init.fogos.gaming.rc "$OUT_DIR/config/init.fogos.gaming.rc" || true
 cp patches/fogos_game_network.sh "$OUT_DIR/config/fogos_game_network.sh" || true
 cp patches/fogos_ram_optimizer.sh "$OUT_DIR/config/fogos_ram_optimizer.sh" || true
 cp rootdir/init.fogos.rc "$OUT_DIR/config/init.fogos.rc" || true
+cp patches/thermal-engine-fogos-game-perf.conf "$OUT_DIR/config/thermal-engine-fogos-game-perf.conf" || true
 cp system_ext.prop "$OUT_DIR/config/system_ext.prop" || true
 echo "These configs have been baked into the system partitions. They are kept here for documentation purposes." > "$OUT_DIR/config/README.txt"
 
