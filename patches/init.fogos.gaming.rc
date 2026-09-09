@@ -105,10 +105,13 @@ on boot
     chown system system /sys/class/touchscreen/primary/wake_gestures
     write /sys/class/touchscreen/primary/wake_gestures 1
 
-    # IMU / Gyroscope Low-Latency Polling (SENSOR_RATE_FASTEST)
+    # iOS-Grade IMU / Gyroscope Ultra-Fast 1ms Polling & Direct Channel
     write /sys/devices/platform/soc/soc:sensors/batch_delay 0
-    write /sys/class/sensors/gyro_sensor/poll_delay 5
-    write /sys/class/sensors/accelerometer_sensor/poll_delay 5
+    write /sys/class/sensors/gyro_sensor/poll_delay 1
+    write /sys/class/sensors/gyro_sensor/fast_calibration 1
+    write /sys/class/sensors/gyro_sensor/filter_level 0
+    write /sys/class/sensors/accelerometer_sensor/poll_delay 1
+    write /sys/class/sensors/accelerometer_sensor/fast_calibration 1
 
 # ==============================================================================
 # Dynamic Performance Profiles (Quick Settings Tiles & VirgoX PulseControl)
@@ -142,25 +145,41 @@ on property:persist.fogos.profile=balanced
     exec_background - root root -- /system/bin/fogos_game_network.sh 0
 
 on property:persist.fogos.profile=gaming
-    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2000000
-    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2208000
-    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 950000000
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq 1516800
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2208000
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/down_rate_limit_us 50000
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_min_freq 1804800
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2592000
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/down_rate_limit_us 50000
+    write /sys/class/kgsl/kgsl-3d0/min_gpuclk 600000000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 1050000000
+    write /sys/class/kgsl/kgsl-3d0/idle_timer 120
     write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
     write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
     write /sys/class/kgsl/kgsl-3d0/throttling 0
-    write /proc/sys/vm/swappiness 100
-    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 60
+    write /dev/cpu_dma_latency 0
+    write /proc/sys/vm/swappiness 80
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 80
+    write /sys/devices/system/cpu/cpu_boost/input_boost_freq "0:1400000 6:2054400"
     exec_background - root root -- /system/bin/fogos_game_network.sh 1
 
 on property:persist.fogos.profile=turbo
-    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2000000
-    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2208000
-    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 950000000
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq 1708800
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq 2208000
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/down_rate_limit_us 80000
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_min_freq 2054400
+    write /sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq 2592000
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/down_rate_limit_us 80000
+    write /sys/class/kgsl/kgsl-3d0/min_gpuclk 840000000
+    write /sys/class/kgsl/kgsl-3d0/max_gpuclk 1050000000
+    write /sys/class/kgsl/kgsl-3d0/idle_timer 180
     write /sys/class/kgsl/kgsl-3d0/force_bus_on 1
     write /sys/class/kgsl/kgsl-3d0/force_clk_on 1
     write /sys/class/kgsl/kgsl-3d0/throttling 0
-    write /proc/sys/vm/swappiness 100
-    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 80
+    write /dev/cpu_dma_latency 0
+    write /proc/sys/vm/swappiness 70
+    write /sys/devices/system/cpu/cpu_boost/input_boost_ms 100
+    write /sys/devices/system/cpu/cpu_boost/input_boost_freq "0:1708800 6:2208000"
     exec_background - root root -- /system/bin/fogos_game_network.sh 1
 
 # Performance mode toggle hook

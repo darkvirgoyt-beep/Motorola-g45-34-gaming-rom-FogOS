@@ -19,4 +19,11 @@
     <!-- Genshin Impact & Honkai Star Rail -->
     <package name="com.miHoYo.GenshinImpact" spoof="OnePlus" brand="OnePlus" model="PGP110" />
     <package name="com.HoYoverse.hkrpgoversea" spoof="OnePlus" brand="OnePlus" model="PGP110" />
+
+    <!-- Free Fire & Free Fire MAX 120FPS Unlock -->
+    <package name="com.dts.freefiremax" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+    <package name="com.dts.freefireth" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
+
+    <!-- Call of Duty: Warzone Mobile 120FPS Unlock -->
+    <package name="com.activision.callofduty.warzone" spoof="ASUS_AI2401_D" brand="asus" model="ROG Phone 8 Pro" />
 </game-spoofing>

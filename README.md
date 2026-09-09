@@ -26,21 +26,24 @@
 - **Network:** TCP BBR2 congestion control
 - **Storage:** BFQ I/O scheduler
 
-### 2. 🎮 Gaming Optimizations
-- **Profiles:** 3 gaming profiles: Balanced / Performance / Turbo
-- **Per-Game Configs:** BGMI, PUBG, CODM, Genshin Impact, Free Fire, Mobile Legends
-- **Device Spoofing:** High FPS unlock via device prop spoofing
-- **GameManagerService:** Native integration
-- **Resource Allocation:** Background app restriction during gaming
-- **Network QoS:** iptables TOS Low Delay on game traffic
+### 2. 🎮 Gaming Optimizations & Locked Stable FPS (Zero Drop Engine)
+- **Profiles:** 3 gaming profiles: Balanced / Performance / Turbo with locked frequency floors
+- **Zero Frame Drops:** Big cores locked at 1.80GHz - 2.60GHz, GPU floor locked at 600MHz - 1050MHz
+- **Thermal Ceiling:** Elevated gaming thermal limits (54°C - 63°C) preventing combat throttling cliffs
+- **SurfaceFlinger Stability:** Triple buffering, 0ms touch timer, disabled GL backpressure, content detection disabled
+- **Per-Game Configs:** BGMI, PUBG, CODM, Warzone Mobile, Free Fire MAX, Genshin Impact, Mobile Legends
+- **Device Spoofing:** ROG Phone 8 Pro / Xperia 1 III spoofing for 90 FPS & 120 FPS unlock
+- **GameManagerService:** Native integration with background throttling suppression
+- **Network QoS:** iptables TOS Low Delay & TCP BBR2 on game packets
 
-### 3. 📱 Touch & Display (1000Hz Ultra-High Polling Engine)
+### 3. 📱 Touch & iOS-Grade Gyroscope (1000Hz Polling Engine)
 - **Touch Rate:** 1000Hz touch sampling / polling rate with 16MHz SPI bus throughput
 - **Zero Input Latency:** `debug.input.latency=0`, `persist.sys.touch.debounce_ms=0`, 0ms touch delay
 - **Esports Crosshair Precision:** Raw Level-0 filter bypass (`touch.filter.level=0`), `slop_scale=0.25`, sensitivity=2
+- **iOS-Grade Gyroscope:** Direct Channel hardware shared memory (`persist.vendor.sensors.direct_channel=true`), real-time RT task thread (`enable.rt_task=true`)
+- **Ultra-Fast 1000Hz IMU Polling:** `ro.sensor.rate.fastest=1000` (1ms hardware polling delay)
+- **Zero Gyro Delay & Drift:** Artificial low-pass filter disabled (`imu_filter=0`), raw 1:1 tracking (`gyro_smoothing=0.0`)
 - **Event Pipeline Throughput:** `max_events_per_sec=1000`, `ro.input.max_events=2000`, `ro.input.event_per_port=128`
-- **Smoothness:** Dynamic frame prediction & SurfaceFlinger touch boost (`ro.sf.frame_prediction=true`)
-- **Sensors:** Low-latency gyroscope calibration (`SENSOR_RATE_FASTEST`) for instantaneous aim alignment
 - **Features:** Double-tap-to-wake (Goodix GT917S, Chipone TDDI, Ilitek)
 
 ### 4. 💾 Smart RAM Management

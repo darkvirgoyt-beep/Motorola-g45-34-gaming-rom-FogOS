@@ -39,13 +39,20 @@ debug.input.latency=0
 debug.sf.touch_frame_prediction=1
 ro.sf.frame_prediction=true
 
-# --- GYRO / SENSORS (Precision Aiming for BGMI/PUBG/CODM) ---
+# --- iOS-GRADE GYROSCOPE CALIBRATION & DIRECT CHANNEL HARDWARE POLLING ---
 ro.sensor.gyro.cal=true
 ro.sensor.game_gesture=true
-ro.sensor.rate.fastest=10000
+ro.sensor.rate.fastest=1000
 persist.vendor.sensors.direct_channel=true
+persist.vendor.sensors.support_direct_channel=true
+persist.vendor.sensors.enable.rt_task=true
+persist.vendor.sensors.enable.bypass_worker=true
+persist.vendor.sensors.enable.mag_filter=false
 persist.vendor.sensors.batch_delay=0
 persist.vendor.sensors.hal.imu_filter=0
+persist.fogos.gyro.smoothing=0
+persist.fogos.gyro.sensitivity=1.0
+persist.sys.gyro.ios_mode=1
 ro.vendor.sensors.ssc=true
 ro.vendor.sensors.adsp=true
 
