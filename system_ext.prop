@@ -85,5 +85,5 @@ ro.vendor.camera.mot_hal3=1
 # --- VIRGOX OTA UPDATE SYSTEM ---
 ro.virgox.version=1.0-Cyber
 ro.virgox.device=fogos
-ro.virgox.ota.url=https://raw.githubusercontent.com/darkvirgoyt-beep/VirgoX-OTA-Updater/main/ota_feed.json
-lineage.updater.uri=https://raw.githubusercontent.com/darkvirgoyt-beep/VirgoX-OTA-Updater/main/ota_feed.json
+ro.virgox.ota.url=https://raw.githubusercontent.com/darkvirgoyt-beep/VirgoX-ROM-Portal/main/public/ota_feed.json
+lineage.updater.uri=https://raw.githubusercontent.com/darkvirgoyt-beep/VirgoX-ROM-Portal/main/public/ota_feed.json
